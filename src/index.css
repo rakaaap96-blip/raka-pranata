@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+* {
+  cursor:none
+}
+
+/* ========== TYPOGRAPHY WITH FALLBACKS ========== */
+h1 {
+  font-family: 'Libre Baskerville', serif;
+}
+h2 {
+  font-family: 'Libre Baskerville', serif;
+}
+p {
+  font-family: "Manrope", sans-serif;
+}
+
+/* ========== ANIMATED GOLD SCROLLBAR ========== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #d4af37, #f4d03f, #d4af37);
+  border-radius: 10px;
+  background-size: 200% 200%;
+  animation: scrollbarGradient 3s ease infinite;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #f4d03f, #ffffea, #f4d03f);
+  animation: scrollbarGradient 1.5s ease infinite;
+}
+
+@keyframes scrollbarGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
