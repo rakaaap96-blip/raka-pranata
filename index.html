@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark" itemscope itemtype="https://schema.org/WebPage">
 <head>
     <meta charset="UTF-8" />
     
-    <!-- Fixed Favicon Links -->
+    <!-- ========== ENHANCED FAVICON & ICONS ========== -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/IMGG/logo.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="mask-icon" href="/IMGG/logo.svg" color="#d4af37">
     
-    <!-- Viewport & Rendering -->
+    <!-- ========== ENHANCED VIEWPORT & RENDERING ========== -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#d4af37">
     <meta name="msapplication-TileColor" content="#d4af37">
@@ -45,13 +45,15 @@
     }
     </style>
 
-    <!-- ========== PERFORMANCE & PRELOADING ========== -->
+    <!-- ========== ENHANCED PERFORMANCE & PRELOADING ========== -->
     <link rel="preload" href="/src/main.tsx" as="script" fetchpriority="high">
     <link rel="preload" href="/IMGG/og-image.png" as="image" type="image/png">
     
     <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
     <!-- ========== OPTIMIZED GOOGLE ANALYTICS ========== -->
     <script>
@@ -81,11 +83,11 @@
     }
     </script>
 
-    <!-- ========== OPTIMIZED META TAGS ========== -->
-    <title>Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert</title>
-    <meta name="title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript">
-    <meta name="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia. View my projects, design work, and let's build something amazing together!">
-    <meta name="keywords" content="Raka Pranata, Raka Pranata portfolio, frontend developer Bogor, UI/UX designer Indonesia, React developer, TypeScript expert, web developer Bogor, frontend engineer Indonesia, React.js developer, portfolio website">
+    <!-- ========== ENHANCED META TAGS ========== -->
+    <title itemprop="name">Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert</title>
+    <meta name="title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert">
+    <meta name="description" itemprop="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia. View my projects, design work, and let's build something amazing together!">
+    <meta name="keywords" content="Raka Pranata, Raka Pranata portfolio, frontend developer Bogor, UI/UX designer Indonesia, React developer, TypeScript expert, web developer Bogor, frontend engineer Indonesia, React.js developer, portfolio website, JavaScript developer, Next.js developer">
     <meta name="author" content="Raka Pranata">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
@@ -113,14 +115,14 @@
     <meta property="business:contact_data:country_name" content="Indonesia">
     
     <!-- ========== TWITTER OPTIMIZATION ========== -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://raka-pranata.vercel.app/">
-    <meta property="twitter:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
-    <meta property="twitter:description" content="Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
-    <meta property="twitter:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
-    <meta property="twitter:image:alt" content="Raka Pranata Portfolio">
-    <meta property="twitter:creator" content="@raka_pranata">
-    <meta property="twitter:site" content="@raka_pranata">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://raka-pranata.vercel.app/">
+    <meta name="twitter:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
+    <meta name="twitter:description" content="Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
+    <meta name="twitter:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
+    <meta name="twitter:image:alt" content="Raka Pranata Portfolio">
+    <meta name="twitter:creator" content="@raka_pranata">
+    <meta name="twitter:site" content="@raka_pranata">
     
     <!-- ========== CANONICAL & ALTERNATE URLS ========== -->
     <link rel="canonical" href="https://raka-pranata.vercel.app" />
@@ -332,8 +334,30 @@
     <meta name="format-detection" content="date=no">
     <meta name="format-detection" content="address=no">
     <meta name="format-detection" content="email=no">
+    
+    <!-- ========== ADDITIONAL SEO ENHANCEMENTS ========== -->
+    <meta name="generator" content="Vite, React, TypeScript">
+    <meta name="copyright" content="Raka Pranata">
+    <meta name="designer" content="Raka Pranata">
+    <meta name="reply-to" content="raka.pranata@example.com">
+    <meta name="owner" content="Raka Pranata">
+    <meta name="directory" content="submission">
+    
+    <!-- ========== SOCIAL VERIFICATION ========== -->
+    <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_CODE">
+    <meta name="msvalidate.01" content="YOUR_BING_WEBMASTER_CODE">
+    
+    <!-- ========== CONTENT SECURITY POLICY ========== -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      font-src 'self' https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https://www.google-analytics.com;
+    ">
 </head>
-<body class="antialiased" cz-shortcut-listen="true">   
+<body class="antialiased" cz-shortcut-listen="true" itemscope itemtype="https://schema.org/WebPage">   
     <div id="root"></div>
     
     <!-- ========== PERFORMANCE & FALLBACK SCRIPTS ========== -->
@@ -408,5 +432,21 @@
             <p>You can contact Raka Pranata directly via <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a> or <a href="https://github.com/rakaaap96-blip" style="color: #d4af37;">GitHub</a>.</p>
         </div>
     </noscript>
+    
+    <!-- ========== ADDITIONAL SEO ELEMENTS ========== -->
+    <!-- Hidden semantic content for SEO -->
+    <div hidden aria-hidden="true">
+        <h1>Raka Pranata - Frontend Developer & UI/UX Designer Portfolio</h1>
+        <h2>React TypeScript Expert based in Bogor, Indonesia</h2>
+        <p>Specializing in modern web development, React applications, TypeScript, and user interface design. Available for freelance projects and full-time opportunities.</p>
+        <ul>
+            <li>Frontend Development</li>
+            <li>UI/UX Design</li>
+            <li>React Applications</li>
+            <li>TypeScript Development</li>
+            <li>Responsive Web Design</li>
+            <li>Performance Optimization</li>
+        </ul>
+    </div>
 </body>
 </html>
