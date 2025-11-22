@@ -44,14 +44,15 @@ function ProfileImage() {
       <div className={`relative w-full h-full rounded-full overflow-hidden border-4 border-[#d4af37]/40 ${
         !isMobile ? 'group-hover:border-[#d4af37] transition-all duration-500 shadow-2xl' : ''
       }`}>
-        {/* LCP IMAGE - SAMA UNTUK SEMUA DEVICE */}
+        
+        {/* PRIMARY IMAGE */}
         <img
-          src="/IMGG/face1-320x320.webp"
-          alt="Raka Pranata professional profile - Frontend Developer and UI/UX Designer"
+          src="/IMGG/face1-248x248.webp"
+          alt="Raka Pranata - Frontend Developer and UI/UX Designer"
           fetchPriority="high"
-          width="320"
-          height="320"
-          className={`absolute inset-0 w-full h-full object-cover ${
+          width="248"
+          height="248"
+          className={`w-full h-full object-cover ${
             !isMobile 
               ? 'transition-all duration-1000 ease-out opacity-100 group-hover:opacity-0 group-hover:scale-110' 
               : ''
@@ -61,11 +62,11 @@ function ProfileImage() {
         {/* SECOND IMAGE - HANYA DI DESKTOP */}
         {!isMobile && (
           <img
-            src="/IMGG/face0-320x320.webp"
-            alt="Raka Pranata creative profile - showcasing innovative design and development work"
+            src="/IMGG/face0-248x248.webp"
+            alt="Raka Pranata creative profile"
             loading="lazy"
-            width="320"
-            height="320"
+            width="248"
+            height="248"
             className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
           />
         )}
@@ -92,7 +93,7 @@ function ProfileImage() {
         </>
       )}
       
-      {/* TECH STACK - SIMPLIFIED DI MOBILE */}
+      {/* TECH STACK */}
       <div className={`absolute -left-4 top-1/2 transform -translate-y-1/2 space-y-2 ${
         isMobile ? 'space-y-1' : ''
       }`}>
