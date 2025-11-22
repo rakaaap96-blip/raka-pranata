@@ -26,7 +26,7 @@ function ProfileImage() {
       <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-[#d4af37]/40 group-hover:border-[#d4af37] transition-all duration-500 shadow-2xl">
         {/* LCP IMAGE - NO LAZY LOAD */}
         <img
-          src="/IMGG/face1-496x496.webp"
+          src="/IMGG/face1-248x248.webp"
           srcSet="/IMGG/face1-248x248.webp 248w,
                   /IMGG/face1-496x496.webp 496w,
                   /IMGG/face1-1418x1418.webp 1418w"
@@ -42,7 +42,7 @@ function ProfileImage() {
         
         {/* SECOND IMAGE - BISA LAZY LOAD */}
         <img
-          src="/IMGG/face0-496x496.webp"
+          src="/IMGG/face0-248x248.webp"
           srcSet="/IMGG/face0-248x248.webp 248w,
                   /IMGG/face0-496x496.webp 496w,
                   /IMGG/face0-1418x1418.webp 1418w"
