@@ -58,9 +58,11 @@
     }
     </style>
 
-    <!-- ========== ENHANCED PERFORMANCE & PRELOADING ========== -->
-    <link rel="preload" href="/src/main.tsx" as="script" fetchpriority="high">
-    <link rel="preload" href="/IMGG/og-image.png" as="image" type="image/png">
+    <!-- ========== FIXED PERFORMANCE & PRELOADING ========== -->
+    <link rel="preload" href="/assets/index-BCMMTH3A.css" as="style" fetchpriority="high">
+    <link rel="preload" href="/assets/index-D3cnzbcO.js" as="script" fetchpriority="high">
+    <link rel="preload" href="/src/main.tsx" as="script">
+    <link rel="preload" href="/IMGG/og-image.png" as="image" type="image/png" fetchpriority="high">
     
     <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -311,11 +313,6 @@
     <meta name="designer" content="Raka Pranata">
     <meta name="owner" content="Raka Pranata">
     <meta name="directory" content="submission">
-    
-    <!-- ========== SOCIAL VERIFICATION ========== -->
-    <!-- <meta name="google-site-verification" content="YOUR_GOOGLE_SEARCH_CONSOLE_CODE"> -->
-    <!-- <meta name="msvalidate.01" content="YOUR_BING_WEBMASTER_CODE"> -->
-    
 </head>
 <body class="antialiased" cz-shortcut-listen="true" itemscope itemtype="https://schema.org/WebPage">   
     <div id="root"></div>
@@ -370,8 +367,8 @@
         <p>If you're interested in my work featured in this portfolio, please feel free to reach out for collaboration opportunities, freelance projects, or full-time positions.</p>
     </div>
 
-    <!-- ========== PERFORMANCE & FALLBACK SCRIPTS ========== -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- ========== FIXED PERFORMANCE & FALLBACK SCRIPTS ========== -->
+    <script type="module" src="/src/main.tsx" defer></script>
     
     <!-- ========== SERVICE WORKER REGISTRATION ========== -->
     <script>
@@ -442,6 +439,7 @@
             <p>You can contact Raka Pranata directly via <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a> or <a href="https://github.com/rakaaap96-blip" style="color: #d4af37;">GitHub</a>.</p>
         </div>
     </noscript>
+    
     <!-- ========== ADDITIONAL SEO ELEMENTS ========== -->
     <!-- Hidden semantic content for SEO -->
     <div style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;" aria-hidden="true">
