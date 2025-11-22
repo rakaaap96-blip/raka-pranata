@@ -28,10 +28,9 @@ function ProfileImage() {
         <img
           src="/IMGG/face1-248x248.webp"
           srcSet="/IMGG/face1-248x248.webp 248w,
-                  /IMGG/face1-496x496.webp 496w,
                   /IMGG/face1-1418x1418.webp 1418w"
           sizes="(max-width: 640px) 248px,
-                 (max-width: 1024px) 496px,
+                 (max-width: 1024px) 248px,
                  1418px"
           alt="Raka Pranata professional profile - Frontend Developer and UI/UX Designer"
           fetchPriority="high"
@@ -44,10 +43,9 @@ function ProfileImage() {
         <img
           src="/IMGG/face0-248x248.webp"
           srcSet="/IMGG/face0-248x248.webp 248w,
-                  /IMGG/face0-496x496.webp 496w,
                   /IMGG/face0-1418x1418.webp 1418w"
           sizes="(max-width: 640px) 248px,
-                 (max-width: 1024px) 496px,
+                 (max-width: 1024px) 248px,
                  1418px"
           alt="Raka Pranata creative profile - showcasing innovative design and development work"
           loading="lazy"
