@@ -1,37 +1,38 @@
-const CACHE_NAME = 'portfolio-v1.3';
+const CACHE_NAME = 'portfolio-v1.4'; // Update version
 const OFFLINE_URL = '/offline.html';
 
-// Assets to cache immediately on install
 const urlsToCache = [
   '/',
   '/offline.html',
   '/manifest.json',
   '/favicon.ico',
-  '/favicon-16x16.png',
+  '/favicon-16x16.png', 
   '/favicon-32x32.png',
   '/favicon-192x192.png',
   '/favicon-512x512.png',
   '/apple-touch-icon.png',
   '/IMGG/logo.svg',
   '/IMGG/og-image.png',
-  // Add other critical images you have
   '/src/main.tsx'
 ];
 
-// Install event - cache critical assets
+// Install event - FIXED
 self.addEventListener('install', (event) => {
   console.log('🟢 Service Worker installed');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('📦 Caching critical files');
-        return cache.addAll(urlsToCache);
+        // Gunakan cache.addAll dengan error handling
+        return cache.addAll(urlsToCache).catch(error => {
+          console.error('Failed to cache some files:', error);
+        });
       })
       .then(() => self.skipWaiting())
   );
 });
 
-// Activate event - cleanup old caches
+// Activate event - FIXED
 self.addEventListener('activate', (event) => {
   console.log('🔥 Service Worker activated');
   event.waitUntil(
@@ -44,48 +45,73 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      console.log('🚀 Claiming clients');
+      return self.clients.claim();
+    })
   );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - FIXED (No more cancelled requests!)
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests
-  if (event.request.method !== 'GET') return;
+  // Skip non-GET requests and chrome extensions
+  if (event.request.method !== 'GET' || 
+      event.request.url.startsWith('chrome-extension://')) {
+    return;
+  }
 
-  // Skip Chrome extensions
-  if (event.request.url.startsWith('chrome-extension://')) return;
+  // Skip dev server websockets and analytics
+  if (event.request.url.includes('sockjs-node') ||
+      event.request.url.includes('google-analytics') ||
+      event.request.url.includes('collect?v=2')) {
+    return;
+  }
 
   event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // Return cached version or fetch from network
-        return response || fetch(event.request)
-          .then((fetchResponse) => {
-            // Cache new requests for next time
-            if (event.request.url.startsWith('http') && 
-                !event.request.url.includes('sockjs-node') &&
-                !event.request.url.includes('google-analytics')) {
-              
-              const responseToCache = fetchResponse.clone();
-              caches.open(CACHE_NAME)
-                .then((cache) => {
-                  cache.put(event.request, responseToCache);
-                });
-            }
-            return fetchResponse;
-          })
-          .catch(() => {
-            // If both cache and network fail, show offline page
-            if (event.request.destination === 'document') {
-              return caches.match(OFFLINE_URL);
-            }
-          });
-      })
+    (async () => {
+      try {
+        // Coba cache dulu
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) {
+          console.log('📨 Serving from cache:', event.request.url);
+          return cachedResponse;
+        }
+
+        // Kalau tidak ada di cache, fetch dari network
+        console.log('🌐 Fetching from network:', event.request.url);
+        const networkResponse = await fetch(event.request);
+        
+        // Cache response untuk future use (kecuali external resources)
+        if (event.request.url.startsWith('http') && 
+            event.request.url.startsWith(self.location.origin)) {
+          
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(event.request, networkResponse.clone());
+        }
+        
+        return networkResponse;
+        
+      } catch (error) {
+        console.log('❌ Network failed, trying offline page:', error);
+        
+        // Jika request untuk HTML document, return offline page
+        if (event.request.destination === 'document' || 
+            event.request.headers.get('accept')?.includes('text/html')) {
+          const offlinePage = await caches.match(OFFLINE_URL);
+          if (offlinePage) return offlinePage;
+        }
+        
+        // Return generic error response
+        return new Response('Network error', {
+          status: 408,
+          statusText: 'Network offline'
+        });
+      }
+    })()
   );
 });
 
-// Background sync for form submissions (optional future feature)
+// Background sync
 self.addEventListener('sync', (event) => {
   if (event.tag === 'background-sync') {
     console.log('🔄 Background sync triggered');
