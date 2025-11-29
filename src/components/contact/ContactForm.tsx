@@ -46,13 +46,17 @@ function ContactForm({ isVisible }: ContactFormProps) {
           className="space-y-12 group flex flex-col"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {/* Name Field */}
+            {/* Name Field - FIXED */}
             <div className="space-y-2">
-              <label className="text-[#ffffea] font-medium text-sm">Your Name</label>
+              <label htmlFor="contact-name" className="text-[#ffffea] font-medium text-sm">
+                Your Name
+              </label>
               <div className="relative">
                 <input
                   type="text"
+                  id="contact-name"
                   name="name"
+                  autoComplete="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   onFocus={() => setActiveField('name')}
@@ -71,13 +75,17 @@ function ContactForm({ isVisible }: ContactFormProps) {
               </div>
             </div>
 
-            {/* Email Field */}
+            {/* Email Field - FIXED */}
             <div className="space-y-2">
-              <label className="text-[#ffffea] font-medium text-sm">Email Address</label>
+              <label htmlFor="contact-email" className="text-[#ffffea] font-medium text-sm">
+                Email Address
+              </label>
               <div className="relative">
                 <input
                   type="email"
+                  id="contact-email"
                   name="email"
+                  autoComplete="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   onFocus={() => setActiveField('email')}
@@ -97,13 +105,17 @@ function ContactForm({ isVisible }: ContactFormProps) {
             </div>
           </div>
 
-          {/* Subject Field */}
+          {/* Subject Field - FIXED */}
           <div className="space-y-2">
-            <label className="text-[#ffffea] font-medium text-sm">Subject</label>
+            <label htmlFor="contact-subject" className="text-[#ffffea] font-medium text-sm">
+              Subject
+            </label>
             <div className="relative">
               <input
                 type="text"
+                id="contact-subject"
                 name="subject"
+                autoComplete="off"
                 value={formData.subject}
                 onChange={handleInputChange}
                 onFocus={() => setActiveField('subject')}
@@ -122,12 +134,16 @@ function ContactForm({ isVisible }: ContactFormProps) {
             </div>
           </div>
 
-          {/* Message Field */}
+          {/* Message Field - FIXED */}
           <div className="space-y-2 flex-1 flex flex-col">
-            <label className="text-[#ffffea] font-medium text-sm">Your Message</label>
+            <label htmlFor="contact-message" className="text-[#ffffea] font-medium text-sm">
+              Your Message
+            </label>
             <div className="relative flex-1">
               <textarea
+                id="contact-message"
                 name="message"
+                autoComplete="off"
                 value={formData.message}
                 onChange={handleInputChange}
                 onFocus={() => setActiveField('message')}
@@ -161,9 +177,9 @@ function ContactForm({ isVisible }: ContactFormProps) {
                 </>
               ) : (
                 <>
-                  <span>🚀</span>
+                  <span aria-hidden="true">🚀</span>
                   Send Message
-                  <span>✨</span>
+                  <span aria-hidden="true">✨</span>
                 </>
               )}
             </span>
@@ -175,4 +191,3 @@ function ContactForm({ isVisible }: ContactFormProps) {
 }
 
 export default ContactForm;
-
