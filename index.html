@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8" />
     
-    <!-- ========== ENHANCED FAVICON & ICONS ========== -->
+    <!-- ========== OPTIMIZED FAVICON & ICONS ========== -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="/IMGG/logo.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="mask-icon" href="/IMGG/logo.svg" color="#d4af37">
     
-    <!-- ========== ENHANCED VIEWPORT & RENDERING ========== -->
+    <!-- ========== OPTIMIZED VIEWPORT & RENDERING ========== -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#d4af37">
     <meta name="msapplication-TileColor" content="#d4af37">
@@ -23,8 +21,7 @@
     <!-- ========== OPTIMIZED FONT LOADING ========== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap">
     <noscript>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap">
     </noscript>
@@ -58,9 +55,9 @@
     }
     </style>
 
-    <!-- ========== FIXED PERFORMANCE & PRELOADING ========== -->
-    <link rel="preload" href="/src/main.tsx" as="script">
-    <link rel="preload" href="/IMGG/og-image.png" as="image" type="image/png" fetchpriority="high">
+    <!-- ========== OPTIMIZED PRELOADING ========== -->
+    <!-- Preload critical above-the-fold images only -->
+    <link rel="preload" href="/IMGG/logo.svg" as="image" type="image/svg+xml">
     
     <!-- Preconnect to critical third-party origins -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
@@ -68,49 +65,24 @@
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
-    <!-- ========== OPTIMIZED GOOGLE ANALYTICS ========== -->
+    <!-- ========== SIMPLIFIED GOOGLE ANALYTICS ========== -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9"></script>
     <script>
-    // Defer GA loading - non blocking
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-ZR9N8GXMB9', {
-        page_title: document.title,
-        page_location: window.location.href,
-        transport_type: 'beacon'
-    });
-
-    // Load GA script after page is interactive
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            var script = document.createElement('script');
-            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9';
-            script.async = true;
-            document.head.appendChild(script);
-        });
-    } else {
-        var script = document.createElement('script');
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9';
-        script.async = true;
-        document.head.appendChild(script);
-    }
+    gtag('config', 'G-ZR9N8GXMB9');
     </script>
 
-    <!-- ========== FIXED & OPTIMIZED META TAGS ========== -->
+    <!-- ========== OPTIMIZED META TAGS ========== -->
     <title itemprop="name">Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert</title>
-    <meta name="title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert">
     <meta name="description" itemprop="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia. View my projects, design work, and let's build something amazing together!">
     <meta name="keywords" content="Raka Pranata, Raka Pranata portfolio, frontend developer portfolio, React portfolio, TypeScript portfolio, UI/UX designer portfolio, web developer Bogor, frontend engineer Indonesia, React.js developer portfolio, JavaScript developer portfolio">
     <meta name="author" content="Raka Pranata">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     
-    <!-- ========== ENHANCED OPEN GRAPH ========== -->
+    <!-- ========== OPTIMIZED OPEN GRAPH ========== -->
     <meta property="og:type" content="website">
-    <meta property="og:profile:first_name" content="Raka">
-    <meta property="og:profile:last_name" content="Pranata">
-    <meta property="og:profile:username" content="raka-pranata">
     <meta property="og:url" content="https://raka-pranata.vercel.app/">
     <meta property="og:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
     <meta property="og:description" content="Portfolio of Raka Pranata - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
@@ -118,204 +90,49 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
-    <meta property="og:image:alt" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
     <meta property="og:site_name" content="Raka Pranata Portfolio">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:locale:alternate" content="id_ID">
     
     <!-- ========== TWITTER OPTIMIZATION ========== -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://raka-pranata.vercel.app/">
     <meta name="twitter:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
     <meta name="twitter:description" content="Portfolio showcasing React, TypeScript projects and UI/UX design work by Raka Pranata - Frontend Developer based in Bogor, Indonesia.">
     <meta name="twitter:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
-    <meta name="twitter:image:alt" content="Raka Pranata Portfolio">
-    <meta name="twitter:creator" content="@raka_pranata">
-    <meta name="twitter:site" content="@raka_pranata">
     
-    <!-- ========== CANONICAL & ALTERNATE URLS ========== -->
+    <!-- ========== CANONICAL URL ========== -->
     <link rel="canonical" href="https://raka-pranata.vercel.app" />
-    <link rel="alternate" hreflang="en" href="https://raka-pranata.vercel.app" />
-    <link rel="alternate" hreflang="id" href="https://raka-pranata.vercel.app" />
-    <link rel="alternate" hreflang="x-default" href="https://raka-pranata.vercel.app" />
 
     <!-- ========== PWA MANIFEST ========== -->
     <link rel="manifest" href="/manifest.json">
 
-    <!-- ========== ENHANCED STRUCTURED DATA ========== -->
+    <!-- ========== OPTIMIZED STRUCTURED DATA ========== -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://raka-pranata.vercel.app/#person",
-          "name": "Raka Pranata",
-          "alternateName": "Raka",
-          "jobTitle": ["Frontend Developer", "UI/UX Designer", "React Developer"],
-          "description": "Portfolio of Raka Pranata - Frontend Developer with 4+ years of design experience and modern frontend development skills. Specializing in React, TypeScript, and creating beautiful, performant user interfaces.",
-          "url": "https://raka-pranata.vercel.app",
-          "image": {
-            "@type": "ImageObject",
-            "url": "https://raka-pranata.vercel.app/IMGG/og-image.png",
-            "width": 1200,
-            "height": 630,
-            "caption": "Raka Pranata Portfolio - Frontend Developer & UI/UX Designer"
-          },
-          "sameAs": [
-            "https://github.com/rakaaap96-blip",
-            "https://www.linkedin.com/in/raka-pranata-2804a437a/",
-            "https://dribbble.com/raka-pranata",
-            "https://www.instagram.com/aranasaha11/",
-            "https://www.behance.net/Rakanzha",
-            "https://raka-pranata.vercel.app"
-          ],
-          "knowsAbout": [
-            "React", "TypeScript", "JavaScript", "UI/UX Design", "Figma",
-            "Adobe Illustrator", "CorelDRAW", "Frontend Development",
-            "Responsive Web Design", "TailwindCSS", "Web Performance",
-            "React.js", "Next.js", "Vite", "Git", "REST APIs"
-          ],
-          "hasOccupation": {
-            "@type": "Occupation",
-            "name": "Frontend Developer & UI/UX Designer",
-            "occupationLocation": {
-              "@type": "Country",
-              "name": "Indonesia"
-            }
-          },
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Bogor",
-            "addressRegion": "West Java",
-            "addressCountry": "Indonesia"
-          },
-          "knowsLanguage": [
-            {"@type": "Language", "name": "Indonesian", "proficiency": "Native"},
-            {"@type": "Language", "name": "English", "proficiency": "Professional Working"}
-          ],
-          "seeks": "Full-time Frontend Developer roles, UI/UX Engineer positions, Remote opportunities"
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://raka-pranata.vercel.app/#website",
-          "url": "https://raka-pranata.vercel.app",
-          "name": "Raka Pranata Portfolio - Frontend Developer & UI/UX Designer",
-          "description": "Professional portfolio website showcasing React, TypeScript projects, UI/UX design work, and frontend development expertise.",
-          "publisher": { "@id": "https://raka-pranata.vercel.app/#person" },
-          "inLanguage": ["en-US", "id-ID"],
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "https://raka-pranata.vercel.app/#projects?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-          },
-          "copyrightYear": 2024
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://raka-pranata.vercel.app/#webpage",
-          "url": "https://raka-pranata.vercel.app",
-          "name": "Raka Pranata Portfolio - Frontend Developer & UI/UX Designer",
-          "description": "🎨 4+ years design expertise meets modern frontend development. Specializing in React, TypeScript, and creating beautiful, performant user interfaces. Explore my portfolio projects and let's collaborate!",
-          "isPartOf": { "@id": "https://raka-pranata.vercel.app/#website" },
-          "about": { "@id": "https://raka-pranata.vercel.app/#person" },
-          "primaryImageOfPage": {
-            "@type": "ImageObject",
-            "url": "https://raka-pranata.vercel.app/IMGG/og-image.png",
-            "width": 1200,
-            "height": 630
-          },
-          "datePublished": "2024-01-15T00:00:00+07:00",
-          "dateModified": "2024-11-25T00:00:00+07:00",
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "Home",
-                "item": "https://raka-pranata.vercel.app"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "Projects",
-                "item": "https://raka-pranata.vercel.app/#projects"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "About",
-                "item": "https://raka-pranata.vercel.app/#about"
-              }
-            ]
-          }
-        },
-        {
-          "@type": "CollectionPage",
-          "name": "Raka Pranata Portfolio Projects",
-          "description": "Collection of frontend development and UI/UX design projects in my portfolio",
-          "mainEntity": {
-            "@type": "ItemList",
-            "numberOfItems": 6,
-            "itemListElement": [
-              {
-                "@type": "ListItem",
-                "position": 1,
-                "name": "React Projects"
-              },
-              {
-                "@type": "ListItem",
-                "position": 2,
-                "name": "TypeScript Applications"
-              },
-              {
-                "@type": "ListItem",
-                "position": 3,
-                "name": "UI/UX Design Work"
-              }
-            ]
-          }
-        }
-      ]
+      "@type": "Person",
+      "name": "Raka Pranata",
+      "jobTitle": "Frontend Developer & UI/UX Designer",
+      "description": "Portfolio of Raka Pranata - Frontend Developer with 4+ years of design experience and modern frontend development skills. Specializing in React, TypeScript, and creating beautiful, performant user interfaces.",
+      "url": "https://raka-pranata.vercel.app",
+      "image": "https://raka-pranata.vercel.app/IMGG/og-image.png",
+      "sameAs": [
+        "https://github.com/rakaaap96-blip",
+        "https://www.linkedin.com/in/raka-pranata-2804a437a/",
+        "https://dribbble.com/raka-pranata"
+      ],
+      "knowsAbout": ["React", "TypeScript", "JavaScript", "UI/UX Design", "Figma"],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bogor",
+        "addressRegion": "West Java",
+        "addressCountry": "Indonesia"
+      }
     }
     </script>
-
-    <!-- ========== ADDITIONAL SEO META ========== -->
-    <meta name="subject" content="Frontend Development, UI/UX Design, React, TypeScript, Web Development, Portfolio">
-    <meta name="classification" content="Portfolio, Web Development, Design">
-    <meta name="url" content="https://raka-pranata.vercel.app">
-    <meta name="identifier-URL" content="https://raka-pranata.vercel.app">
-    <meta name="category" content="technology">
-    <meta name="coverage" content="Worldwide">
-    <meta name="distribution" content="Global">
-    <meta name="rating" content="General">
-    <meta name="revisit-after" content="7 days">
-    <meta name="target" content="all">
-    <meta name="audience" content="developers, designers, recruiters, hiring managers">
-    <meta name="HandheldFriendly" content="true">
-    <meta name="MobileOptimized" content="width">
-    
-    <!-- ========== PERFORMANCE HINTS ========== -->
-    <meta name="format-detection" content="telephone=no">
-    <meta name="format-detection" content="date=no">
-    <meta name="format-detection" content="address=no">
-    <meta name="format-detection" content="email=no">
-    
-    <!-- ========== ADDITIONAL SEO ENHANCEMENTS ========== -->
-    <meta name="generator" content="Vite, React, TypeScript">
-    <meta name="copyright" content="Raka Pranata">
-    <meta name="designer" content="Raka Pranata">
-    <meta name="owner" content="Raka Pranata">
-    <meta name="directory" content="submission">
 </head>
 <body class="antialiased" cz-shortcut-listen="true" itemscope itemtype="https://schema.org/WebPage">   
     <div id="root"></div>
     
-    <!-- ========== SEO OPTIMIZED CONTENT - FIX FOR STRIKETHROUGH ========== -->
+    <!-- ========== SINGLE SEO OPTIMIZED CONTENT ========== -->
     <div class="seo-optimized-content" aria-hidden="true">
         <h1>Raka Pranata Portfolio - Frontend Developer & UI/UX Designer</h1>
         <h2>React TypeScript Expert Based in Bogor, Indonesia</h2>
@@ -344,33 +161,18 @@
             <li>Responsive Web Design</li>
             <li>Modern JavaScript ES6+</li>
             <li>Web Performance Optimization</li>
-            <li>Cross-browser Compatibility</li>
-        </ul>
-        
-        <h3>Portfolio Projects Include</h3>
-        <ul>
-            <li>React TypeScript Applications</li>
-            <li>Responsive Web Designs</li>
-            <li>User Interface Designs</li>
-            <li>Frontend Development Projects</li>
-            <li>Web Development Work</li>
-            <li>Mobile-first Designs</li>
         </ul>
         
         <p>This developer portfolio demonstrates my expertise in creating modern, responsive web applications using React and TypeScript. As a frontend developer, I focus on writing clean, maintainable code and creating intuitive user experiences.</p>
         
-        <p>Explore my portfolio to see examples of my work in frontend development, React.js projects, TypeScript applications, and UI/UX design. Each project in this portfolio represents my commitment to quality and attention to detail.</p>
-        
-        <h3>Contact for Portfolio Inquiries</h3>
-        <p>If you're interested in my work featured in this portfolio, please feel free to reach out for collaboration opportunities, freelance projects, or full-time positions.</p>
+        <p>Explore my portfolio to see examples of my work in frontend development, React.js projects, TypeScript applications, and UI/UX design.</p>
     </div>
 
-    <!-- ========== FIXED PERFORMANCE & FALLBACK SCRIPTS ========== -->
+    <!-- ========== MAIN SCRIPT ========== -->
     <script type="module" src="/src/main.tsx" defer></script>
     
     <!-- ========== SERVICE WORKER REGISTRATION ========== -->
     <script>
-    // Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js')
@@ -383,50 +185,22 @@
       });
     }
 
-    // Track PWA installation
     window.addEventListener('appinstalled', (event) => {
       console.log('📱 PWA installed successfully');
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'pwa_installed');
-      }
     });
     </script>
 
-    <!-- ========== SIMPLE PERFORMANCE MONITORING ========== -->
+    <!-- ========== PERFORMANCE MONITORING ========== -->
     <script>
-    // Simple performance tracking tanpa CSP issues
-    if (typeof gtag !== 'undefined') {
-      // Track page load time
-      window.addEventListener('load', function() {
+    window.addEventListener('load', function() {
+      if (typeof gtag !== 'undefined') {
         const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
         gtag('event', 'page_load_time', {
           value: loadTime,
           non_interaction: true
         });
-      });
-
-      // Enhanced engagement tracking
-      document.addEventListener('click', function(e) {
-        if (e.target.matches('a[href^="#"]')) {
-          gtag('event', 'internal_link_click', {
-            'link_url': e.target.href,
-            'link_text': e.target.textContent
-          });
-        }
-      });
-
-      // Scroll depth tracking
-      let scrollDepth = 0;
-      window.addEventListener('scroll', function() {
-        const newDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-        if (newDepth > scrollDepth && newDepth % 25 === 0) {
-          gtag('event', 'scroll_depth', {
-            'scroll_percentage': newDepth
-          });
-          scrollDepth = newDepth;
-        }
-      });
-    }
+      }
+    });
     </script>
     
     <!-- ========== PROGRESSIVE ENHANCEMENT ========== -->
@@ -437,35 +211,5 @@
             <p>You can contact Raka Pranata directly via <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a> or <a href="https://github.com/rakaaap96-blip" style="color: #d4af37;">GitHub</a>.</p>
         </div>
     </noscript>
-    
-    <!-- ========== ADDITIONAL SEO ELEMENTS ========== -->
-    <!-- Hidden semantic content for SEO -->
-    <div style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden;" aria-hidden="true">
-    <h1>Raka Pranata - Frontend Developer & UI/UX Designer Portfolio</h1>
-    <h2>React TypeScript Expert based in Bogor, Indonesia</h2>
-    <p>Welcome to my professional portfolio website showcasing frontend development projects, React applications, TypeScript code, and UI/UX design work. This portfolio demonstrates my expertise in modern web technologies.</p>
-    
-    <h3>Portfolio Sections</h3>
-    <ul>
-        <li>Frontend Development Portfolio</li>
-        <li>React Projects Portfolio</li>
-        <li>TypeScript Development Portfolio</li>
-        <li>UI/UX Design Portfolio</li>
-        <li>Web Development Portfolio</li>
-        <li>Responsive Design Portfolio</li>
-    </ul>
-    
-    <h3>Skills in This Portfolio</h3>
-    <ul>
-        <li>React.js Development</li>
-        <li>TypeScript Programming</li>
-        <li>Frontend Engineering</li>
-        <li>UI/UX Design</li>
-        <li>Responsive Web Design</li>
-        <li>Performance Optimization</li>
-    </ul>
-    
-    <p>Browse through my portfolio to see examples of React applications, TypeScript projects, and user interface designs. Each project in this portfolio represents my commitment to quality frontend development and user experience design.</p>
-</div>
 </body>
 </html>
