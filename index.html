@@ -1,48 +1,47 @@
 <!DOCTYPE html>
 <html lang="en" class="dark" itemscope itemtype="https://schema.org/WebPage">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     
-    <!-- ========== OPTIMIZED FAVICON & ICONS ========== -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    
-    <!-- ========== OPTIMIZED VIEWPORT & RENDERING ========== -->
+    <!-- ========== 1. OPTIMIZED VIEWPORT FIRST ========== -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#d4af37">
-    <meta name="msapplication-TileColor" content="#d4af37">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Raka Pranata Portfolio">
-
-    <!-- ========== OPTIMIZED FONT LOADING ========== -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap">
-    <noscript>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap">
-    </noscript>
-
-    <!-- ========== CRITICAL CSS INLINE ========== -->
-    <style>
-    /* Critical Above-the-Fold CSS */
-    body { 
+    
+    <!-- ========== 2. TITLE & DESCRIPTION (CRITICAL) ========== -->
+    <title itemprop="name">Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert</title>
+    <meta name="description" itemprop="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
+    
+    <!-- ========== 3. CRITICAL CSS INLINE (NON-BLOCKING) ========== -->
+    <style id="critical-css">
+    /* Minimal CSS untuk rendering awal */
+    body, html { 
         margin: 0; 
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: #000;
-        color: #fff;
+        padding: 0;
+        overflow-x: hidden;
+        background-color: #000000;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        color: #ffffff;
     }
-    #root { 
+    
+    #root {
         min-height: 100vh;
         display: flex;
         flex-direction: column;
     }
     
-    /* SEO Content - Visible to Google but not users */
-    .seo-optimized-content {
+    /* Loading state untuk konten utama */
+    .skeleton-loader {
+        background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+    
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    
+    /* SEO content tetap tersembunyi */
+    .seo-hidden {
         position: absolute;
         width: 1px;
         height: 1px;
@@ -54,162 +53,193 @@
         border: 0;
     }
     </style>
-
-    <!-- ========== OPTIMIZED PRELOADING ========== -->
-    <!-- Preload critical above-the-fold images only -->
-    <link rel="preload" href="/IMGG/logo.svg" as="image" type="image/svg+xml">
     
-    <!-- Preconnect to critical third-party origins -->
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-
-    <!-- ========== SIMPLIFIED GOOGLE ANALYTICS ========== -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9"></script>
+    <!-- ========== 4. NON-BLOCKING FONT LOADING ========== -->
+    <!-- Preconnect saja, font akan di-load nanti -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Load fonts async setelah rendering -->
+    <script>
+    (function() {
+        // Load fonts setelah konten utama muncul
+        function loadFonts() {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap';
+            link.media = 'print';
+            link.onload = function() {
+                this.media = 'all';
+                document.body.classList.add('fonts-loaded');
+            };
+            document.head.appendChild(link);
+        }
+        
+        // Tunggu sampai konten utama render
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadFonts);
+        } else {
+            loadFonts();
+        }
+    })();
+    </script>
+    
+    <!-- ========== 5. PRELOAD CRITICAL RESOURCES ========== -->
+    <!-- Preload hanya yang benar-benar critical -->
+    <link rel="preload" href="/src/main.tsx" as="script">
+    <link rel="preload" href="/assets/index-BforxC2r.css" as="style">
+    
+    <!-- ========== 6. NON-BLOCKING CSS LOADING ========== -->
+    <!-- Load CSS secara async -->
+    <link rel="stylesheet" href="/assets/index-BforxC2r.css" media="print" onload="this.media='all'" id="main-css">
+    <noscript>
+        <link rel="stylesheet" href="/assets/index-BforxC2r.css">
+    </noscript>
+    
+    <!-- ========== 7. DEFERRED THIRD-PARTY SCRIPTS ========== -->
+    <!-- GA diletakkan setelah konten penting -->
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-ZR9N8GXMB9');
-    </script>
-
-    <!-- ========== OPTIMIZED META TAGS ========== -->
-    <title itemprop="name">Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert</title>
-    <meta name="description" itemprop="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia. View my projects, design work, and let's build something amazing together!">
-    <meta name="keywords" content="Raka Pranata, Raka Pranata portfolio, frontend developer portfolio, React portfolio, TypeScript portfolio, UI/UX designer portfolio, web developer Bogor, frontend engineer Indonesia, React.js developer portfolio, JavaScript developer portfolio">
-    <meta name="author" content="Raka Pranata">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     
-    <!-- ========== OPTIMIZED OPEN GRAPH ========== -->
+    // Defer GA loading
+    setTimeout(function() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9';
+        script.onload = function() {
+            gtag('config', 'G-ZR9N8GXMB9', { 
+                transport_type: 'beacon',
+                page_title: document.title,
+                page_location: window.location.href
+            });
+        };
+        document.head.appendChild(script);
+    }, 3000); // Delay 3 detik untuk prioritas konten utama
+    </script>
+    
+    <!-- ========== 8. FAVICON (NON-BLOCKING) ========== -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" type="image/png" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    
+    <!-- ========== 9. META TAGS (NON-CRITICAL) ========== -->
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-TileColor" content="#000000">
+    
+    <!-- ========== 10. OPEN GRAPH (NON-CRITICAL) ========== -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://raka-pranata.vercel.app/">
     <meta property="og:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
-    <meta property="og:description" content="Portfolio of Raka Pranata - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
+    <meta property="og:description" content="Portfolio of Raka Pranata - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development.">
     <meta property="og:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:site_name" content="Raka Pranata Portfolio">
     
-    <!-- ========== TWITTER OPTIMIZATION ========== -->
+    <!-- ========== 11. TWITTER CARDS (NON-CRITICAL) ========== -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
-    <meta name="twitter:description" content="Portfolio showcasing React, TypeScript projects and UI/UX design work by Raka Pranata - Frontend Developer based in Bogor, Indonesia.">
+    <meta name="twitter:title" content="Raka Pranata Portfolio">
+    <meta name="twitter:description" content="Frontend Developer & UI/UX Designer specializing in React and TypeScript">
     <meta name="twitter:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
     
-    <!-- ========== CANONICAL URL ========== -->
-    <link rel="canonical" href="https://raka-pranata.vercel.app" />
-
-    <!-- ========== PWA MANIFEST ========== -->
-    <link rel="manifest" href="/manifest.json">
-
-    <!-- ========== OPTIMIZED STRUCTURED DATA ========== -->
-    <script type="application/ld+json">
+    <!-- ========== 12. CANONICAL & MANIFEST ========== -->
+    <link rel="canonical" href="https://raka-pranata.vercel.app">
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+    
+    <!-- ========== 13. STRUCTURED DATA (DEFERRED) ========== -->
+    <script type="application/ld+json" id="structured-data">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Raka Pranata",
       "jobTitle": "Frontend Developer & UI/UX Designer",
-      "description": "Portfolio of Raka Pranata - Frontend Developer with 4+ years of design experience and modern frontend development skills. Specializing in React, TypeScript, and creating beautiful, performant user interfaces.",
+      "description": "Portfolio of Raka Pranata - Frontend Developer with modern frontend development skills.",
       "url": "https://raka-pranata.vercel.app",
-      "image": "https://raka-pranata.vercel.app/IMGG/og-image.png",
-      "sameAs": [
-        "https://github.com/rakaaap96-blip",
-        "https://www.linkedin.com/in/raka-pranata-2804a437a/",
-        "https://dribbble.com/raka-pranata"
-      ],
-      "knowsAbout": ["React", "TypeScript", "JavaScript", "UI/UX Design", "Figma"],
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Bogor",
-        "addressRegion": "West Java",
-        "addressCountry": "Indonesia"
-      }
+      "image": "https://raka-pranata.vercel.app/IMGG/og-image.png"
     }
+    </script>
+    <script>
+    // Move structured data to bottom setelah page load
+    window.addEventListener('load', function() {
+        const structuredData = document.getElementById('structured-data');
+        if (structuredData) {
+            document.head.appendChild(structuredData);
+        }
+    });
     </script>
 </head>
 <body class="antialiased" cz-shortcut-listen="true" itemscope itemtype="https://schema.org/WebPage">   
-    <div id="root"></div>
+    <!-- ========== 14. SKELETON LOADER UNTUK LCP ========== -->
+    <div id="root">
+        <!-- Skeleton content untuk immediate paint -->
+        <div style="min-height: 100vh; background: #000;">
+            <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+                <div class="skeleton-loader" style="height: 40px; width: 300px; margin-bottom: 2rem; border-radius: 4px;"></div>
+                <div class="skeleton-loader" style="height: 20px; width: 80%; margin-bottom: 1rem; border-radius: 4px;"></div>
+                <div class="skeleton-loader" style="height: 20px; width: 70%; margin-bottom: 3rem; border-radius: 4px;"></div>
+                <div class="skeleton-loader" style="height: 300px; width: 100%; margin-bottom: 2rem; border-radius: 8px;"></div>
+            </div>
+        </div>
+    </div>
     
-    <!-- ========== SINGLE SEO OPTIMIZED CONTENT ========== -->
-    <div class="seo-optimized-content" aria-hidden="true">
+    <!-- ========== 15. SEO CONTENT (HIDDEN) ========== -->
+    <div class="seo-hidden" aria-hidden="true">
         <h1>Raka Pranata Portfolio - Frontend Developer & UI/UX Designer</h1>
-        <h2>React TypeScript Expert Based in Bogor, Indonesia</h2>
-        
-        <p>Welcome to my professional portfolio website. This portfolio showcases my work as a frontend developer and UI/UX designer specializing in React.js, TypeScript, and modern web technologies.</p>
-        
-        <h3>About This Portfolio</h3>
-        <p>This is the online portfolio of Raka Pranata, a frontend developer and UI/UX designer from Bogor, Indonesia. My portfolio features various web development projects, React applications, TypeScript code examples, and user interface designs.</p>
-        
-        <h3>Portfolio Sections</h3>
-        <ul>
-            <li>React.js Projects Portfolio</li>
-            <li>TypeScript Development Portfolio</li>
-            <li>UI/UX Design Portfolio</li>
-            <li>Frontend Development Work</li>
-            <li>Web Application Portfolio</li>
-            <li>Responsive Design Portfolio</li>
-        </ul>
-        
-        <h3>Skills Featured in This Portfolio</h3>
-        <ul>
-            <li>React.js Development</li>
-            <li>TypeScript Programming</li>
-            <li>Frontend Engineering</li>
-            <li>UI/UX Design</li>
-            <li>Responsive Web Design</li>
-            <li>Modern JavaScript ES6+</li>
-            <li>Web Performance Optimization</li>
-        </ul>
-        
-        <p>This developer portfolio demonstrates my expertise in creating modern, responsive web applications using React and TypeScript. As a frontend developer, I focus on writing clean, maintainable code and creating intuitive user experiences.</p>
-        
-        <p>Explore my portfolio to see examples of my work in frontend development, React.js projects, TypeScript applications, and UI/UX design.</p>
+        <p>Portfolio showcasing React, TypeScript projects and UI/UX design work.</p>
+        <p>Frontend developer specializing in modern web technologies and user experience design.</p>
     </div>
 
-    <!-- ========== MAIN SCRIPT ========== -->
-    <script type="module" src="/src/main.tsx" defer></script>
+    <!-- ========== 16. MAIN SCRIPT (DEFERRED & ASYNC) ========== -->
+    <script type="module" src="/src/main.tsx" defer async></script>
     
-    <!-- ========== SERVICE WORKER REGISTRATION ========== -->
+    <!-- ========== 17. SERVICE WORKER (LOW PRIORITY) ========== -->
     <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(registration) {
-            console.log('🚀 ServiceWorker registered: ', registration.scope);
-          })
-          .catch(function(error) {
-            console.log('❌ ServiceWorker registration failed: ', error);
-          });
-      });
-    }
-
-    window.addEventListener('appinstalled', (event) => {
-      console.log('📱 PWA installed successfully');
-    });
-    </script>
-
-    <!-- ========== PERFORMANCE MONITORING ========== -->
-    <script>
+    // Register service worker setelah semua selesai
     window.addEventListener('load', function() {
-      if (typeof gtag !== 'undefined') {
-        const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
-        gtag('event', 'page_load_time', {
-          value: loadTime,
-          non_interaction: true
-        });
-      }
+        setTimeout(function() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            }
+        }, 5000); // Delay 5 detik
     });
     </script>
     
-    <!-- ========== PROGRESSIVE ENHANCEMENT ========== -->
+    <!-- ========== 18. PROGRESSIVE ENHANCEMENT ========== -->
     <noscript>
-        <div style="text-align: center; padding: 2rem; background: #1a1a1a; color: #ffffea;">
-            <h2>JavaScript Required</h2>
-            <p>This portfolio requires JavaScript to function properly. Please enable JavaScript to view the content.</p>
-            <p>You can contact Raka Pranata directly via <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a> or <a href="https://github.com/rakaaap96-blip" style="color: #d4af37;">GitHub</a>.</p>
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; color: #fff; padding: 2rem; z-index: 9999;">
+            <h1>Raka Pranata Portfolio</h1>
+            <p>This portfolio requires JavaScript. Please enable JavaScript to view the full experience.</p>
+            <p>Contact: <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a> | <a href="https://github.com/rakaaap96-blip" style="color: #d4af37;">GitHub</a></p>
         </div>
     </noscript>
+    
+    <!-- ========== 19. PERFORMANCE MONITORING ========== -->
+    <script>
+    // Track LCP (Largest Contentful Paint)
+    window.addEventListener('load', function() {
+        const lcpObserver = new PerformanceObserver((entryList) => {
+            const entries = entryList.getEntries();
+            const lastEntry = entries[entries.length - 1];
+            
+            // Report LCP ke console atau analytics
+            console.log('🚀 LCP:', lastEntry.startTime, 'ms');
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'performance', {
+                    event_category: 'Web Vitals',
+                    event_label: 'LCP',
+                    value: Math.round(lastEntry.startTime),
+                    non_interaction: true
+                });
+            }
+        });
+        
+        lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
+    });
+    </script>
 </body>
 </html>
