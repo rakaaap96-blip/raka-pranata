@@ -8,7 +8,7 @@ function ContactHeader({ isVisible }: ContactHeaderProps) {
       isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
     }`}>
       <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6">
-        <span className="block bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x">
+        <span className="block pb-6 bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x">
           Let's Work Together
         </span>
       </h2>
