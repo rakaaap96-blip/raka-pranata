@@ -6,6 +6,11 @@
     <!-- ========== 1. OPTIMIZED VIEWPORT FIRST ========== -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
+    <!-- ========== 1.5. PRELOAD & PREFETCH CRITICAL ========== -->
+    <link rel="preconnect" href="https://raka-pranata.vercel.app">
+    <link rel="dns-prefetch" href="https://raka-pranata.vercel.app">
+    <link rel="preload" href="https://raka-pranata.vercel.app/IMGG/og-image.png" as="image" fetchpriority="high">
+    
     <!-- ========== 2. TITLE & DESCRIPTION (CRITICAL) ========== -->
     <title itemprop="name">Raka Pranata Portfolio - Frontend Developer & UI/UX Designer Bogor | React + TypeScript Expert</title>
     <meta name="description" itemprop="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
@@ -96,7 +101,11 @@
         <link rel="stylesheet" href="/assets/index-BforxC2r.css">
     </noscript>
     
-    <!-- ========== 7. DEFERRED THIRD-PARTY SCRIPTS ========== -->
+    <!-- ========== 7. ROBOTS & GOOGLE META ========== -->
+    <meta name="robots" content="max-image-preview:large, max-snippet:-1">
+    <meta name="google" content="max-image-preview:large">
+    
+    <!-- ========== 8. DEFERRED THIRD-PARTY SCRIPTS ========== -->
     <!-- GA diletakkan setelah konten penting -->
     <script>
     window.dataLayer = window.dataLayer || [];
@@ -119,16 +128,16 @@
     }, 3000); // Delay 3 detik untuk prioritas konten utama
     </script>
     
-    <!-- ========== 8. FAVICON (NON-BLOCKING) ========== -->
+    <!-- ========== 9. FAVICON (NON-BLOCKING) ========== -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="alternate icon" type="image/png" href="/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
-    <!-- ========== 9. META TAGS (NON-CRITICAL) ========== -->
+    <!-- ========== 10. META TAGS (NON-CRITICAL) ========== -->
     <meta name="theme-color" content="#000000">
     <meta name="msapplication-TileColor" content="#000000">
     
-    <!-- ========== 10. OPEN GRAPH (NON-CRITICAL) ========== -->
+    <!-- ========== 11. OPEN GRAPH (NON-CRITICAL) ========== -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://raka-pranata.vercel.app/">
     <meta property="og:title" content="Raka Pranata Portfolio - Frontend Developer & UI/UX Designer">
@@ -137,40 +146,63 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     
-    <!-- ========== 11. TWITTER CARDS (NON-CRITICAL) ========== -->
+    <!-- ========== 12. TWITTER CARDS (NON-CRITICAL) ========== -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Raka Pranata Portfolio">
     <meta name="twitter:description" content="Frontend Developer & UI/UX Designer specializing in React and TypeScript">
     <meta name="twitter:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
     
-    <!-- ========== 12. CANONICAL & MANIFEST ========== -->
+    <!-- ========== 13. CANONICAL & MANIFEST ========== -->
     <link rel="canonical" href="https://raka-pranata.vercel.app">
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
     
-    <!-- ========== 13. STRUCTURED DATA (DEFERRED) ========== -->
-    <script type="application/ld+json" id="structured-data">
+    <!-- ========== 14. STRUCTURED DATA (IMPROVED) ========== -->
+    <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Raka Pranata",
       "jobTitle": "Frontend Developer & UI/UX Designer",
-      "description": "Portfolio of Raka Pranata - Frontend Developer with modern frontend development skills.",
+      "description": "Portfolio of Raka Pranata - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development.",
       "url": "https://raka-pranata.vercel.app",
-      "image": "https://raka-pranata.vercel.app/IMGG/og-image.png"
+      "image": "https://raka-pranata.vercel.app/IMGG/og-image.png",
+      "sameAs": [
+        "https://linkedin.com/in/raka-pranata-2804a437a",
+        "https://github.com/rakaaap96-blip"
+      ],
+      "knowsAbout": ["React", "TypeScript", "UI/UX Design", "Frontend Development"],
+      "location": {
+        "@type": "Place",
+        "name": "Bogor, Indonesia"
+      }
     }
-    </script>
-    <script>
-    // Move structured data to bottom setelah page load
-    window.addEventListener('load', function() {
-        const structuredData = document.getElementById('structured-data');
-        if (structuredData) {
-            document.head.appendChild(structuredData);
-        }
-    });
     </script>
 </head>
 <body class="antialiased" cz-shortcut-listen="true" itemscope itemtype="https://schema.org/WebPage">   
-    <!-- ========== 14. SKELETON LOADER UNTUK LCP ========== -->
+    <!-- ========== 15. GOOGLE BOT PROFILE HELPER (CRITICAL FIX) ========== -->
+    <div style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;"
+         aria-hidden="true"
+         itemscope 
+         itemtype="https://schema.org/Person">
+        
+        <!-- FOTO PROFIL UTAMA untuk Google -->
+        <img src="https://raka-pranata.vercel.app/IMGG/og-image.png" 
+             alt="Raka Pranata - Creative Developer & UI/UX Designer"
+             width="500" 
+             height="500"
+             loading="eager"
+             decoding="sync"
+             fetchpriority="high"
+             itemprop="image">
+        
+        <!-- Data struktur untuk Google -->
+        <meta itemprop="name" content="Raka Pranata">
+        <meta itemprop="jobTitle" content="Frontend Developer & UI/UX Designer">
+        <meta itemprop="url" content="https://raka-pranata.vercel.app">
+        <meta itemprop="description" content="Creative Frontend Developer specializing in React, TypeScript, and modern UI/UX design">
+    </div>
+    
+    <!-- ========== 16. SKELETON LOADER UNTUK LCP ========== -->
     <div id="root">
         <!-- Skeleton content untuk immediate paint -->
         <div style="min-height: 100vh; background: #000;">
@@ -183,17 +215,17 @@
         </div>
     </div>
     
-    <!-- ========== 15. SEO CONTENT (HIDDEN) ========== -->
+    <!-- ========== 17. SEO CONTENT (HIDDEN) ========== -->
     <div class="seo-hidden" aria-hidden="true">
         <h1>Raka Pranata Portfolio - Frontend Developer & UI/UX Designer</h1>
         <p>Portfolio showcasing React, TypeScript projects and UI/UX design work.</p>
         <p>Frontend developer specializing in modern web technologies and user experience design.</p>
     </div>
 
-    <!-- ========== 16. MAIN SCRIPT (DEFERRED & ASYNC) ========== -->
+    <!-- ========== 18. MAIN SCRIPT (DEFERRED & ASYNC) ========== -->
     <script type="module" src="/src/main.tsx" defer async></script>
     
-    <!-- ========== 17. SERVICE WORKER (LOW PRIORITY) ========== -->
+    <!-- ========== 19. SERVICE WORKER (LOW PRIORITY) ========== -->
     <script>
     // Register service worker setelah semua selesai
     window.addEventListener('load', function() {
@@ -208,7 +240,7 @@
     });
     </script>
     
-    <!-- ========== 18. PROGRESSIVE ENHANCEMENT ========== -->
+    <!-- ========== 20. PROGRESSIVE ENHANCEMENT ========== -->
     <noscript>
         <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; color: #fff; padding: 2rem; z-index: 9999;">
             <h1>Raka Pranata Portfolio</h1>
@@ -217,7 +249,7 @@
         </div>
     </noscript>
     
-    <!-- ========== 19. PERFORMANCE MONITORING ========== -->
+    <!-- ========== 21. PERFORMANCE MONITORING ========== -->
     <script>
     // Track LCP (Largest Contentful Paint)
     window.addEventListener('load', function() {
