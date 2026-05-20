@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark" itemscope itemtype="https://schema.org/WebPage">
+<html lang="id" class="dark" itemscope itemtype="https://schema.org/WebPage">
 <head>
     <meta charset="UTF-8">
     
@@ -11,11 +11,13 @@
     <link rel="dns-prefetch" href="https://raka-pranata.vercel.app">
     <link rel="preload" href="https://raka-pranata.vercel.app/IMGG/og-image.png" as="image" fetchpriority="high">
     
-    <!-- ========== 3. TITLE & DESCRIPTION ========== -->
-    <title>Raka Pranata - Frontend Developer & UI/UX Designer | React + TypeScript Expert Bogor</title>
-    <meta name="description" content="Raka Pranata Portfolio - Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development. Based in Bogor, Indonesia.">
+    <!-- ========== 3. TITLE & DESCRIPTION (FOKUS JASA WEBSITE) ========== -->
+    <title>Jasa Pembuatan Website & Landing Page Profesional | Raka Pranata</title>
+    <meta name="description" content="Butuh jasa pembuatan website company profile, landing page high-converting, atau web custom? Raka Pranata - Frontend Developer & UI/UX Designer. Konsultasi gratis!">
+    <meta name="keywords" content="jasa pembuatan website, jasa landing page, web developer bogor, harga website murah, react js, next js, frontend freelance">
+    <meta name="author" content="Raka Pranata">
     
-    <!-- ========== 4. CRITICAL CSS INLINE ========== -->
+    <!-- ========== 4. CRITICAL CSS INLINE (SKELETON LOADING) ========== -->
     <style id="critical-css">
     /* Minimal CSS untuk rendering awal */
     body, html { 
@@ -81,7 +83,7 @@
         function loadFonts() {
             const link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = 'https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Manrope:wght@200..800&display=swap';
+            link.href = 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap';
             link.media = 'print';
             link.onload = function() {
                 this.media = 'all';
@@ -143,48 +145,71 @@
     <meta name="msapplication-TileColor" content="#000000">
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
     
-    <!-- ========== 12. OPEN GRAPH (NO FB:APP_ID) ========== -->
-    <meta property="og:site_name" content="Raka Pranata Portfolio">
+    <!-- ========== 12. OPEN GRAPH (FOKUS JASA) ========== -->
+    <meta property="og:site_name" content="Raka Pranata - Jasa Website & Landing Page">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://raka-pranata.vercel.app/">
-    <meta property="og:title" content="Raka Pranata - Frontend Developer & UI/UX Designer">
-    <meta property="og:description" content="Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development.">
+    <meta property="og:title" content="Jasa Pembuatan Website & Landing Page Profesional">
+    <meta property="og:description" content="Jasa pembuatan website perusahaan, landing page marketing, dan UI/UX design. Konsultasi gratis!">
     <meta property="og:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Raka Pranata - Frontend Developer Portfolio">
+    <meta property="og:image:alt" content="Raka Pranata - Jasa Website & Landing Page">
     
     <!-- ========== 13. TWITTER CARDS ========== -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Raka Pranata Portfolio">
-    <meta name="twitter:description" content="Frontend Developer & UI/UX Designer specializing in React and TypeScript">
+    <meta name="twitter:title" content="Jasa Pembuatan Website & Landing Page">
+    <meta name="twitter:description" content="Frontend Developer & UI/UX Designer spesialis jasa website dan landing page modern.">
     <meta name="twitter:image" content="https://raka-pranata.vercel.app/IMGG/og-image.png">
-    <meta name="twitter:image:alt" content="Raka Pranata Portfolio">
+    <meta name="twitter:image:alt" content="Raka Pranata - Jasa Website">
     
     <!-- ========== 14. CANONICAL ========== -->
     <link rel="canonical" href="https://raka-pranata.vercel.app">
     
-    <!-- ========== 15. STRUCTURED DATA (GOOGLE RICH RESULTS) ========== -->
+    <!-- ========== 15. STRUCTURED DATA (JASA PROFESIONAL) ========== -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "@id": "https://raka-pranata.vercel.app/#person",
-      "name": "Raka Pranata",
+      "@type": "ProfessionalService",
+      "@id": "https://raka-pranata.vercel.app/#service",
+      "name": "Raka Pranata - Jasa Pembuatan Website & Landing Page",
       "url": "https://raka-pranata.vercel.app",
       "image": "https://raka-pranata.vercel.app/IMGG/og-image.png",
-      "description": "Creative Frontend Developer & UI/UX Designer specializing in React, TypeScript, and modern web development.",
-      "jobTitle": "Frontend Developer & UI/UX Designer",
-      "knowsAbout": ["React", "TypeScript", "JavaScript", "UI/UX Design", "Frontend Development", "Next.js", "Tailwind CSS"],
-      "sameAs": [
-        "https://linkedin.com/in/raka-pranata-2804a437a",
-        "https://github.com/rakaaap96-blip"
-      ],
+      "description": "Menyediakan jasa pembuatan website, landing page, company profile, dan UI/UX design. Berpengalaman dengan React, Next.js, Tailwind CSS. Konsultasi gratis.",
+      "priceRange": "Rp1.500.000 - Rp15.000.000",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Bogor",
         "addressRegion": "West Java",
         "addressCountry": "ID"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "telephone": "+6287823268333",
+        "email": "rakaaa.p96@gmail.com",
+        "availableLanguage": ["Indonesian", "English"]
+      },
+      "areaServed": "Indonesia",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Paket Website",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "Paket Landing Page",
+            "description": "Landing page profesional untuk lead generation & campaign",
+            "price": "1500000",
+            "priceCurrency": "IDR"
+          },
+          {
+            "@type": "Offer",
+            "name": "Paket Company Profile",
+            "description": "Website multi halaman untuk bisnis & UMKM",
+            "price": "3500000",
+            "priceCurrency": "IDR"
+          }
+        ]
       }
     }
     </script>
@@ -195,16 +220,10 @@
       "@type": "WebPage",
       "@id": "https://raka-pranata.vercel.app/#webpage",
       "url": "https://raka-pranata.vercel.app",
-      "name": "Raka Pranata Portfolio - Frontend Developer & UI/UX Designer",
-      "description": "Portfolio showcasing React, TypeScript projects and UI/UX design work.",
+      "name": "Jasa Pembuatan Website & Landing Page - Raka Pranata",
+      "description": "Layanan jasa website profesional dan landing page konversi tinggi.",
       "about": {
-        "@id": "https://raka-pranata.vercel.app/#person"
-      },
-      "primaryImageOfPage": {
-        "@type": "ImageObject",
-        "url": "https://raka-pranata.vercel.app/IMGG/og-image.png",
-        "width": 1200,
-        "height": 630
+        "@id": "https://raka-pranata.vercel.app/#service"
       }
     }
     </script>
@@ -213,10 +232,10 @@
 <body class="antialiased" cz-shortcut-listen="true">   
     <!-- ========== 16. GOOGLE HELPER - VISIBLE TO GOOGLE ONLY ========== -->
     <div class="google-helper">
-        <h1 style="font-size: 1px; margin: 0; padding: 0;">Raka Pranata - Frontend Developer & UI/UX Designer</h1>
-        <p style="font-size: 1px; margin: 0; padding: 0;">Creative Developer specializing in React, TypeScript, and modern web development based in Bogor, Indonesia.</p>
+        <h1 style="font-size: 1px; margin: 0; padding: 0;">Raka Pranata - Jasa Pembuatan Website & Landing Page Profesional</h1>
+        <p style="font-size: 1px; margin: 0; padding: 0;">Frontend Developer & UI/UX Designer. Layanan custom website, landing page konversi tinggi, optimasi performa dan SEO. Hubungi +6287823268333.</p>
         <img src="https://raka-pranata.vercel.app/IMGG/og-image.png" 
-             alt="Raka Pranata - Portfolio Photo" 
+             alt="Raka Pranata - Jasa Website" 
              style="width: 1px; height: 1px;"
              width="1" 
              height="1"
@@ -232,28 +251,31 @@
              height="500">
         <span itemprop="name">Raka Pranata</span>
         <span itemprop="jobTitle">Frontend Developer & UI/UX Designer</span>
-        <span itemprop="description">Specializing in React, TypeScript, and modern web development</span>
+        <span itemprop="description">Spesialis jasa pembuatan website dan landing page untuk bisnis Anda. Kontak: +6287823268333</span>
     </div>
     
     <!-- ========== 18. MAIN REACT APP ========== -->
     <div id="root">
-        <!-- Skeleton content untuk immediate paint -->
+        <!-- Skeleton content untuk immediate paint (detail seperti asli) -->
         <div style="min-height: 100vh; background: #000;">
             <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
                 <div class="skeleton-loader" style="height: 40px; width: 300px; margin-bottom: 2rem; border-radius: 4px;"></div>
                 <div class="skeleton-loader" style="height: 20px; width: 80%; margin-bottom: 1rem; border-radius: 4px;"></div>
                 <div class="skeleton-loader" style="height: 20px; width: 70%; margin-bottom: 3rem; border-radius: 4px;"></div>
                 <div class="skeleton-loader" style="height: 300px; width: 100%; margin-bottom: 2rem; border-radius: 8px;"></div>
+                <div class="skeleton-loader" style="height: 200px; width: 100%; margin-bottom: 2rem; border-radius: 8px;"></div>
+                <div class="skeleton-loader" style="height: 150px; width: 100%; border-radius: 8px;"></div>
             </div>
         </div>
     </div>
     
-    <!-- ========== 19. EXTRA SEO CONTENT ========== -->
+    <!-- ========== 19. EXTRA SEO CONTENT (FOKUS JASA) ========== -->
     <div class="seo-hidden" aria-hidden="true">
-        <h2>Frontend Developer Portfolio</h2>
-        <p>React Developer, TypeScript Expert, UI/UX Designer in Bogor Indonesia.</p>
-        <p>Skills: React.js, TypeScript, JavaScript, Next.js, Tailwind CSS, Figma, UI Design.</p>
-        <p>Contact: rakaaa.p96@gmail.com | Bogor, West Java, Indonesia</p>
+        <h2>Jasa Pembuatan Website Professional</h2>
+        <p>Landing Page, Company Profile, Toko Online, Portfolio Digital.</p>
+        <p>Skills: React.js, TypeScript, Next.js, Tailwind CSS, Figma, UI/UX Design.</p>
+        <p>WhatsApp: +6287823268333 | Email: rakaaa.p96@gmail.com | Bogor, Jawa Barat</p>
+        <p>Harga terjangkau, pengerjaan cepat, dan support 24 jam.</p>
     </div>
 
     <!-- ========== 20. MAIN REACT SCRIPT ========== -->
@@ -276,9 +298,9 @@
     <!-- ========== 22. PROGRESSIVE ENHANCEMENT ========== -->
     <noscript>
         <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; color: #fff; padding: 2rem; z-index: 9999;">
-            <h1>Raka Pranata Portfolio</h1>
-            <p>Frontend Developer & UI/UX Designer specializing in React and TypeScript.</p>
-            <p>Contact: <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a> | <a href="https://github.com/rakaaap96-blip" style="color: #d4af37;">GitHub</a></p>
+            <h1>Raka Pranata - Jasa Pembuatan Website & Landing Page</h1>
+            <p>Frontend Developer & UI/UX Designer spesialis React dan TypeScript.</p>
+            <p>Hubungi: <a href="https://wa.me/6287823268333" style="color: #d4af37;">WhatsApp +6287823268333</a> | <a href="https://www.linkedin.com/in/raka-pranata-2804a437a/" style="color: #d4af37;">LinkedIn</a></p>
             <p>Email: rakaaa.p96@gmail.com</p>
         </div>
     </noscript>
