@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { projects } from '../data/projects';
 import useFilter from '../hooks/useFilter';
 import useScrollAnimation from '../hooks/useScrollAnimation';
@@ -26,10 +26,59 @@ import {
   RiStarFill
 } from 'react-icons/ri';
 
+// Custom hook untuk media query
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, [matches, query]);
+
+  return matches;
+}
+
 function ProjectsSection() {
   const { filter, setFilter, searchTerm, setSearchTerm, filteredProjects } = useFilter(projects);
   const { ref, isVisible } = useScrollAnimation();
   const projectsRef = useRef<HTMLDivElement>(null);
+  const filterRef = useRef<HTMLDivElement>(null); // Ref untuk elemen filter
+  
+  const isDesktop = useMediaQuery('(min-width: 768px)');
+  const DEFAULT_VISIBLE = isDesktop ? 6 : 3;
+  
+  const [visibleCount, setVisibleCount] = useState(DEFAULT_VISIBLE);
+  const totalFiltered = filteredProjects.length;
+
+  // Update default ketika ukuran layar berubah (resize)
+  useEffect(() => {
+    setVisibleCount(prev => {
+      if (prev === totalFiltered) return prev;
+      return DEFAULT_VISIBLE;
+    });
+  }, [isDesktop, DEFAULT_VISIBLE, totalFiltered]);
+
+  // Reset ke default device ketika filter atau pencarian berubah
+  useEffect(() => {
+    setVisibleCount(DEFAULT_VISIBLE);
+  }, [filter, searchTerm, DEFAULT_VISIBLE]);
+
+  const showAll = () => {
+    setVisibleCount(totalFiltered);
+  };
+
+  const showLess = () => {
+    setVisibleCount(DEFAULT_VISIBLE);
+    // Scroll back to the filter section
+    if (filterRef.current) {
+      filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   const skills = [
     { name: "Figma", level: 90, color: "from-purple-500 to-pink-500", icon: FaFigma },
@@ -120,28 +169,55 @@ function ProjectsSection() {
           </div>
         </div>
 
-        {/* Filter Section */}
-        <ProjectFilter
-          filter={filter}
-          setFilter={setFilter}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
+        {/* Filter Section - dengan ref untuk scrolling */}
+        <div ref={filterRef}>
+          <ProjectFilter
+            filter={filter}
+            setFilter={setFilter}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+          />
+        </div>
 
         {/* Projects Grid */}
-        {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            {filteredProjects.map((project, index) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                index={index}
-              />
-            ))}
-          </div>
+        {totalFiltered > 0 ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-10">
+              {filteredProjects.slice(0, visibleCount).map((project, index) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={index}
+                />
+              ))}
+            </div>
+            
+            {/* Tombol Show More / Show Less */}
+            {totalFiltered > DEFAULT_VISIBLE && (
+              <div className="text-center mt-8 sm:mt-10">
+                {visibleCount < totalFiltered ? (
+                  <button
+                    onClick={showAll}
+                    className="inline-block px-6 sm:px-8 py-3 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-xl font-bold text-[#1a1a1a] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#d4af37]/30"
+                    aria-label="Show all projects"
+                  >
+                    Show More ({totalFiltered - visibleCount} more)
+                  </button>
+                ) : (
+                  <button
+                    onClick={showLess}
+                    className="inline-block px-6 sm:px-8 py-3 bg-[#1a1a1a] border border-[#d4af37]/50 rounded-xl font-bold text-[#d4af37] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#d4af37]/30"
+                    aria-label="Show fewer projects"
+                  >
+                    Show Less
+                  </button>
+                )}
+              </div>
+            )}
+          </>
         ) : (
           <div 
-            className="text-center py-16 sm:py-20 bg-[#1a1a1a]/50 backdrop-blur-sm rounded-2xl border border-[#d4af37]/20"
+            className="text-center py-16 sm:py-20 bg-[#1a1a1a]/50 backdrop-blur-sm rounded-2xl border border-[#d4af37]/20 mt-8 sm:mt-10"
             role="status"
             aria-live="polite"
           >
@@ -151,7 +227,7 @@ function ProjectsSection() {
           </div>
         )}
 
-        {/* Stats - Fixed mobile gap */}
+        {/* Stats */}
         <div className="mt-16 sm:mt-20 grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 text-center">
           {[
             { number: new Set(projects.flatMap(p => p.technologies)).size, label: 'Tools Used', icon: RiToolsFill },
@@ -183,7 +259,6 @@ function ProjectsSection() {
             Interested in working together? Let's create something amazing!
           </p>
           
-          {/* Opsi 1: Link external ke WhatsApp/Email */}
           <a 
             href="https://wa.me/6287823268333?text=Hi%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20get%20in%20touch" 
             target="_blank" 

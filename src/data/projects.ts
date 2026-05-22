@@ -1,8 +1,28 @@
 import type { Project } from '../types/project';
 
 export const projects: Project[] = [
-  {
+    {
     id: 1,
+    title: "Bakso Menyala",
+    description: "Modern, clean, minimalist, responsive, and intuitive landing page ",
+    image: "/IMGG/bakla.avif",
+    technologies: ["React", "TailwindCSS", "TypeScript", "Vite", "lucide", 'git', 'vercel'],
+    category: "Landing Page",
+    liveUrl: "https://bakla-ten.vercel.app/",
+    featured: false
+  },
+  {
+    id: 2,
+    title: "Coklat Susu",
+    description: "Modern, Futuristic, robotic, responsive, and intuitive landing page ",
+    image: "/IMGG/coksu.avif",
+    technologies: ["React", "TailwindCSS", "TypeScript", "Vite", "lucide", 'git', 'vercel'],
+    category: "Landing Page",
+    liveUrl: "https://coksu.vercel.app/",
+    featured: false
+  },
+  {
+    id: 3,
     title: "Reconstella Company Profile",
     description: "Cleanest construction company profile",
     image: "/IMGG/reconstella.webp",
@@ -12,7 +32,7 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    id: 2,
+    id: 4,
     title: "NutriNest",
     description: "Modern, clean, minimalist interface design",
     image: "/IMGG/UIdesign.webp",
@@ -22,7 +42,7 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    id: 3,
+    id: 5,
     title: "Artisan Craft",
     description: "Interactive, Intuitive, Animative, Responsive landing page",
     image: "/IMGG/ArtisanCraftHero.webp",
@@ -32,7 +52,7 @@ export const projects: Project[] = [
     featured: false
   },
   {
-    id: 4,
+    id: 6,
     title: "Bogor Nexus",
     description: "Futuristic, responsive, and intuitive dashboard ",
     image: "/IMGG/BogorNexus.webp",
@@ -40,7 +60,8 @@ export const projects: Project[] = [
     category: "Dashboard",
     liveUrl: "https://bogor-nexus.vercel.app/",
     featured: false
-  }
+  },
+
 ];
 
 export const categories = ["All", "Company Profile", "UI Design", "Landing Page", "Dashboard"];
