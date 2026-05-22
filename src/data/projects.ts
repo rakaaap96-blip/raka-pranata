@@ -4,7 +4,7 @@ export const projects: Project[] = [
     {
     id: 1,
     title: "Bakso Menyala",
-    description: "Modern, clean, minimalist, responsive, and intuitive landing page ",
+    description: "clean, minimalist, responsive, and intuitive landing page ",
     image: "/IMGG/bakla.avif",
     technologies: ["React", "TailwindCSS", "TypeScript", "Vite", "lucide", 'git', 'vercel'],
     category: "Landing Page",
