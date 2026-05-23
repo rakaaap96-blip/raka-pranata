@@ -14,7 +14,7 @@ export const projects: Project[] = [
   {
     id: 2,
     title: "Coklat Susu",
-    description: "Modern, Futuristic, robotic, responsive, and intuitive landing page ",
+    description: "Futuristic, robotic, responsive, and intuitive landing page ",
     image: "/IMGG/coksu.avif",
     technologies: ["React", "TailwindCSS", "TypeScript", "Vite", "lucide", 'git', 'vercel'],
     category: "Landing Page",
