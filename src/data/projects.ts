@@ -23,6 +23,16 @@ export const projects: Project[] = [
   },
   {
     id: 3,
+    title: "TK Ceria",
+    description: "Cleanest education institute profile",
+    image: "/IMGG/tkceria.avif",
+    technologies: ["Figma", "React", "TypeScript", 'vite', 'vercel', 'git', 'framer-motion'],
+    category: "Company Profile",
+    liveUrl: "https://tkceria.vercel.app/",
+    featured: true
+  },
+  {
+    id: 4,
     title: "Reconstella Company Profile",
     description: "Cleanest construction company profile",
     image: "/IMGG/reconstella.webp",
@@ -32,7 +42,7 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    id: 4,
+    id: 5,
     title: "NutriNest",
     description: "Modern, clean, minimalist interface design",
     image: "/IMGG/UIdesign.webp",
@@ -42,7 +52,7 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    id: 5,
+    id: 6,
     title: "Artisan Craft",
     description: "Interactive, Intuitive, Animative, Responsive landing page",
     image: "/IMGG/ArtisanCraftHero.webp",
@@ -52,7 +62,7 @@ export const projects: Project[] = [
     featured: false
   },
   {
-    id: 6,
+    id: 7,
     title: "Bogor Nexus",
     description: "Futuristic, responsive, and intuitive dashboard ",
     image: "/IMGG/BogorNexus.webp",
