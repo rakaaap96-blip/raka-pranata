@@ -26,7 +26,7 @@ export const projects: Project[] = [
     title: "TK Ceria",
     description: "Cleanest education institute profile",
     image: "/IMGG/tkceria.avif",
-    technologies: ["Figma", "React", "TypeScript", 'vite', 'vercel', 'git', 'framer-motion'],
+    technologies: ["Figma", "React", "TypeScript", 'vite', 'vercel', 'git', 'Framer Motion'],
     category: "Company Profile",
     liveUrl: "https://tkceria.vercel.app/",
     featured: true
