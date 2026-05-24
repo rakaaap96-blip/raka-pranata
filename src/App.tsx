@@ -8,6 +8,7 @@ import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 import AIChatBot from './components/chat/AiChatBot';
 import CustomCursor from './components/CustomCursor';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 
 export default function App() {
@@ -24,7 +25,7 @@ export default function App() {
         <Contact />
         <Footer />
       </BackgroundWrapper>
-      
+      <SpeedInsights />
     </div>
   );
 }
