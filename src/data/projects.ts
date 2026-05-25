@@ -35,7 +35,7 @@ export const projects: Project[] = [
     id: 4,
     title: "Roti Sobek",
     description: "Cleanest bakery profile",
-    image: "/IMGG/reconstella.webp",
+    image: "/IMGG/sobek.avif",
     technologies: ["Figma", "React", "TypeScript", 'vite', 'vercel', 'git'],
     category: "Company Profile",
     liveUrl: "https://robek.vercel.app/",
