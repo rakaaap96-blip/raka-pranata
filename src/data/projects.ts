@@ -33,6 +33,16 @@ export const projects: Project[] = [
   },
   {
     id: 4,
+    title: "Roti Sobek",
+    description: "Cleanest bakery profile",
+    image: "/IMGG/reconstella.webp",
+    technologies: ["Figma", "React", "TypeScript", 'vite', 'vercel', 'git'],
+    category: "Company Profile",
+    liveUrl: "https://robek.vercel.app/",
+    featured: true
+  },
+  {
+    id: 5,
     title: "Reconstella Company Profile",
     description: "Cleanest construction company profile",
     image: "/IMGG/reconstella.webp",
@@ -42,7 +52,7 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    id: 5,
+    id: 6,
     title: "NutriNest",
     description: "Modern, clean, minimalist interface design",
     image: "/IMGG/UIdesign.webp",
@@ -52,7 +62,7 @@ export const projects: Project[] = [
     featured: true
   },
   {
-    id: 6,
+    id: 7,
     title: "Artisan Craft",
     description: "Interactive, Intuitive, Animative, Responsive landing page",
     image: "/IMGG/ArtisanCraftHero.webp",
@@ -62,7 +72,7 @@ export const projects: Project[] = [
     featured: false
   },
   {
-    id: 7,
+    id: 8,
     title: "Bogor Nexus",
     description: "Futuristic, responsive, and intuitive dashboard ",
     image: "/IMGG/BogorNexus.webp",
@@ -71,6 +81,7 @@ export const projects: Project[] = [
     liveUrl: "https://bogor-nexus.vercel.app/",
     featured: false
   },
+  
 
 ];
 
