@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     
     <!-- ========== 2. PRELOAD OG IMAGE (CRITICAL) ========== -->
-    <link rel="preconnect" href="https://raka-pranata.vercel.app">
-    <link rel="dns-prefetch" href="https://raka-pranata.vercel.app">
     <link rel="preload" href="https://raka-pranata.vercel.app/IMGG/og-image.png" as="image" fetchpriority="high">
     
     <!-- ========== 3. TITLE & DESCRIPTION (FOKUS JASA WEBSITE) ========== -->
@@ -100,10 +98,6 @@
     })();
     </script>
     
-    <!-- ========== 6. PRELOAD CRITICAL RESOURCES ========== -->
-    <link rel="preload" href="/src/main.tsx" as="script">
-    
-    
     <!-- ========== 8. ROBOTS & GOOGLE META ========== -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -130,14 +124,14 @@
     </script>
     
     <!-- ========== 10. FAVICON ========== -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/IMGG/logo.svg">
     <link rel="alternate icon" type="image/png" href="/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
     <!-- ========== 11. THEME & MANIFEST ========== -->
     <meta name="theme-color" content="#000000">
     <meta name="msapplication-TileColor" content="#000000">
-    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+    <link rel="manifest" href="/manifest.json">
     
     <!-- ========== 12. OPEN GRAPH (FOKUS JASA) ========== -->
     <meta property="og:site_name" content="Raka Pranata - Jasa Website & Landing Page">
@@ -273,20 +267,23 @@
     </div>
 
     <!-- ========== 20. MAIN REACT SCRIPT ========== -->
-    <script type="module" src="/src/main.tsx" defer async></script>
+    <script type="module" src="/src/main.tsx"></script>
     
     <!-- ========== 21. SERVICE WORKER ========== -->
     <script>
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js')
-                    .catch(function(error) {
-                        console.log('ServiceWorker registration failed:', error);
-                    });
-            }
-        }, 5000);
-    });
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if ('serviceWorker' in navigator) {
+                    fetch('/sw.js', { method: 'HEAD' })
+                        .then(response => {
+                            if (response.ok) {
+                                navigator.serviceWorker.register('/sw.js');
+                            }
+                        })
+                        .catch(() => {});
+                }
+            }, 5000);
+        });
     </script>
     
     <!-- ========== 22. PROGRESSIVE ENHANCEMENT ========== -->
