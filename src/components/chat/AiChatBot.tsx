@@ -555,6 +555,7 @@ function AIChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const aiEngine = useRef(new SmartAIEngine());
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ 
@@ -570,6 +571,20 @@ function AIChatBot() {
       }, 400);
     }
   }, [isOpen]);
+
+  useEffect(() => {
+  const checkMobile = () => {
+    setIsMobile(window.innerWidth < 768);
+  };
+
+  checkMobile();
+
+  window.addEventListener('resize', checkMobile);
+
+  return () => {
+    window.removeEventListener('resize', checkMobile);
+  };
+}, []);
 
   const simulateTyping = useCallback((message: string, onComplete: (fullMessage: string) => void) => {
     setIsTyping(true);
@@ -777,7 +792,7 @@ function AIChatBot() {
         onClick={() => setIsOpen(true)}
         className="fixed z-50 bg-gradient-to-br from-[#d4af37] to-[#f4d03f] text-[#1a1a1a] shadow-2xl hover:scale-110 transition-all duration-300 group animate-float"
         style={{
-          bottom: 'clamp(1rem, 3vw, 2rem)',
+          bottom: isMobile ? '7rem' : '2rem',
           right: 'clamp(1rem, 3vw, 2rem)',
           padding: 'clamp(0.75rem, 2vw, 1rem)',
           borderRadius: '50%',
