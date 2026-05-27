@@ -1,30 +1,48 @@
-import ProjectsSection from './sections/ProjectsSection';
+import { lazy, Suspense } from 'react';
 import Navbar from './sections/Navbar';
 import Hero from './sections/Hero';
-import About from './sections/About';
 import BackgroundWrapper from './layout/BackgroundWrapper';
-import Testimonials from './sections/Testimonial';
-import Contact from './sections/Contact';
-import Footer from './sections/Footer';
-import AIChatBot from './components/chat/AiChatBot';
 import CustomCursor from './components/CustomCursor';
 
+// Komponen yang di-lazy (dimuat belakangan)
+const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
+const About = lazy(() => import('./sections/About'));
+const Testimonials = lazy(() => import('./sections/Testimonial'));
+const Contact = lazy(() => import('./sections/Contact'));
+const Footer = lazy(() => import('./sections/Footer'));
+const AIChatBot = lazy(() => import('./components/chat/AiChatBot'));
+
+// Komponen fallback saat loading (skeleton)
+const SectionLoader = () => (
+  <div className="skeleton-loader" style={{ height: '300px', width: '100%', borderRadius: '12px' }} />
+);
 
 export default function App() {
   return (
-    <div className=" bg-[#050505] text-white min-h-screen">
+    <div className="bg-[#050505] text-white min-h-screen">
       <CustomCursor />
       <Navbar />
-      <AIChatBot />
+      <Suspense fallback={null}>
+        <AIChatBot />
+      </Suspense>
       <BackgroundWrapper>
         <Hero />
-        <ProjectsSection />
-        <About/>
-        <Testimonials/>
-        <Contact />
-        <Footer />
+        <Suspense fallback={<SectionLoader />}>
+          <ProjectsSection />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <About />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Testimonials />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Contact />
+        </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <Footer />
+        </Suspense>
       </BackgroundWrapper>
-      
     </div>
   );
 }
