@@ -8,7 +8,7 @@
     
     <!-- ========== 2. PRELOAD OG IMAGE (CRITICAL) ========== -->
     <link rel="preload" href="https://raka-pranata.vercel.app/IMGG/og-image.png" as="image" fetchpriority="high">
-    
+    <link rel="preload" as="image" href="/IMGG/face1-248x248.webp" fetchpriority="high">
     <!-- ========== 3. TITLE & DESCRIPTION (FOKUS JASA WEBSITE) ========== -->
     <title>Jasa Pembuatan Website & Landing Page Profesional | Raka Pranata</title>
     <meta name="description" content="Butuh jasa pembuatan website company profile, landing page high-converting, atau web custom? Raka Pranata - Frontend Developer & UI/UX Designer. Konsultasi gratis!">
@@ -245,6 +245,15 @@
     <!-- ========== 18. MAIN REACT APP ========== -->
     <main id="root">
         <!-- Skeleton content untuk immediate paint (detail seperti asli) -->
+         <!-- LCP image statis untuk discoverability -->
+        <img 
+        src="/IMGG/face1-248x248.webp" 
+        width="248" 
+        height="248" 
+        alt="Raka Pranata" 
+        fetchpriority="high"
+        style="position: absolute; top: 0; left: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none;"
+        />
         <div style="min-height: 100vh; background: #000;">
             <div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
                 <div class="skeleton-loader" style="height: 40px; width: 300px; margin-bottom: 2rem; border-radius: 4px;"></div>
