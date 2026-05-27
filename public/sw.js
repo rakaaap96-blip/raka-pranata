@@ -1,4 +1,4 @@
-const CACHE_NAME = 'portfolio-v1.5';
+const CACHE_NAME = 'portfolio-v1.6';
 const OFFLINE_URL = '/offline.html';
 
 const urlsToCache = [
