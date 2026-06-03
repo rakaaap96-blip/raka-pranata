@@ -15,7 +15,7 @@ function FooterBottomBar({ isVisible }: FooterBottomBarProps) {
           © {new Date().getFullYear()} Raka Pranata. Crafted with 
           <FaHeart className="text-red-500 animate-pulse" /> 
           and 
-          <FaCoffee className="text-amber-600" />
+          <FaCoffee className="text-amber-600" /> Powered by rakawebpro.vercel.app
         </div>
         <div className="flex items-center gap-6 text-[#ffffea]/60 text-sm">
           <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer transform hover:scale-105">
