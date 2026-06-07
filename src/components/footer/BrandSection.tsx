@@ -288,7 +288,7 @@ function BrandSection({ isVisible }: BrandSectionProps) {
         </h3>
         <p className="text-[#ffffea]/70 leading-relaxed text-sm group-hover:text-[#ffffea]/90 transition-colors duration-300 mb-6">
           <TypingText 
-            text="Creating digital experiences that blend beautiful design with flawless functionality. Let's build the future together, one pixel at a time." 
+            text="Creating digital experiences that blend beautiful design with flawless functionality. Let's build the future together." 
             isVisible={isVisible} 
             delay={400} 
           />

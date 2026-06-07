@@ -97,10 +97,13 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
       disabled ? 'opacity-50 cursor-not-allowed' : ''
     } ${className}`;
 
+    // 🔧 Perbaikan UX untuk tombol secondary:
+    // - hover background menjadi emas solid
+    // - hover teks dan icon menjadi hitam
     const variantClasses = isPrimary
       ? 'bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-[#1a1a1a] shadow-lg'
       : isSecondary
-      ? 'bg-transparent border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10'
+      ? 'bg-transparent border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-[#1a1a1a] transition-colors duration-300'
       : 'bg-[#1a1a1a]/80 border border-[#d4af37]/20 text-[#ffffea] hover:border-[#d4af37]/40';
 
     const Tag = href ? 'a' : 'button';
@@ -108,7 +111,6 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
       ? { href, target, rel: rel || (target === '_blank' ? 'noopener noreferrer' : undefined) }
       : {};
 
-    // Generate particle positions once (stabil)
     const particlePositions = useRef(
       Array.from({ length: particleCount }, (_, i) => {
         const angle = (i / particleCount) * Math.PI * 2 + Math.random() * 0.5;
@@ -133,7 +135,7 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
           transition: `all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}ms`,
         }}
       >
-        {/* Particles – selalu dirender, hanya opacity/scale yang berubah */}
+        {/* Particles */}
         <div className="absolute inset-0 pointer-events-none z-20">
           {particlePositions.map((p, idx) => (
             <div
@@ -169,7 +171,7 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
           }`}
         />
 
-        {/* Inner content */}
+        {/* Inner content with magnet & tilt */}
         <div
           className="relative flex items-center justify-center gap-2 w-full"
           style={{
@@ -178,6 +180,7 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
             transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
+          {/* Shimmer sweep */}
           <div
             className={`absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none ${
               isHovered ? 'opacity-100' : ''
@@ -186,6 +189,7 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
             <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/20 to-transparent animate-shimmer-sweep" />
           </div>
 
+          {/* Holographic border effect (hanya untuk secondary, tidak mengganggu teks) */}
           {isSecondary && isHovered && (
             <div className="absolute inset-0 rounded-xl p-0.5 pointer-events-none">
               <div className="absolute inset-0 rounded-xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-holo-shift" />
@@ -193,6 +197,7 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
             </div>
           )}
 
+          {/* Equalizer bars */}
           {showEq && (
             <div
               className={`absolute left-2 top-1/2 -translate-y-1/2 flex items-end gap-0.5 h-3 transition-opacity duration-300 ${
@@ -213,7 +218,8 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
             </div>
           )}
 
-          <span className="relative z-10 flex items-center gap-2">
+          {/* Teks dan icon */}
+          <span className="relative z-10 flex items-center gap-2 transition-colors duration-300">
             {icon && (
               <span className={`transition-transform duration-300 ${isHovered ? 'scale-110' : ''}`}>
                 {icon}

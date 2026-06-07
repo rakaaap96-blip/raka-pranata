@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { FaRocket, FaFolderOpen, FaEye } from 'react-icons/fa';
+import { FaRocket, FaFolderOpen } from 'react-icons/fa';
 import MagneticButton from '../ui/MagneticButton';
 
 /* ============================================
@@ -96,16 +96,23 @@ function FooterCTASection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-          <MagneticButton href="#contact" variant="primary" delay={300} isVisible={isVisible}>
-            <FaRocket />
+          <MagneticButton 
+            href="#contact" 
+            variant="primary" 
+            delay={300} 
+            isVisible={isVisible}
+            icon={<FaRocket />}
+          >
             Start a Project
-            <FaRocket />
           </MagneticButton>
           
-          <MagneticButton href="#projects" variant="secondary" delay={400} isVisible={isVisible}>
-            <FaFolderOpen />
+          <MagneticButton 
+            href="#projects" 
+            variant="secondary" 
+            isVisible={isVisible}
+            icon={<FaFolderOpen />}
+          >
             View My Work
-            <FaEye />
           </MagneticButton>
         </div>
       </div>

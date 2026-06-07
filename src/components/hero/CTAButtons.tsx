@@ -24,9 +24,9 @@ function CTAButtons({ onDownloadCV, onLetsTalk }: CTAButtonsProps) {
         href="https://wa.me/6287823268333?text=Hi%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20get%20in%20touch"
         onClick={onLetsTalk}
         variant="secondary"
-        delay={100}
         icon={<FaComments />}
         showEq
+        // Tidak perlu className, karena di MagneticButton sudah diatur untuk secondary: hover bg emas & teks hitam
       >
         Let's Talk
       </MagneticButton>

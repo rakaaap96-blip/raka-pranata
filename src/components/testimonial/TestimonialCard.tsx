@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Testimonial } from '../../data/testimonial-data';
-import { FaStar, FaQuoteLeft } from 'react-icons/fa';
+import { FaStar, FaQuoteLeft, FaArrowLeft } from 'react-icons/fa';
 import { HiBuildingOffice2 } from 'react-icons/hi2';
 import MagneticButton from '../ui/MagneticButton';
 import { MagneticAvatar } from '../ui/MagneticAvatar';
 
 /* ============================================
-   STAR WITH BURST ANIMATION (FIXED: always render, toggle with CSS)
+   STAR WITH BURST ANIMATION
    ============================================ */
 function StarBurst({ filled, delay }: { filled: boolean; delay: number }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -18,7 +18,6 @@ function StarBurst({ filled, delay }: { filled: boolean; delay: number }) {
 
   return (
     <div className="relative">
-      {/* Burst background - selalu ada, dikontrol dengan opacity+scale */}
       <div
         className={`absolute inset-0 bg-[#d4af37]/30 rounded-full blur-md transition-all duration-500 ${
           isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
@@ -35,7 +34,7 @@ function StarBurst({ filled, delay }: { filled: boolean; delay: number }) {
 }
 
 /* ============================================
-   EQUALIZER BAR (no changes)
+   EQUALIZER BAR
    ============================================ */
 function EqBar({ delay }: { delay: number }) {
   const [height] = useState(() => `${20 + Math.random() * 80}%`);
@@ -54,27 +53,44 @@ function EqBar({ delay }: { delay: number }) {
 }
 
 /* ============================================
-   3D FLIP CARD BACKFACE (no changes)
+   3D FLIP CARD BACKFACE (with back button)
    ============================================ */
-function CardBack({ testimonial }: { testimonial: Testimonial }) {
+interface CardBackProps {
+  testimonial: Testimonial;
+  onFlipBack: () => void;
+}
+
+function CardBack({ testimonial, onFlipBack }: CardBackProps) {
   return (
     <div className="absolute inset-0 bg-linear-to-br from-[#1a1a1a] to-[#0f0f0f] rounded-2xl p-5 border border-[#d4af37]/30 flex flex-col items-center justify-center text-center backface-hidden rotate-y-180">
-      <HiBuildingOffice2 className="w-8 h-8 text-[#d4af37] mb-3" />
-      <h4 className="text-[#d4af37] font-bold text-base mb-1">{testimonial.project}</h4>
-      <p className="text-[#ffffea]/80 text-xs mb-3">Completed with excellence</p>
-      <div className="flex gap-2">
+      <HiBuildingOffice2 className="w-10 h-10 text-[#d4af37] mb-3" />
+      <h4 className="text-[#d4af37] font-bold text-lg mb-1">{testimonial.project}</h4>
+      <p className="text-[#ffffea]/80 text-sm mb-4">Completed with excellence</p>
+      <div className="flex flex-wrap gap-2 justify-center mb-6">
         {['Design', 'Code', 'Deploy'].map((tag) => (
-          <span key={tag} className="px-2 py-0.5 bg-[#d4af37]/10 text-[#d4af37] text-[10px] rounded-full border border-[#d4af37]/20">
+          <span key={tag} className="px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] text-xs rounded-full border border-[#d4af37]/20">
             {tag}
           </span>
         ))}
       </div>
+      <MagneticButton
+        onClick={onFlipBack}
+        variant="secondary"
+        magnetStrength={0.2}
+        particleCount={4}
+        ripple={true}
+        className="text-sm px-4 py-2"
+        aria-label="Back to testimonial"
+      >
+        <FaArrowLeft className="w-3 h-3" />
+        Back to Testimonial
+      </MagneticButton>
     </div>
   );
 }
 
 /* ============================================
-   MAIN TESTIMONIAL CARD (no structural changes)
+   MAIN TESTIMONIAL CARD (improved UX)
    ============================================ */
 interface TestimonialCardProps {
   testimonial: Testimonial;
@@ -114,7 +130,10 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
   const handleMouseLeave = () => {
     setIsHovered(false);
     setSpotlight({ x: 50, y: 50 });
-    setIsFlipped(false);
+  };
+
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
   };
 
   const renderStars = (rating: number) => {
@@ -131,7 +150,12 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
     >
-      <div className={`absolute -inset-2 rounded-3xl bg-linear-to-r from-[#d4af37]/20 to-transparent opacity-0 blur-2xl transition-all duration-700 ${isHovered ? 'opacity-100' : ''}`} />
+      {/* Glow background on hover */}
+      <div
+        className={`absolute -inset-2 rounded-3xl bg-linear-to-r from-[#d4af37]/20 to-transparent opacity-0 blur-2xl transition-all duration-700 ${
+          isHovered && !isFlipped ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
 
       <div
         className={`relative h-full transition-all duration-700 preserve-3d ${
@@ -139,29 +163,26 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
         } ${isFlipped ? 'rotate-y-180' : ''}`}
         style={{
           transitionProperty: 'transform, opacity',
-          transitionDuration: '0.7s, 0.7s',
-          transitionTimingFunction: 'ease-out, ease-out',
+          transitionDuration: '0.6s, 0.7s',
+          transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1), ease-out',
           transitionDelay: isVisible ? `${index * 150}ms` : '0ms',
-          animation: isVisible && !isHovered ? `float-testi 5s ease-in-out ${index * 1.5}s infinite` : 'none',
         }}
       >
         {/* FRONT FACE */}
         <div
           className={`group relative rounded-2xl p-5 overflow-hidden transition-all duration-500 flex flex-col h-full ${
-            isHovered
+            isHovered && !isFlipped
               ? 'bg-[#fefcf5] border-[#d4af37]/60 shadow-2xl shadow-[#d4af37]/20'
               : 'bg-[#1a1a1a]/70 backdrop-blur-xl border border-[#d4af37]/15'
           }`}
         >
-          {/* Spotlight */}
-          {!isHovered && (
-            <div
-              className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-              style={{
-                background: `radial-gradient(400px circle at ${spotlight.x}% ${spotlight.y}%, rgba(212, 175, 55, 0.12), transparent 50%)`,
-              }}
-            />
-          )}
+          {/* Spotlight effect */}
+          <div
+            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+            style={{
+              background: `radial-gradient(400px circle at ${spotlight.x}% ${spotlight.y}%, rgba(212, 175, 55, 0.12), transparent 50%)`,
+            }}
+          />
 
           {/* Noise texture */}
           <div
@@ -171,19 +192,11 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
             }}
           />
 
-          {/* Holographic border */}
-          {!isHovered && (
-            <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none p-px">
-              <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-holo-shift" />
-              <div className="w-full h-full rounded-2xl bg-[#1a1a1a]" />
-            </div>
-          )}
-
           {/* Quote & Stars */}
           <div className="relative flex justify-between items-start mb-3 z-10">
             <FaQuoteLeft
               className={`w-5 h-5 transition-all duration-500 ${
-                isHovered
+                isHovered && !isFlipped
                   ? 'text-[#d4af37] drop-shadow-[0_0_4px_rgba(0,0,0,0.2)]'
                   : 'text-[#d4af37]/50'
               }`}
@@ -202,33 +215,30 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
           <div className="flex-1 mb-4 z-10">
             <p
               className={`leading-relaxed text-sm transition-all duration-300 ${
-                isHovered ? 'text-[#1a1a1a] font-medium' : 'text-[#ffffea]/80'
+                isHovered && !isFlipped ? 'text-[#1a1a1a] font-medium' : 'text-[#ffffea]/80'
               }`}
             >
               {testimonial.text}
             </p>
           </div>
 
-          {/* Project Button */}
+          {/* Flip Button (Project) - Improved UX */}
           <div className="mb-3 z-10">
-            <MagneticButton
-              variant="ghost"
-              onClick={() => setIsFlipped(true)}
-              magnetStrength={0.2}
-              particleCount={0}
-              ripple={false}
-              className={`text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit transition-all duration-300 ${
-                isHovered
-                  ? 'bg-[#1a1a1a] text-[#d4af37] border border-[#d4af37]/40 shadow-md'
-                  : 'text-[#d4af37] bg-[#d4af37]/10 border border-[#d4af37]/20'
+            <button
+              onClick={handleFlip}
+              className={`group/flip text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5 w-fit transition-all duration-300 ${
+                isHovered && !isFlipped
+                  ? 'bg-[#1a1a1a] text-[#d4af37] border border-[#d4af37]/40 shadow-md hover:bg-[#d4af37] hover:text-[#1a1a1a] hover:border-[#d4af37]'
+                  : 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 hover:bg-[#d4af37] hover:text-[#1a1a1a] hover:border-[#d4af37]'
               }`}
+              aria-label={`View project details for ${testimonial.project}`}
             >
-              <HiBuildingOffice2 className="w-2.5 h-2.5" />
+              <HiBuildingOffice2 className="w-3 h-3 transition-transform group-hover/flip:rotate-12" />
               <span className="truncate max-w-[150px]">{testimonial.project}</span>
-              <span className="text-[8px] opacity-0 group-hover/project:opacity-100 transition-opacity">
+              <span className="text-[10px] opacity-0 group-hover/flip:opacity-100 transition-opacity">
                 (flip)
               </span>
-            </MagneticButton>
+            </button>
           </div>
 
           {/* Client Info */}
@@ -236,19 +246,19 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
             <MagneticAvatar
               image={testimonial.image}
               name={testimonial.name}
-              isHovered={isHovered}
+              isHovered={isHovered && !isFlipped}
             />
             <div className="flex-1 min-w-0">
               <div
                 className={`font-bold text-sm truncate transition-all duration-300 ${
-                  isHovered ? 'text-[#d4af37]' : 'text-[#ffffea]'
+                  isHovered && !isFlipped ? 'text-[#d4af37]' : 'text-[#ffffea]'
                 }`}
               >
                 {testimonial.name}
               </div>
               <p
                 className={`text-[11px] truncate transition-all duration-300 ${
-                  isHovered ? 'text-[#1a1a1a]/70' : 'text-[#ffffea]/60'
+                  isHovered && !isFlipped ? 'text-[#1a1a1a]/70' : 'text-[#ffffea]/60'
                 }`}
               >
                 {testimonial.role} at {testimonial.company}
@@ -258,9 +268,7 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
         </div>
 
         {/* BACK FACE */}
-        <div className="absolute inset-0 backface-hidden rotate-y-180">
-          <CardBack testimonial={testimonial} />
-        </div>
+        <CardBack testimonial={testimonial} onFlipBack={handleFlip} />
       </div>
     </div>
   );

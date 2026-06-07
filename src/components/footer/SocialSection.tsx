@@ -90,25 +90,18 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
                 particleCount={8}
                 ripple={true}
                 showEq={true}
-                className={`group relative w-full p-4 bg-[#1a1a1a]/80 backdrop-blur-md rounded-2xl border transition-all duration-300 ${
+                className={`group relative w-full p-4 rounded-2xl border transition-all duration-300 ${
                   isCardHovered
-                    ? 'border-[#d4af37]/60 shadow-2xl shadow-[#d4af37]/20 scale-105 z-10'
-                    : 'border-[#d4af37]/15 hover:border-[#d4af37]/40'
+                    ? 'bg-[#d4af37] border-[#d4af37] shadow-2xl shadow-[#d4af37]/30 scale-105 z-10'
+                    : 'bg-[#1a1a1a]/80 backdrop-blur-md border-[#d4af37]/15 hover:border-[#d4af37]/40'
                 }`}
               >
-                {/* Inner content with icon, text, arrow, and orbit ring */}
+                {/* Inner content */}
                 <div className="relative flex items-center gap-3 w-full">
-                  {/* Holographic border (on hover) - always rendered, opacity toggled */}
-                  <div className={`absolute inset-0 rounded-2xl transition-opacity duration-500 pointer-events-none p-px ${
-                    isCardHovered ? 'opacity-100' : 'opacity-0'
-                  }`}>
-                    <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-holo-shift" />
-                    <div className="w-full h-full rounded-2xl bg-[#1a1a1a]" />
-                  </div>
-
-                  {/* Shimmer sweep - always rendered */}
+                  {/* Holographic border (only for non-hover state? Actually we don't need it) */}
+                  {/* Shimmer sweep - always rendered, controlled by CSS */}
                   <div className={`absolute inset-0 transition-opacity duration-500 pointer-events-none ${
-                    isCardHovered ? 'opacity-100' : 'opacity-0'
+                    isCardHovered ? 'opacity-0' : 'opacity-0'
                   }`}>
                     <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent animate-shimmer-sweep" />
                   </div>
@@ -118,10 +111,12 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
                     <div className={`w-10 h-10 rounded-xl bg-linear-to-r from-[#d4af37] to-[#f4d03f] flex items-center justify-center transition-all duration-500 ${
                       isCardHovered ? 'scale-110 rotate-12 shadow-lg shadow-[#d4af37]/30' : ''
                     }`}>
-                      <social.icon className="w-5 h-5 text-[#1a1a1a]" />
+                      <social.icon className={`w-5 h-5 transition-colors duration-300 ${
+                        isCardHovered ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]'
+                      }`} />
                     </div>
                     
-                    {/* Orbit ring (appears on hover) - FIXED: always rendered, visibility toggled */}
+                    {/* Orbit ring */}
                     <svg 
                       className={`absolute -inset-1 w-12 h-12 -rotate-90 pointer-events-none transition-all duration-500 ${
                         isCardHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
@@ -140,16 +135,17 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
                     }`} />
                   </div>
 
-                  {/* Text and equalizer - FIXED: always render equalizer bars, hide with CSS */}
+                  {/* Text and equalizer */}
                   <div className="flex-1 min-w-0 relative z-10">
                     <span
-                      className="font-semibold text-sm transition-colors duration-300 block"
-                      style={{ color: isCardHovered ? '#1a1a1a' : '#ffffea' }}
+                      className={`font-semibold text-sm block transition-colors duration-300 ${
+                        isCardHovered ? 'text-[#1a1a1a]' : 'text-[#ffffea]'
+                      }`}
                     >
                       {social.name}
                     </span>
                     
-                    {/* Equalizer bars - always present, visibility toggled */}
+                    {/* Equalizer bars */}
                     <div className={`flex items-end gap-0.5 h-2 mt-1 transition-all duration-300 ${
                       isCardHovered ? 'opacity-50 visible' : 'opacity-0 invisible'
                     }`}>
@@ -160,7 +156,7 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
                           style={{
                             height: `${30 + Math.random() * 70}%`,
                             animationDelay: `${i * 80}ms`,
-                            backgroundColor: '#1a1a1a',
+                            backgroundColor: '#1a1a1a', // hitam di atas background emas
                             animationPlayState: isCardHovered ? 'running' : 'paused',
                           }}
                         />
