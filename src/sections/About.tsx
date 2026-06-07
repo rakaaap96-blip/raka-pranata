@@ -2,7 +2,6 @@ import AboutHeader from '../components/about/AboutHeader';
 import MusicCard from '../components/about/MusicCard';
 import PhilosophyCard from '../components/about/PhilosophyCard';
 import LanguagesCard from '../components/about/LanguagesCard';
-import HobbiesCard from '../components/about/HobbiesCard';
 import AboutQuote from '../components/about/AboutQuote';
 
 function About() {
@@ -25,12 +24,6 @@ function About() {
         <div className="mb-8">
           <LanguagesCard />
         </div>
-
-        {/* Bottom Row - Beyond Coding */}
-        <div>
-          <HobbiesCard />
-        </div>
-
         <AboutQuote />
       </div>
     </section>

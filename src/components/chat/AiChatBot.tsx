@@ -555,36 +555,16 @@ function AIChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const aiEngine = useRef(new SmartAIEngine());
-  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ 
-      behavior: "smooth",
-      block: "end"
-    });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages, isTyping]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 400);
+      setTimeout(() => inputRef.current?.focus(), 400);
     }
   }, [isOpen]);
-
-  useEffect(() => {
-  const checkMobile = () => {
-    setIsMobile(window.innerWidth < 768);
-  };
-
-  checkMobile();
-
-  window.addEventListener('resize', checkMobile);
-
-  return () => {
-    window.removeEventListener('resize', checkMobile);
-  };
-}, []);
 
   const simulateTyping = useCallback((message: string, onComplete: (fullMessage: string) => void) => {
     setIsTyping(true);
@@ -787,15 +767,11 @@ function AIChatBot() {
 
   return (
     <>
-      {/* Floating Button dengan warna emas */}
+      {/* Floating Button - PERBAIKAN CLS: tanpa isMobile, langsung pakai kelas responsif */}
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed z-50 bg-gradient-to-br from-[#d4af37] to-[#f4d03f] text-[#1a1a1a] shadow-2xl hover:scale-110 transition-all duration-300 group animate-float"
+        className="fixed z-50 bg-linear-to-br from-[#d4af37] to-[#f4d03f] text-[#1a1a1a] shadow-2xl hover:scale-110 transition-all duration-300 group animate-float rounded-full p-3 md:p-4 bottom-28 md:bottom-8 right-4 md:right-6"
         style={{
-          bottom: isMobile ? '7rem' : '2rem',
-          right: 'clamp(1rem, 3vw, 2rem)',
-          padding: 'clamp(0.75rem, 2vw, 1rem)',
-          borderRadius: '50%',
           boxShadow: '0 8px 32px rgba(212, 175, 55, 0.3)'
         }}
         aria-label="Open AI Chat Assistant"
@@ -826,7 +802,7 @@ function AIChatBot() {
           aria-describedby="ai-chat-description"
         >
           <div 
-            className="absolute inset-0 bg-gradient-to-br from-black/80 via-[#d4af37]/10 to-black/80 backdrop-blur-lg"
+            className="absolute inset-0 bg-linear-to-br from-black/80 via-[#d4af37]/10 to-black/80 backdrop-blur-lg"
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -835,10 +811,9 @@ function AIChatBot() {
             id="ai-chat-modal"
             className="relative w-full max-w-full sm:max-w-md lg:max-w-lg h-[90vh] sm:h-[600px] bg-[#0a0a0a] border border-[#d4af37]/40 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden"
           >
+            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-linear-to-r from-[#d4af37]/10 via-[#f4d03f]/10 to-[#d4af37]/10 animate-gradient-x" aria-hidden="true" />
             
-            <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#d4af37]/10 via-[#f4d03f]/10 to-[#d4af37]/10 animate-gradient-x" aria-hidden="true" />
-            
-            <div className="relative bg-gradient-to-r from-[#d4af37] to-[#f4d03f] p-4 sm:p-5 rounded-t-2xl sm:rounded-t-3xl">
+            <div className="relative bg-linear-to-r from-[#d4af37] to-[#f4d03f] p-4 sm:p-5 rounded-t-2xl sm:rounded-t-3xl">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   <div className="bg-[#0a0a0a] p-2 rounded-full border border-[#d4af37]/30">
@@ -889,7 +864,7 @@ function AIChatBot() {
                   <div 
                     className={`max-w-[85%] sm:max-w-[80%] p-3 rounded-2xl backdrop-blur-sm ${
                       msg.role === 'user' 
-                        ? 'bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-[#0a0a0a] rounded-br-none border border-[#d4af37]/30' 
+                        ? 'bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-[#0a0a0a] rounded-br-none border border-[#d4af37]/30' 
                         : 'bg-[#1a1a1a]/80 border border-[#d4af37]/20 text-white rounded-bl-none'
                     }`}
                     role={msg.role === 'user' ? 'status' : 'article'}
@@ -939,7 +914,7 @@ function AIChatBot() {
                           aria-valuemax={100}
                         >
                           <div 
-                            className="h-full bg-gradient-to-r from-[#d4af37] to-[#f4d03f] transition-all duration-300"
+                            className="h-full bg-linear-to-r from-[#d4af37] to-[#f4d03f] transition-all duration-300"
                             style={{ width: `${typingProgress}%` }}
                             aria-hidden="true"
                           />
@@ -964,7 +939,7 @@ function AIChatBot() {
                           setInputMessage(question);
                           setTimeout(sendMessage, 100);
                         }}
-                        className="bg-[#1a1a1a]/80 border border-[#d4af37]/20 text-xs text-white p-3 rounded-xl hover:bg-gradient-to-r hover:from-[#d4af37]/20 hover:to-[#f4d03f]/20 hover:border-[#d4af37]/40 transition-all text-center backdrop-blur-sm group"
+                        className="bg-[#1a1a1a]/80 border border-[#d4af37]/20 text-xs text-white p-3 rounded-xl hover:bg-linear-to-r hover:from-[#d4af37]/20 hover:to-[#f4d03f]/20 hover:border-[#d4af37]/40 transition-all text-center backdrop-blur-sm group"
                         role="menuitem"
                         aria-label={`Ask: ${question}`}
                       >
@@ -1001,7 +976,7 @@ function AIChatBot() {
                 <button 
                   onClick={sendMessage}
                   disabled={isLoading || !inputMessage.trim() || isTyping}
-                  className="bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-[#0a0a0a] p-3 sm:p-4 rounded-2xl hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all flex items-center justify-center min-w-12 sm:min-w-14 font-semibold disabled:cursor-not-allowed group"
+                  className="bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-[#0a0a0a] p-3 sm:p-4 rounded-2xl hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 transition-all flex items-center justify-center min-w-12 sm:min-w-14 font-semibold disabled:cursor-not-allowed group"
                   aria-label="Send message"
                 >
                   {isLoading || isTyping ? (

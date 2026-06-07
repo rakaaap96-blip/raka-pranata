@@ -29,12 +29,11 @@ interface ProjectCardProps {
   index: number;
 }
 
-// Mapping technology names to icons
 const getTechIcon = (tech: string) => {
   const techLower = tech.toLowerCase();
   
   if (techLower.includes('type')) return SiTypescript;
-  if (techLower.includes('tailwind')) return SiTailwindcss; // Pakai SiTailwindcss
+  if (techLower.includes('tailwind')) return SiTailwindcss;
   if (techLower.includes('vite')) return SiVite;
   if (techLower.includes('java')) return SiJavascript;
   if (techLower.includes('react')) return SiReact;
@@ -52,8 +51,65 @@ const getTechIcon = (tech: string) => {
   if (techLower.includes('firebase')) return SiFirebase;
   if (techLower.includes('vercel')) return SiVercel;
   
-  return HiSparkles; // default icon
+  return HiSparkles;
 };
+
+// Tech badge dengan animasi kompleks (FIXED: sparkle particles selalu dirender)
+function TechBadge({ tech, techIndex, cardIndex }: { tech: string; techIndex: number; cardIndex: number }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const IconComponent = getTechIcon(tech);
+  
+  const entranceDelay = (cardIndex * 100) + (techIndex * 80);
+  const floatDelay = techIndex * 0.5;
+
+  return (
+    <span
+      className="relative inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full 
+                 bg-[#1a1a1a] border border-[#d4af37]/30 text-[#d4af37]
+                 cursor-default select-none
+                 animate-tech-float animate-tech-entrance
+                 hover:scale-110 hover:-translate-y-1 hover:z-10
+                 transition-all duration-300 ease-out
+                 group/badge"
+      style={{
+        animationDelay: `${floatDelay}s, ${entranceDelay}ms`,
+        animationDuration: '3s, 0.6s',
+        animationFillMode: 'both, backwards',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Animated gradient border on hover */}
+      <div className="absolute inset-0 rounded-full opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300 -z-10">
+        <div className="absolute inset-0 rounded-full bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-shimmer" />
+        <div className="absolute inset-px rounded-full bg-[#1a1a1a]" />
+      </div>
+      
+      {/* Glow effect */}
+      <div className={`absolute inset-0 rounded-full bg-[#d4af37]/20 blur-md transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+      
+      {/* Icon dengan animasi */}
+      <span className={`relative transition-transform duration-300 ${isHovered ? 'rotate-12 scale-125' : ''}`}>
+        <IconComponent className="w-3.5 h-3.5" />
+      </span>
+      
+      {/* Text */}
+      <span className="relative">{tech}</span>
+      
+      {/* Sparkle particles - selalu dirender, visibilitas dikontrol CSS */}
+      <span
+        className={`absolute -top-1 -right-1 w-1 h-1 bg-[#f4d03f] rounded-full transition-all duration-300 ${
+          isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+        } ${isHovered ? 'animate-ping' : ''}`}
+      />
+      <span
+        className={`absolute -bottom-1 -left-1 w-0.5 h-0.5 bg-[#d4af37] rounded-full transition-all duration-300 ${
+          isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
+        } ${isHovered ? 'animate-pulse' : ''}`}
+      />
+    </span>
+  );
+}
 
 function ProjectCard({ project, index }: ProjectCardProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -97,7 +153,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         
         {/* Featured Badge */}
         {project.featured && (
-          <div className="absolute top-4 left-4 bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-[#1a1a1a] px-3 py-1 rounded-full text-sm font-bold transform -rotate-6 shadow-lg flex items-center gap-1">
+          <div className="absolute top-4 left-4 bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-[#1a1a1a] px-3 py-1 rounded-full text-sm font-bold transform -rotate-6 shadow-lg flex items-center gap-1 animate-pulse">
             <FaStar className="w-3 h-3" />
             Featured
           </div>
@@ -137,20 +193,16 @@ function ProjectCard({ project, index }: ProjectCardProps) {
           {project.description}
         </p>
         
-        {/* Technologies with Icons */}
-        <div className="flex flex-wrap gap-2">
-          {project.technologies.map((tech, techIndex) => {
-            const IconComponent = getTechIcon(tech);
-            return (
-              <span
-                key={techIndex}
-                className="px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] text-xs rounded-full border border-[#d4af37]/20 transition-all duration-300 hover:bg-[#d4af37] hover:text-[#1a1a1a] hover:scale-105 cursor-default flex items-center gap-1"
-              >
-                <IconComponent className="w-3 h-3" />
-                {tech}
-              </span>
-            );
-          })}
+        {/* Technologies with Enhanced Animation */}
+        <div className="flex flex-wrap gap-2 perspective-1000">
+          {project.technologies.map((tech, techIndex) => (
+            <TechBadge 
+              key={techIndex} 
+              tech={tech} 
+              techIndex={techIndex} 
+              cardIndex={index} 
+            />
+          ))}
         </div>
       </div>
     </div>

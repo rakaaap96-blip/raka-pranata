@@ -10,7 +10,6 @@ import {
   FaHtml5, 
   FaJs, 
   FaSearch,
-  FaHandshake
 } from 'react-icons/fa';
 import { 
   SiAdobeillustrator, 
@@ -23,10 +22,8 @@ import {
 } from 'react-icons/gi';
 import { 
   RiToolsFill,
-  RiStarFill
 } from 'react-icons/ri';
 
-// Custom hook untuk media query
 function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
 
@@ -43,11 +40,205 @@ function useMediaQuery(query: string): boolean {
   return matches;
 }
 
+/* ============================================
+   SKILL CARD (TANPA PARTIKEL, TANPA CONDITIONAL RENDER)
+   ============================================ */
+interface SkillCardProps {
+  skill: {
+    name: string;
+    level: number;
+    color: string;
+    icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
+  };
+  index: number;
+}
+
+function SkillCard({ skill, index }: SkillCardProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const IconComponent = skill.icon;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), index * 80);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (cardRef.current) observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [index]);
+
+  const radius = 36;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (skill.level / 100) * circumference;
+
+  return (
+    <div
+      ref={cardRef}
+      className={`relative group cursor-default shrink-0 w-44 sm:w-48 transition-all duration-700 ${
+        isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-90'
+      }`}
+      style={{ transitionDelay: `${index * 100}ms` }}
+    >
+      {/* Glow background (always there, opacity controlled by group-hover) */}
+      <div 
+        className={`absolute -inset-1 rounded-2xl bg-linear-to-r ${skill.color} opacity-0 blur-xl transition-all duration-500 group-hover:opacity-40`}
+      />
+
+      <div className="relative bg-[#1a1a1a]/80 backdrop-blur-md rounded-2xl p-5 border border-[#d4af37]/10 overflow-hidden transition-all duration-500 group-hover:border-[#d4af37]/40 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10">
+        {/* Top border line */}
+        <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r ${skill.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+        
+        {/* Shimmer sweep (always there, opacity controlled) */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent animate-shimmer-sweep" />
+        </div>
+
+        <div className="flex flex-col items-center gap-3">
+          <div className="relative w-20 h-20">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,234,0.08)" strokeWidth="6" />
+              <circle
+                cx="50" cy="50" r={radius} fill="none" stroke="url(#gradient)" strokeWidth="6" strokeLinecap="round"
+                strokeDasharray={circumference}
+                strokeDashoffset={isVisible ? strokeDashoffset : circumference}
+                className="transition-all duration-1500 ease-out"
+                style={{ transitionDelay: `${index * 120 + 300}ms` }}
+              />
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#d4af37" />
+                  <stop offset="100%" stopColor="#f4d03f" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative transition-all duration-500 group-hover:scale-110">
+                <IconComponent 
+                  className={`w-7 h-7 text-[#d4af37] transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.6)]`}
+                  aria-hidden={true} 
+                />
+                {/* Efek glow icon – selalu ada, opacity diatur */}
+                <div className="absolute inset-0 blur-lg bg-[#d4af37]/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center space-y-1">
+            <h4 className="text-[#ffffea] font-bold text-sm group-hover:text-[#d4af37] transition-colors duration-300">
+              {skill.name}
+            </h4>
+            <div className="flex items-center justify-center gap-1">
+              <span className="text-xl font-black bg-linear-to-r from-[#d4af37] to-[#f4d03f] bg-clip-text text-transparent">
+                {skill.level}
+              </span>
+              <span className="text-[#d4af37]/60 text-xs font-medium">%</span>
+            </div>
+          </div>
+
+          <div className="flex gap-1">
+            {[...Array(10)].map((_, i) => (
+              <div
+                key={i}
+                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                  i < Math.floor(skill.level / 10)
+                    ? 'bg-[#d4af37] shadow-[0_0_6px_rgba(212,175,55,0.5)]'
+                    : 'bg-[#ffffea]/10'
+                }`}
+                style={{ 
+                  transitionDelay: `${index * 100 + i * 50}ms`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ============================================
+   INFINITE MARQUEE SKILLS ROW (tanpa perubahan)
+   ============================================ */
+interface MarqueeSkillsProps {
+  skills: Array<{
+    name: string;
+    level: number;
+    color: string;
+    icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
+  }>;
+  direction?: 'left' | 'right';
+  speed?: number;
+}
+
+function MarqueeSkills({ skills, direction = 'left', speed = 30 }: MarqueeSkillsProps) {
+  const duplicatedSkills = [...skills, ...skills, ...skills, ...skills];
+  
+  return (
+    <div className="relative overflow-hidden group/marquee py-4">
+      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-linear-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-linear-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+      
+      <div 
+        className={`flex gap-4 sm:gap-6 w-max ${direction === 'left' ? 'animate-marquee-left' : 'animate-marquee-right'}`}
+        style={{ animationDuration: `${speed}s` }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.animationPlayState = 'paused';
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.animationPlayState = 'running';
+        }}
+      >
+        {duplicatedSkills.map((skill, index) => (
+          <SkillCard key={`${skill.name}-${index}`} skill={skill} index={index % skills.length} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+function SectionHeader({ isVisible }: { isVisible: boolean }) {
+  return (
+    <div
+      className={`text-center mb-12 transition-all duration-1000 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      }`}
+    >
+      <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/20 animate-float-subtle">
+        <RiToolsFill className="w-4 h-4 text-[#d4af37]" />
+        <span className="text-[#d4af37] text-sm font-medium tracking-wider uppercase">Portfolio</span>
+      </div>
+      
+      <h2 
+        id="projects-heading"
+        className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 relative"
+      >
+        <span className="bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x bg-size-[200%_auto]">
+          My Projects
+        </span>
+        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 bg-linear-to-r from-transparent via-[#d4af37] to-transparent rounded-full opacity-60" />
+      </h2>
+      
+      <p className="text-lg sm:text-xl text-[#ffffea]/60 max-w-2xl mx-auto leading-relaxed">
+        Projects with a frontend focus that highlight current development techniques, seamless interactions, and clean design.
+      </p>
+    </div>
+  );
+}
+
 function ProjectsSection() {
   const { filter, setFilter, searchTerm, setSearchTerm, filteredProjects } = useFilter(projects);
   const { ref, isVisible } = useScrollAnimation();
   const projectsRef = useRef<HTMLDivElement>(null);
-  const filterRef = useRef<HTMLDivElement>(null); // Ref untuk elemen filter
+  const filterRef = useRef<HTMLDivElement>(null);
   
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const DEFAULT_VISIBLE = isDesktop ? 6 : 3;
@@ -55,7 +246,6 @@ function ProjectsSection() {
   const [visibleCount, setVisibleCount] = useState(DEFAULT_VISIBLE);
   const totalFiltered = filteredProjects.length;
 
-  // Update default ketika ukuran layar berubah (resize)
   useEffect(() => {
     setVisibleCount(prev => {
       if (prev === totalFiltered) return prev;
@@ -63,7 +253,6 @@ function ProjectsSection() {
     });
   }, [isDesktop, DEFAULT_VISIBLE, totalFiltered]);
 
-  // Reset ke default device ketika filter atau pencarian berubah
   useEffect(() => {
     setVisibleCount(DEFAULT_VISIBLE);
   }, [filter, searchTerm, DEFAULT_VISIBLE]);
@@ -74,7 +263,6 @@ function ProjectsSection() {
 
   const showLess = () => {
     setVisibleCount(DEFAULT_VISIBLE);
-    // Scroll back to the filter section
     if (filterRef.current) {
       filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -99,77 +287,31 @@ function ProjectsSection() {
       className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24"
       aria-labelledby="projects-heading"
     >
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#f4d03f]/5 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }} />
+
       <div className="relative z-20 w-full max-w-7xl mx-auto">
-        {/* Header */}
-        <div
-          ref={ref}
-          className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <h2 
-            id="projects-heading"
-            className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6"
-          >
-            <span className="block bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x pb-4">
-              My Projects
-            </span>
-          </h2>
-          <p className="text-lg sm:text-xl text-[#ffffea]/70 max-w-2xl mx-auto leading-relaxed px-4">
-            Projects with a frontend focus that highlight current development techniques, seamless interactions, and clean design.
-          </p>
+        <div ref={ref}>
+          <SectionHeader isVisible={isVisible} />
         </div>
 
-        {/* Skills Overview */}
-        <div 
-          className="mb-12 sm:mb-16 bg-[#1a1a1a]/50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-[#d4af37]/20 transform hover:scale-105 transition-all duration-500"
-          aria-labelledby="tech-stack-heading"
-        >
-          <h3 
-            id="tech-stack-heading"
-            className="text-xl sm:text-2xl font-bold text-[#d4af37] mb-6 text-center flex items-center justify-center gap-3"
-          >
-            <RiToolsFill className="w-6 h-6" aria-hidden="true" />
-            Tech Stack
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {skills.map((skill, index) => {
-              const IconComponent = skill.icon;
-              return (
-                <div key={skill.name} className="space-y-2 group">
-                  <div className="flex justify-between items-center text-sm">
-                    <div className="flex items-center gap-2">
-                      <IconComponent 
-                        className="w-4 h-4 text-[#d4af37] transition-transform group-hover:scale-110" 
-                        aria-hidden="true" 
-                      />
-                      <span className="text-[#ffffea] font-medium">{skill.name}</span>
-                    </div>
-                    <span className="text-[#d4af37]">{skill.level}%</span>
-                  </div>
-                  <div 
-                    className="w-full bg-[#ffffea]/10 rounded-full h-2"
-                    role="progressbar"
-                    aria-valuenow={skill.level}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                    aria-label={`${skill.name} proficiency: ${skill.level}%`}
-                  >
-                    <div 
-                      className={`h-2 rounded-full bg-linear-to-r ${skill.color} transition-all duration-1000 ease-out group-hover:shadow-lg group-hover:shadow-current/30`}
-                      style={{ 
-                        width: `${skill.level}%`,
-                        transitionDelay: `${index * 100}ms`
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+        {/* SKILLS - INFINITE MARQUEE */}
+        <div className="mb-16 relative" aria-labelledby="tech-stack-heading">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="h-px w-12 bg-linear-to-r from-transparent to-[#d4af37]/50" />
+            <h3 id="tech-stack-heading" className="text-xl sm:text-2xl font-bold text-[#d4af37] flex items-center gap-3">
+              <RiToolsFill className="w-6 h-6 animate-spin-slow" aria-hidden="true" />
+              Tech Stack
+            </h3>
+            <div className="h-px w-12 bg-linear-to-l from-transparent to-[#d4af37]/50" />
+          </div>
+
+          <MarqueeSkills skills={skills} direction="left" speed={35} />
+          <div className="mt-2">
+            <MarqueeSkills skills={[...skills].reverse()} direction="right" speed={40} />
           </div>
         </div>
 
-        {/* Filter Section - dengan ref untuk scrolling */}
         <div ref={filterRef}>
           <ProjectFilter
             filter={filter}
@@ -179,37 +321,34 @@ function ProjectsSection() {
           />
         </div>
 
-        {/* Projects Grid */}
         {totalFiltered > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-10">
               {filteredProjects.slice(0, visibleCount).map((project, index) => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  index={index}
-                />
+                <ProjectCard key={project.id} project={project} index={index} />
               ))}
             </div>
             
-            {/* Tombol Show More / Show Less */}
             {totalFiltered > DEFAULT_VISIBLE && (
               <div className="text-center mt-8 sm:mt-10">
                 {visibleCount < totalFiltered ? (
                   <button
                     onClick={showAll}
-                    className="inline-block px-6 sm:px-8 py-3 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-xl font-bold text-[#1a1a1a] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#d4af37]/30"
+                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-xl font-bold text-[#1a1a1a] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/30 overflow-hidden"
                     aria-label="Show all projects"
                   >
-                    Show More ({totalFiltered - visibleCount} more)
+                    <span className="relative z-10">Show More</span>
+                    <span className="relative z-10 bg-[#1a1a1a]/20 px-2 py-0.5 rounded-md text-sm">{totalFiltered - visibleCount}</span>
+                    <div className="absolute inset-0 bg-linear-to-r from-[#f4d03f] to-[#d4af37] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </button>
                 ) : (
                   <button
                     onClick={showLess}
-                    className="inline-block px-6 sm:px-8 py-3 bg-[#1a1a1a] border border-[#d4af37]/50 rounded-xl font-bold text-[#d4af37] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#d4af37]/30"
+                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-[#1a1a1a] border border-[#d4af37]/50 rounded-xl font-bold text-[#d4af37] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/20 overflow-hidden"
                     aria-label="Show fewer projects"
                   >
-                    Show Less
+                    <span className="relative z-10">Show Less</span>
+                    <div className="absolute inset-0 bg-[#d4af37]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </button>
                 )}
               </div>
@@ -218,61 +357,13 @@ function ProjectsSection() {
         ) : (
           <div 
             className="text-center py-16 sm:py-20 bg-[#1a1a1a]/50 backdrop-blur-sm rounded-2xl border border-[#d4af37]/20 mt-8 sm:mt-10"
-            role="status"
-            aria-live="polite"
+            role="status" aria-live="polite"
           >
-            <FaSearch className="text-4xl sm:text-6xl mb-4 mx-auto text-[#d4af37]/50" aria-hidden="true" />
+            <FaSearch className="text-4xl sm:text-6xl mb-4 mx-auto text-[#d4af37]/50 animate-bounce-slow" aria-hidden="true" />
             <h3 className="text-xl sm:text-2xl font-bold text-[#ffffea] mb-2">No projects found</h3>
             <p className="text-[#ffffea]/70 text-sm sm:text-base">Try adjusting your search or filter criteria</p>
           </div>
         )}
-
-        {/* Stats */}
-        <div className="mt-16 sm:mt-20 grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 text-center">
-          {[
-            { number: new Set(projects.flatMap(p => p.technologies)).size, label: 'Tools Used', icon: RiToolsFill },
-            { number: "4.8", label: 'Design Rating', icon: RiStarFill },
-          ].map((stat, index) => {
-            const IconComponent = stat.icon;
-            return (
-              <div
-                key={stat.label}
-                className="bg-[#1a1a1a]/50 backdrop-blur-sm rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-[#d4af37]/20 transform hover:scale-105 transition-all duration-500 hover:shadow-lg hover:shadow-[#d4af37]/20 group"
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <IconComponent 
-                  className="w-6 h-6 sm:w-8 sm:h-8 text-[#d4af37] mb-2 mx-auto transition-transform group-hover:scale-110 group-hover:rotate-12" 
-                  aria-hidden="true" 
-                />
-                <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#d4af37] mb-1 sm:mb-2">
-                  {stat.number}{!stat.number.toString().includes('.') && '+'}
-                </div>
-                <div className="text-[#ffffea]/70 text-xs sm:text-sm">{stat.label}</div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-12 sm:mt-16">
-          <p className="text-base sm:text-lg text-[#ffffea]/70 mb-4 sm:mb-6 px-4">
-            Interested in working together? Let's create something amazing!
-          </p>
-          
-          <a 
-            href="https://wa.me/6287823268333?text=Hi%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20get%20in%20touch" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-block group relative px-6 sm:px-8 py-3 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-xl overflow-hidden transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/30"
-            aria-label="Contact via WhatsApp - opens in new window"
-          >
-            <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-            <span className="relative z-10 text-[#1a1a1a] font-bold text-base sm:text-lg tracking-wide flex items-center justify-center gap-2">
-              <FaHandshake className="w-5 h-5 transition-transform group-hover:scale-110" aria-hidden="true" />
-              Get In Touch
-            </span>
-          </a>
-        </div>
       </div>
     </section>
   );

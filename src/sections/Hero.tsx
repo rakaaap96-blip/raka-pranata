@@ -3,8 +3,6 @@ import useTyping from '../hooks/useTyping';
 import ProfileImage from '../components/hero/ProfileImage';
 import TextContent from '../components/hero/TextContent';
 import CTAButtons from '../components/hero/CTAButtons';
-import Stats from '../components/hero/Stats';
-
 function Hero() {
   const displayText = useTyping([
     'UI/UX Designer',
@@ -32,7 +30,6 @@ function Hero() {
         <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 lg:space-y-8">
           <TextContent displayText={displayText} />
           <CTAButtons onDownloadCV={handleDownloadCV} onLetsTalk={handleLetsTalk} />
-          <Stats />
         </div>
 
         {/* Right Content - Image Section */}

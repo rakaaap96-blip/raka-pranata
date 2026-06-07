@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import useMousePosition from '../hooks/useMousePosition';
-import useParticleSystem from '../hooks/useParticleSystem';
-import ParticleBackground from '../components/hero/ParticleBackground';
+// import ParticleBackground from '../components/hero/ParticleBackground';  // ← DIHAPUS
 import GeometricPattern from '../components/hero/GeometricPattern';
 
 interface BackgroundWrapperProps {
@@ -10,7 +9,7 @@ interface BackgroundWrapperProps {
 
 function BackgroundWrapper({ children }: BackgroundWrapperProps) {
   const mousePosition = useMousePosition();
-  const particles = useParticleSystem(40);
+  // const particles = useParticleSystem(40);  // ← tidak dipakai lagi, bisa dihapus juga
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -37,7 +36,7 @@ function BackgroundWrapper({ children }: BackgroundWrapperProps) {
       style={dynamicBackground}
     >
       {/* Global Background Elements */}
-      <ParticleBackground particles={particles} />
+      {/* <ParticleBackground particles={particles} />  ← DIHAPUS */}
       <GeometricPattern />
       
       {/* Additional Glow Effects */}
