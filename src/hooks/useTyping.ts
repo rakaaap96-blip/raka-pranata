@@ -1,9 +1,9 @@
-// hooks/useTyping.ts
 import { useState, useEffect, useRef } from 'react';
 
 function useTyping(words: string[]) {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [currentText, setCurrentText] = useState('');
+  const [displayText, setDisplayText] = useState('');
+  const textRef = useRef('');
+  const wordIndexRef = useRef(0);
   const actionRef = useRef<'typing' | 'deleting' | 'pause'>('typing');
   const startTimeRef = useRef<number>(0);
   const animationRef = useRef<number | null>(null);
@@ -19,12 +19,13 @@ function useTyping(words: string[]) {
     const animate = (timestamp: number) => {
       if (!startTimeRef.current) startTimeRef.current = timestamp;
       const elapsed = timestamp - startTimeRef.current;
-      const currentWord = words[currentWordIndex % words.length];
+      const currentWord = words[wordIndexRef.current % words.length];
 
       if (actionRef.current === 'typing') {
         if (elapsed > typingSpeed) {
-          const nextText = currentWord.slice(0, currentText.length + 1);
-          setCurrentText(nextText);
+          const nextText = currentWord.slice(0, textRef.current.length + 1);
+          textRef.current = nextText;
+          setDisplayText(nextText);
           startTimeRef.current = timestamp;
           if (nextText === currentWord) {
             actionRef.current = 'pause';
@@ -38,11 +39,12 @@ function useTyping(words: string[]) {
         }
       } else if (actionRef.current === 'deleting') {
         if (elapsed > deletingSpeed) {
-          const nextText = currentText.slice(0, -1);
-          setCurrentText(nextText);
+          const nextText = textRef.current.slice(0, -1);
+          textRef.current = nextText;
+          setDisplayText(nextText);
           startTimeRef.current = timestamp;
           if (nextText === '') {
-            setCurrentWordIndex((prev) => (prev + 1) % words.length);
+            wordIndexRef.current = (wordIndexRef.current + 1) % words.length;
             actionRef.current = 'typing';
             startTimeRef.current = timestamp + loopDelay;
           }
@@ -57,9 +59,9 @@ function useTyping(words: string[]) {
     return () => {
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [words, currentWordIndex, currentText]);
+  }, [words]);
 
-  return currentText; // Hanya return teks
+  return displayText;
 }
 
 export default useTyping;

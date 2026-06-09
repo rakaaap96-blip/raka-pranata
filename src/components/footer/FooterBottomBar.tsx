@@ -18,15 +18,15 @@ function FooterBottomBar({ isVisible }: FooterBottomBarProps) {
           <FaCoffee className="text-amber-600" /> Powered by rakawebpro.vercel.app
         </div>
         <div className="flex items-center gap-6 text-[#ffffea]/60 text-sm">
-          <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer transform hover:scale-105">
+          <button type="button" className="hover:text-[#d4af37] transition-colors duration-300 transform hover:scale-105">
             Privacy Policy
-          </span>
-          <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer transform hover:scale-105">
+          </button>
+          <button type="button" className="hover:text-[#d4af37] transition-colors duration-300 transform hover:scale-105">
             Terms of Service
-          </span>
-          <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer transform hover:scale-105">
+          </button>
+          <button type="button" className="hover:text-[#d4af37] transition-colors duration-300 transform hover:scale-105">
             Cookies
-          </span>
+          </button>
         </div>
       </div>
     </div>

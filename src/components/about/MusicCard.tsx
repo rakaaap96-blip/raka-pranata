@@ -242,8 +242,7 @@ function MusicCard() {
   return (
     <div
       ref={containerRef}
-      className="relative group h-full"
-      style={{ perspective: '1200px' }}
+      className="relative group h-full perspective-distant"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}

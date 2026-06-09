@@ -14,8 +14,10 @@ function Hero() {
 
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const handleDownloadCV = () => console.log('Downloading CV...');
-  const handleLetsTalk = () => console.log('Opening contact...');
+  const handleDownloadCV = () => {};
+  const handleLetsTalk = () => {
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
     <section

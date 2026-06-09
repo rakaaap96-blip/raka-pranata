@@ -26,5 +26,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# Environment variables
+.env
+.env.prod
+
 # Tambahkan ini untuk ekstensi VS Code yang ter-build locally
 .vscode/extensions/

@@ -3,18 +3,16 @@ import Navbar from './sections/Navbar';
 import Hero from './sections/Hero';
 import BackgroundWrapper from './layout/BackgroundWrapper';
 import CustomCursor from './components/CustomCursor';
+import ErrorBoundary from './components/ErrorBoundary';
 
-// Komponen yang di-lazy (dimuat belakangan)
 const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
 const About = lazy(() => import('./sections/About'));
 const Testimonials = lazy(() => import('./sections/Testimonial'));
 const Contact = lazy(() => import('./sections/Contact'));
 const Footer = lazy(() => import('./sections/Footer'));
-const AIChatBot = lazy(() => import('./components/chat/AiChatBot'));
 
-// Komponen fallback saat loading (skeleton)
 const SectionLoader = () => (
-  <div className="skeleton-loader" style={{ height: '300px', width: '100%', borderRadius: '12px' }} />
+  <div className="skeleton-loader h-[300px] w-full rounded-xl" />
 );
 
 export default function App() {
@@ -22,26 +20,34 @@ export default function App() {
     <div className="bg-[#050505] text-white min-h-screen">
       <CustomCursor />
       <Navbar />
-      <Suspense fallback={null}>
-        <AIChatBot />
-      </Suspense>
+
       <BackgroundWrapper>
         <Hero />
-        <Suspense fallback={<SectionLoader />}>
-          <ProjectsSection />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <About />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <Testimonials />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <Contact />
-        </Suspense>
-        <Suspense fallback={<SectionLoader />}>
-          <Footer />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<SectionLoader />}>
+            <ProjectsSection />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<SectionLoader />}>
+            <About />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<SectionLoader />}>
+            <Testimonials />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<SectionLoader />}>
+            <Contact />
+          </Suspense>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <Suspense fallback={<SectionLoader />}>
+            <Footer />
+          </Suspense>
+        </ErrorBoundary>
       </BackgroundWrapper>
     </div>
   );

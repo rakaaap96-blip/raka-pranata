@@ -14,6 +14,7 @@ function ContactRobot() {
         <img
           src="/IMGG/ContactRobot.png"
           alt="AI Contact Robot"
+          loading="lazy"
           className="w-full h-full object-cover transition-all duration-1000 ease-out opacity-100 group-hover:opacity-90 group-hover:scale-105"
         />
         

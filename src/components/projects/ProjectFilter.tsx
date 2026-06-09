@@ -42,10 +42,9 @@ function ProjectFilter({ filter, setFilter, searchTerm, setSearchTerm }: Project
 
             {/* Animated border glow */}
             <div
-              className={`absolute -inset-px rounded-xl sm:rounded-2xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] opacity-0 blur-sm transition-opacity duration-500 ${
+              className={`absolute -inset-px rounded-xl sm:rounded-2xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] opacity-0 blur-sm transition-opacity duration-500 bg-[size:200%_100%] ${
                 isFocused ? 'opacity-60 animate-spin-slow' : ''
               }`}
-              style={{ backgroundSize: '200% 100%' }}
             />
 
             <div className="relative bg-[#0f0f0f] rounded-xl sm:rounded-2xl border border-[#d4af37]/20 overflow-hidden">

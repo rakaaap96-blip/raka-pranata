@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useContactForm } from '../../hooks/usContactForm';
+import { useContactForm } from '../../hooks/useContactForm';
 import MagneticButton from '../ui/MagneticButton';
 
 /* ============================================
@@ -163,8 +163,7 @@ interface MagneticSubmitProps {
 function MagneticSubmit({ isSubmitting, isVisible, progress }: MagneticSubmitProps) {
   return (
     <div 
-      className={`relative transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      style={{ transitionDelay: '600ms' }}
+      className={`relative transition-all duration-700 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
     >
       {/* Progress bar above button */}
       <div className="mb-3 flex items-center gap-3">
@@ -242,6 +241,7 @@ function ContactForm({ isVisible }: ContactFormProps) {
     isSubmitting,
     isSubmitted,
     activeField,
+    error,
     setActiveField,
     handleInputChange,
     handleSubmit
@@ -307,6 +307,22 @@ function ContactForm({ isVisible }: ContactFormProps) {
                 <div className="font-bold text-green-400 text-lg">Message Sent!</div>
                 <p className="text-green-300/70 text-sm">I'll get back to you within 24 hours</p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div className="relative mb-6">
+          <div className="bg-linear-to-r from-red-500/20 to-rose-600/20 border border-red-400/30 rounded-2xl p-4 backdrop-blur-sm">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-linear-to-r from-red-400 to-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-red-500/30 shrink-0">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <p className="text-red-200 text-sm">{error}</p>
             </div>
           </div>
         </div>

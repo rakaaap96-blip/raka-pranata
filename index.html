@@ -72,43 +72,30 @@
     }
     </style>
     
-    <!-- ========== 5. NON-BLOCKING FONT LOADING ========== -->
+    <!-- ========== 5. FONT LOADING ========== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <script>
-    (function() {
-        function loadFonts() {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = 'https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap';
-            link.media = 'print';
-            link.onload = function() {
-                this.media = 'all';
-                document.body.classList.add('fonts-loaded');
-            };
-            document.head.appendChild(link);
-        }
-        
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadFonts);
-        } else {
-            loadFonts();
-        }
-    })();
-    </script>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" fetchpriority="low">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all';document.body.classList.add('fonts-loaded')">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
     
     <!-- ========== 8. ROBOTS & GOOGLE META ========== -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1">
     
-    <!-- ========== 9. DEFERRED GOOGLE ANALYTICS ========== -->
+    <!-- ========== 9. DEFERRED GOOGLE ANALYTICS (idle callback) ========== -->
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     
-    setTimeout(function() {
+    ((fn) => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(fn, { timeout: 5000 });
+        } else {
+            setTimeout(fn, 3000);
+        }
+    })(function() {
         var script = document.createElement('script');
         script.async = true;
         script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9';
@@ -120,7 +107,7 @@
             });
         };
         document.head.appendChild(script);
-    }, 3000);
+    });
     </script>
     
     <!-- ========== 10. FAVICON ========== -->
@@ -278,21 +265,27 @@
     <!-- ========== 20. MAIN REACT SCRIPT ========== -->
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- ========== 21. SERVICE WORKER ========== -->
+    <!-- ========== 21. SERVICE WORKER WITH UPDATE DETECTION ========== -->
     <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                if ('serviceWorker' in navigator) {
-                    fetch('/sw.js', { method: 'HEAD' })
-                        .then(response => {
-                            if (response.ok) {
-                                navigator.serviceWorker.register('/sw.js');
-                            }
-                        })
-                        .catch(() => {});
-                }
-            }, 5000);
-        });
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+                        if (reg.active) {
+                            reg.addEventListener('updatefound', function() {
+                                var installing = reg.installing;
+                                installing.addEventListener('statechange', function() {
+                                    if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+                                        var reload = confirm('A new version is available. Reload to update?');
+                                        if (reload) window.location.reload();
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }, 5000);
+            });
+        }
     </script>
     
     <!-- ========== 22. PROGRESSIVE ENHANCEMENT ========== -->

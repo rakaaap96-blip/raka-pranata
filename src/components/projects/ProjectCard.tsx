@@ -140,6 +140,7 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         <img
           src={project.image}
           alt={project.title}
+          loading="lazy"
           className={`w-full h-full object-cover transition-all duration-700 ${
             isHovered ? 'scale-110 rotate-1' : 'scale-100'
           } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}

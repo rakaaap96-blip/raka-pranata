@@ -65,6 +65,7 @@ export function MagneticAvatar({ image, name, isHovered }: MagneticAvatarProps) 
         <img
           src={image}
           alt={name}
+          loading="lazy"
           className={`w-10 h-10 rounded-full object-cover border-2 transition-all duration-500 ${
             isHovered
               ? 'border-[#d4af37] scale-110 shadow-lg shadow-[#d4af37]/30'

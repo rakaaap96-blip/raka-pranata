@@ -12,7 +12,6 @@ interface LanguageBadgeProps {
 }
 
 function LanguageBadge({ name, color, index, categoryIndex }: LanguageBadgeProps) {
-  const [, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const badgeRef = useRef<HTMLDivElement>(null);
 
@@ -36,8 +35,6 @@ function LanguageBadge({ name, color, index, categoryIndex }: LanguageBadgeProps
       className={`relative group/badge cursor-default transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-90'
       }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className={`absolute -inset-1 rounded-xl ${color.replace('bg-', 'bg-').replace('/20', '/30').replace('/15', '/25').replace('/10', '/20').replace('/5', '/15')} opacity-0 blur-lg transition-all duration-500 group-hover/badge:opacity-60`} />
 
@@ -146,7 +143,7 @@ function LanguageCategory({ category, index }: LanguageCategoryProps) {
 
         {/* Holographic border */}
         <div className={`absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 pointer-events-none ${isHovered ? 'opacity-100' : ''}`}>
-          <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-holo-shift" style={{ padding: '1px' }}>
+          <div className="absolute inset-0 rounded-2xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-holo-shift p-px">
             <div className="w-full h-full rounded-2xl bg-[#1a1a1a]" />
           </div>
         </div>
@@ -194,7 +191,6 @@ interface LanguageCategoryType {
 
 function LanguagesCard() {
   const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
-  const [, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const languageCategories: LanguageCategoryType[] = [
@@ -246,11 +242,7 @@ function LanguagesCard() {
       ref={containerRef}
       className="relative group perspective-1200"
       onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => {
-        setIsHovered(false);
-        setSpotlight({ x: 50, y: 50 });
-      }}
+      onMouseLeave={() => setSpotlight({ x: 50, y: 50 })}
     >
       <div className="absolute -inset-8 bg-[#d4af37]/5 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
       <div 
