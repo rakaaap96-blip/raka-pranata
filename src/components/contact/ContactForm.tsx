@@ -9,6 +9,8 @@ interface FocusParticleProps {
   active: boolean;
 }
 
+const particleSpeeds = Array.from({ length: 6 }, () => 2 + Math.random() * 2);
+
 function FocusParticles({ active }: FocusParticleProps) {
   return (
     <div className="absolute inset-0 pointer-events-none">
@@ -25,7 +27,7 @@ function FocusParticles({ active }: FocusParticleProps) {
             ...(active && {
               animation: 'focus-particle 0.5s ease-out forwards',
               '--angle': `${(i / 6) * Math.PI * 2}rad`,
-              '--speed': `${2 + Math.random() * 2}`,
+              '--speed': `${particleSpeeds[i]}`,
             }),
           } as React.CSSProperties}
         />
@@ -37,6 +39,8 @@ function FocusParticles({ active }: FocusParticleProps) {
 /* ============================================
    TYPING WAVE EQUALIZER (FIXED: always render)
    ============================================ */
+const waveHeights = Array.from({ length: 5 }, () => `${30 + Math.random() * 70}%`);
+
 function TypingWave({ active }: { active: boolean }) {
   return (
     <div className={`absolute right-3 top-1/2 -translate-y-1/2 flex items-end gap-0.5 h-4 transition-opacity duration-300 ${
@@ -47,7 +51,7 @@ function TypingWave({ active }: { active: boolean }) {
           key={i}
           className="w-0.5 bg-linear-to-t from-[#d4af37] to-[#f4d03f] rounded-full animate-typing-wave"
           style={{
-            height: `${30 + Math.random() * 70}%`,
+            height: waveHeights[i],
             animationDelay: `${i * 60}ms`,
             animationPlayState: active ? 'running' : 'paused',
           }}
@@ -185,7 +189,7 @@ function MagneticSubmit({ isSubmitting, isVisible, progress }: MagneticSubmitPro
         particleCount={8}
         ripple={true}
         showEq={false}
-        className="w-full"
+          className="w-full"
       >
         {isSubmitting ? (
           <>
@@ -207,20 +211,28 @@ function MagneticSubmit({ isSubmitting, isVisible, progress }: MagneticSubmitPro
    For confetti, it's okay because it appears after submission, not during load.
    But to be safe, we could keep it as is - it only appears after user action.
    ============================================ */
+const confettiItems = Array.from({ length: 20 }, (_, i) => ({
+  left: Math.random() * 100,
+  delay: Math.random() * 2,
+  duration: 2 + Math.random() * 2,
+  rotation: Math.random() * 360,
+  color: ['#d4af37', '#f4d03f', '#ffffea', '#ffd700'][i % 4],
+}));
+
 function SuccessConfetti() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-50">
-      {[...Array(20)].map((_, i) => (
+      {confettiItems.map((item, i) => (
         <div
           key={i}
           className="absolute w-2 h-2 rounded-full animate-confetti-fall"
           style={{
-            left: `${Math.random() * 100}%`,
+            left: `${item.left}%`,
             top: '-10%',
-            backgroundColor: ['#d4af37', '#f4d03f', '#ffffea', '#ffd700'][i % 4],
-            animationDelay: `${Math.random() * 2}s`,
-            animationDuration: `${2 + Math.random() * 2}s`,
-            transform: `rotate(${Math.random() * 360}deg)`,
+            backgroundColor: item.color,
+            animationDelay: `${item.delay}s`,
+            animationDuration: `${item.duration}s`,
+            transform: `rotate(${item.rotation}deg)`,
           }}
         />
       ))}
@@ -295,8 +307,7 @@ function ContactForm({ isVisible }: ContactFormProps) {
       {isSubmitted && (
         <div className="relative mb-6">
           <SuccessConfetti />
-          <div className="bg-linear-to-r from-green-500/20 to-emerald-600/20 border border-green-400/30 rounded-2xl p-6 backdrop-blur-sm animate-pulse relative overflow-hidden">
-            <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/10 to-transparent animate-shimmer-sweep" />
+          <div className="bg-linear-to-r from-green-500/20 to-emerald-600/20 border border-green-400/30 rounded-2xl p-6 animate-pulse relative overflow-hidden">
             <div className="flex items-center gap-3 relative z-10">
               <div className="w-12 h-12 bg-linear-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
                 <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -315,7 +326,7 @@ function ContactForm({ isVisible }: ContactFormProps) {
       {/* Error Message */}
       {error && (
         <div className="relative mb-6">
-          <div className="bg-linear-to-r from-red-500/20 to-rose-600/20 border border-red-400/30 rounded-2xl p-4 backdrop-blur-sm">
+          <div className="bg-linear-to-r from-red-500/20 to-rose-600/20 border border-red-400/30 rounded-2xl p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-linear-to-r from-red-400 to-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-red-500/30 shrink-0">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,12 +340,7 @@ function ContactForm({ isVisible }: ContactFormProps) {
       )}
 
       {/* Contact Form */}
-      <div className="relative bg-[#1a1a1a]/60 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-[#d4af37]/15 overflow-hidden transition-all duration-700 hover:border-[#d4af37]/30 hover:shadow-2xl hover:shadow-[#d4af37]/10">
-        
-        {/* Noise texture */}
-        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}
-        />
+      <div className="relative cyber-card rounded-lg p-8 md:p-10 overflow-hidden transition-all duration-700 hover:border-[#d4af37]/30 hover:shadow-2xl hover:shadow-[#d4af37]/10">
 
         <form 
           ref={formRef}

@@ -12,21 +12,23 @@ function FooterBottomBar({ isVisible }: FooterBottomBarProps) {
     }`}>
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="text-[#ffffea]/60 text-sm text-center md:text-left flex items-center gap-2">
+          <span className="system-status">SYSTEM ONLINE</span>
+          <span className="text-[#ffffea]/40">|</span>
           © {new Date().getFullYear()} Raka Pranata. Crafted with 
           <FaHeart className="text-red-500 animate-pulse" /> 
           and 
           <FaCoffee className="text-amber-600" /> Powered by rakawebpro.vercel.app
         </div>
         <div className="flex items-center gap-6 text-[#ffffea]/60 text-sm">
-          <button type="button" className="hover:text-[#d4af37] transition-colors duration-300 transform hover:scale-105">
+          <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer" role="link" aria-disabled="true">
             Privacy Policy
-          </button>
-          <button type="button" className="hover:text-[#d4af37] transition-colors duration-300 transform hover:scale-105">
+          </span>
+          <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer" role="link" aria-disabled="true">
             Terms of Service
-          </button>
-          <button type="button" className="hover:text-[#d4af37] transition-colors duration-300 transform hover:scale-105">
+          </span>
+          <span className="hover:text-[#d4af37] transition-colors duration-300 cursor-pointer" role="link" aria-disabled="true">
             Cookies
-          </button>
+          </span>
         </div>
       </div>
     </div>

@@ -1,9 +1,12 @@
 // TestimonialsHeader.tsx (tidak berubah, tetap seperti ini)
 function TestimonialsHeader() {
   return (
-    <div className="text-center mb-12"> {/* ubah dari mb-16 ke mb-12 agar lebih hemat ruang */}
-      <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6">
-        <span className="block bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x">
+    <div className="text-center mb-12">
+      <div className="terminal-section-label mb-2">[03] // USER FEEDBACK</div>
+      <div className="data-flow w-full max-w-48 mx-auto h-px mb-4" />
+      <div className="cyber-line w-24 mx-auto mb-6" />
+      <h2 className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-black leading-tight tracking-wide transform transition-all duration-700 hover:scale-[1.03] cursor-default mb-6">
+        <span className="lightning-text" data-text="Testimonials">
           Testimonials
         </span>
       </h2>

@@ -2,16 +2,14 @@ import MagneticButton from '../ui/MagneticButton';
 import { FaDownload, FaComments } from 'react-icons/fa';
 
 interface CTAButtonsProps {
-  onDownloadCV: () => void;
   onLetsTalk: () => void;
 }
 
-function CTAButtons({ onDownloadCV, onLetsTalk }: CTAButtonsProps) {
+function CTAButtons({ onLetsTalk }: CTAButtonsProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 pt-2 justify-center lg:justify-start relative">
       <MagneticButton
         href="https://drive.google.com/file/d/1GMGxkzO1oAyBYOQQQD_BYLpcY6PQxaWH/view?usp=sharing"
-        onClick={onDownloadCV}
         variant="primary"
         delay={0}
         icon={<FaDownload />}

@@ -33,10 +33,11 @@ function Footer() {
   return (
     <footer 
       ref={footerRef}
-      className="relative bg-black border-t border-[#d4af37]/20 overflow-hidden"
+      className="relative bg-black border-t border-[#d4af37]/20 overflow-hidden cyber-grid-section cyber-section"
       role="contentinfo"
       aria-labelledby="footer-heading"
     >
+      <div className="data-flow absolute top-0 left-0 right-0 h-px z-10" />
       <AnimatedBackground />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-16">

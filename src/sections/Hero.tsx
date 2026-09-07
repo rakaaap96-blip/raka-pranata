@@ -5,37 +5,33 @@ import TextContent from '../components/hero/TextContent';
 import CTAButtons from '../components/hero/CTAButtons';
 function Hero() {
   const displayText = useTyping([
-    'UI/UX Designer',
+    'The Architect',
     'Problem Solver',
-    'Creative Thinker',
-    'Frontend Developer',
-    'Digital Artist',
+    'Product Thinker',
+    'Full Stack Developer',
   ]);
 
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const handleDownloadCV = () => {};
-  const handleLetsTalk = () => {
-    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const handleLetsTalk = () => {};
 
   return (
     <section
       id='home'
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24"
+      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-12 py-14 lg:py-16 cyber-grid-section cyber-section"
       aria-labelledby="hero-heading"
     >
-      <div className="relative z-20 w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+      <div className="relative z-20 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-8">
         
         {/* Left Content - Text Section */}
-        <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left space-y-6 lg:space-y-8">
+        <div className="w-full lg:w-[52%] flex flex-col items-center lg:items-start text-center lg:text-left space-y-5 lg:space-y-6 cyber-panel cyber-frame p-4 sm:p-6 lg:p-6">
           <TextContent displayText={displayText} />
-          <CTAButtons onDownloadCV={handleDownloadCV} onLetsTalk={handleLetsTalk} />
+          <CTAButtons onLetsTalk={handleLetsTalk} />
         </div>
 
         {/* Right Content - Image Section */}
-        <div className="w-full lg:w-2/5 flex justify-center lg:justify-end mt-8 lg:mt-0">
+        <div className="w-full lg:w-[38%] flex justify-center lg:justify-end mt-5 lg:mt-0">
           <ProfileImage />
         </div>
       </div>

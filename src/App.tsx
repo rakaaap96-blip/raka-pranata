@@ -18,6 +18,8 @@ const SectionLoader = () => (
 export default function App() {
   return (
     <div className="bg-[#050505] text-white min-h-screen">
+      <div className="scanline-overlay" aria-hidden="true" />
+      <div className="vhs-overlay" aria-hidden="true" />
       <CustomCursor />
       <Navbar />
 

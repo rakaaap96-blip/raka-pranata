@@ -49,13 +49,19 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
   if (event.request.url.startsWith('chrome-extension://')) return;
   if (
     event.request.url.includes('google-analytics') ||
     event.request.url.includes('collect?v=2') ||
     event.request.url.includes('sockjs-node')
   ) {
+    return;
+  }
+
+  if (event.request.method !== 'GET') {
+    if (event.request.method === 'POST') {
+      event.respondWith(networkWithQueue(event.request));
+    }
     return;
   }
 
@@ -68,6 +74,39 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(cacheFirstStrategy(event.request));
   }
 });
+
+async function networkWithQueue(request) {
+  try {
+    const response = await fetch(request.clone());
+    return response;
+  } catch {
+    try {
+      const cache = await caches.open('post-queue');
+      const queued = await cache.match('pending');
+      const queue = queued ? await queued.json() : [];
+      queue.push({
+        url: request.url,
+        method: request.method,
+        headers: Array.from(request.headers.entries()),
+        body: await request.clone().text(),
+        timestamp: Date.now(),
+      });
+      const response = new Response(JSON.stringify({ queued: true }), {
+        status: 202,
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const clone = response.clone();
+      cache.put('pending', new Response(JSON.stringify(queue)));
+      self.registration.sync.register('retry-queue');
+      return response;
+    } catch {
+      return new Response(JSON.stringify({ error: 'Offline' }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  }
+}
 
 async function networkFirstStrategy(request) {
   try {
@@ -103,7 +142,34 @@ async function cacheFirstStrategy(request) {
 }
 
 self.addEventListener('sync', (event) => {
-  if (event.tag === 'background-sync') {
-    console.log('Background sync');
+  if (event.tag === 'retry-queue') {
+    event.waitUntil(processQueue());
   }
 });
+
+async function processQueue() {
+  const cache = await caches.open('post-queue');
+  const queued = await cache.match('pending');
+  if (!queued) return;
+  const queue = await queued.json();
+  const remaining = [];
+
+  for (const item of queue) {
+    try {
+      await fetch(item.url, {
+        method: item.method,
+        headers: Object.fromEntries(item.headers),
+        body: item.body,
+      });
+    } catch {
+      remaining.push(item);
+    }
+  }
+
+  if (remaining.length > 0) {
+    cache.put('pending', new Response(JSON.stringify(remaining)));
+    self.registration.sync.register('retry-queue');
+  } else {
+    cache.delete('pending');
+  }
+}

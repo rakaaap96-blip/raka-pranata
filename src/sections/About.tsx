@@ -8,7 +8,7 @@ function About() {
   return (
     <section 
       id="about" 
-      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24"
+      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24 cyber-grid-section cyber-section"
       aria-labelledby="about-heading"
     >
       <div className="relative z-20 w-full max-w-7xl mx-auto">

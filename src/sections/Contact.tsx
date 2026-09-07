@@ -32,14 +32,14 @@ function Contact() {
     <section 
       id="contact" 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24"
+      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24 cyber-grid-section cyber-section"
       aria-labelledby="contact-heading"
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0" aria-hidden="true">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#d4af37]/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-[#f4d03f]/5 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-2/3 left-1/2 w-48 h-48 bg-[#d4af37]/5 rounded-full blur-2xl animate-pulse delay-500" />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#d4af37]/10 blur-3xl animate-pulse [clip-path:polygon(0_18%,18%_0,100%_0,100%_82%,82%_100%,0_100%)]" />
+        <div className="absolute bottom-1/3 right-1/3 w-80 h-80 bg-[#f4d03f]/5 blur-3xl animate-pulse delay-1000 [clip-path:polygon(0_18%,18%_0,100%_0,100%_82%,82%_100%,0_100%)]" />
+        <div className="absolute top-2/3 left-1/2 w-48 h-48 bg-[#d4af37]/5 blur-2xl animate-pulse delay-500 [clip-path:polygon(0_18%,18%_0,100%_0,100%_82%,82%_100%,0_100%)]" />
       </div>
 
       <div className="relative z-20 w-full max-w-7xl mx-auto">

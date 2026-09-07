@@ -19,6 +19,30 @@ interface MagneticButtonProps {
   icon?: ReactNode;
 }
 
+const eqBarHeights = Array.from({ length: 3 }, () => `${40 + Math.random() * 60}%`);
+
+function EqBars({ isHovered }: { isHovered: boolean }) {
+  return (
+    <div
+      className={`absolute left-2 top-1/2 -translate-y-1/2 flex items-end gap-0.5 h-3 transition-opacity duration-300 ${
+        isHovered ? 'opacity-40' : 'opacity-0'
+      }`}
+    >
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className="w-0.5 bg-[#d4af37] rounded-full animate-eq-mini"
+          style={{
+            height: eqBarHeights[i],
+            animationDelay: `${i * 60}ms`,
+            animationPlayState: isHovered ? 'running' : 'paused',
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, MagneticButtonProps>(
   (
     {
@@ -41,12 +65,14 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
     },
     ref
   ) => {
-    const [magnet, setMagnet] = useState({ x: 0, y: 0 });
-    const [tilt, setTilt] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
     const [particlesActive, setParticlesActive] = useState(false);
     const [ripplesList, setRipplesList] = useState<Array<{ x: number; y: number; id: number }>>([]);
     const elementRef = useRef<HTMLButtonElement | HTMLAnchorElement>(null);
+    const innerRef = useRef<HTMLDivElement>(null);
+    const magnetRef = useRef({ x: 0, y: 0 });
+    const tiltRef = useRef({ x: 0, y: 0 });
+    const moveRafRef = useRef(0);
 
     const setRefs = (element: HTMLButtonElement | HTMLAnchorElement | null) => {
       elementRef.current = element;
@@ -59,8 +85,16 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
       if (!rect) return;
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setTilt({ x: y * -tiltStrength, y: x * tiltStrength });
-      setMagnet({ x: x * magnetStrength * 20, y: y * magnetStrength * 20 });
+      magnetRef.current = { x: x * magnetStrength * 20, y: y * magnetStrength * 20 };
+      tiltRef.current = { x: y * -tiltStrength, y: x * tiltStrength };
+      if (moveRafRef.current) return;
+      moveRafRef.current = requestAnimationFrame(() => {
+        const inner = innerRef.current;
+        if (inner) {
+          inner.style.transform = `translate(${magnetRef.current.x}px, ${magnetRef.current.y}px) rotateX(${tiltRef.current.x}deg) rotateY(${tiltRef.current.y}deg)`;
+        }
+        moveRafRef.current = 0;
+      });
     };
 
     const handleMouseEnter = () => {
@@ -73,8 +107,14 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
 
     const handleMouseLeave = () => {
       setIsHovered(false);
-      setTilt({ x: 0, y: 0 });
-      setMagnet({ x: 0, y: 0 });
+      if (moveRafRef.current) {
+        cancelAnimationFrame(moveRafRef.current);
+        moveRafRef.current = 0;
+      }
+      const inner = innerRef.current;
+      if (inner) {
+        inner.style.transform = 'translate(0px, 0px) rotateX(0deg) rotateY(0deg)';
+      }
     };
 
     const handleClick = (e: React.MouseEvent) => {
@@ -111,14 +151,14 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
       ? { href, target, rel: rel || (target === '_blank' ? 'noopener noreferrer' : undefined) }
       : {};
 
-    const particlePositions = useRef(
+    const [particlePositions] = useState(() =>
       Array.from({ length: particleCount }, (_, i) => {
         const angle = (i / particleCount) * Math.PI * 2 + Math.random() * 0.5;
         const dx = Math.cos(angle) * (30 + Math.random() * 20);
         const dy = Math.sin(angle) * (30 + Math.random() * 20);
         return { dx, dy, delay: i * 30 };
       })
-    ).current;
+    );
 
     return (
       <Tag
@@ -173,49 +213,16 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
 
         {/* Inner content with magnet & tilt */}
         <div
+          ref={innerRef}
           className="relative flex items-center justify-center gap-2 w-full"
           style={{
-            transform: `translate(${magnet.x}px, ${magnet.y}px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
             transformStyle: 'preserve-3d',
             transition: isHovered ? 'transform 0.1s ease-out' : 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
           }}
         >
-          {/* Shimmer sweep */}
-          <div
-            className={`absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none ${
-              isHovered ? 'opacity-100' : ''
-            }`}
-          >
-            <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/20 to-transparent animate-shimmer-sweep" />
-          </div>
-
-          {/* Holographic border effect (hanya untuk secondary, tidak mengganggu teks) */}
-          {isSecondary && isHovered && (
-            <div className="absolute inset-0 rounded-xl p-0.5 pointer-events-none">
-              <div className="absolute inset-0 rounded-xl bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] animate-holo-shift" />
-              <div className="w-full h-full rounded-xl bg-[#1a1a1a]" />
-            </div>
-          )}
-
           {/* Equalizer bars */}
           {showEq && (
-            <div
-              className={`absolute left-2 top-1/2 -translate-y-1/2 flex items-end gap-0.5 h-3 transition-opacity duration-300 ${
-                isHovered ? 'opacity-40' : 'opacity-0'
-              }`}
-            >
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-0.5 bg-[#d4af37] rounded-full animate-eq-mini"
-                  style={{
-                    height: `${40 + Math.random() * 60}%`,
-                    animationDelay: `${i * 60}ms`,
-                    animationPlayState: isHovered ? 'running' : 'paused',
-                  }}
-                />
-              ))}
-            </div>
+            <EqBars isHovered={isHovered} />
           )}
 
           {/* Teks dan icon */}

@@ -56,15 +56,11 @@ function FooterCTASection() {
       />
 
       <div 
-        className={`relative bg-[#1a1a1a]/60 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-[#d4af37]/15 overflow-hidden transition-all duration-700 hover:border-[#d4af37]/30 hover:shadow-2xl hover:shadow-[#d4af37]/10 ${
+        className={`relative cyber-card rounded-lg p-8 md:p-10 overflow-hidden transition-all duration-700 hover:border-[#d4af37]/30 hover:shadow-2xl hover:shadow-[#d4af37]/10 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}
         style={{ animation: isVisible ? 'floatCta 6s ease-in-out infinite' : 'none' }}
       >
-        <div className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
-          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}
-        />
-
         <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
           <div className="absolute w-32 h-32 bg-[#d4af37]/10 rounded-full blur-3xl top-0 left-1/4"
             style={{ animation: 'float1 8s ease-in-out infinite' }} />
@@ -72,6 +68,7 @@ function FooterCTASection() {
             style={{ animation: 'float2 10s ease-in-out infinite' }} />
         </div>
 
+        <div className="terminal-prompt mb-4">&gt; INITIATE_DEPLOYMENT</div>
         <h3 
           className="text-2xl md:text-3xl font-black text-[#ffffea] mb-4 relative"
           style={{

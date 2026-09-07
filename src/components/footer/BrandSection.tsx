@@ -151,8 +151,8 @@ function MagneticEmail({
       <CopyParticles active={showParticles} />
 
       <div
-        className={`relative flex items-center gap-4 p-4 bg-[#1a1a1a]/80 backdrop-blur-md rounded-2xl border overflow-hidden cursor-pointer transition-all duration-300 ${
-          isHovered ? 'border-[#d4af37]/60 shadow-2xl shadow-[#d4af37]/20 scale-105' : 'border-[#d4af37]/15 hover:border-[#d4af37]/40'
+        className={`relative flex items-center gap-4 p-4 cyber-card rounded-lg border overflow-hidden cursor-pointer transition-all duration-300 ${
+          isHovered ? 'border-[#d4af37]/60 shadow-2xl shadow-[#d4af37]/20 scale-105' : 'hover:border-[#d4af37]/40'
         }`}
         style={{
           transform: `translate(${magnet.x}px, ${magnet.y}px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
@@ -161,10 +161,7 @@ function MagneticEmail({
         }}
         onClick={handleClick}
       >
-        {/* Shimmer */}
-        <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none ${isHovered ? 'opacity-100' : ''}`}>
-          <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent animate-shimmer-sweep" />
-        </div>
+
 
         {/* Icon */}
         <div className="relative shrink-0">
@@ -234,8 +231,8 @@ function BrandSection({ isVisible }: BrandSectionProps) {
       await navigator.clipboard.writeText('rakaaa.p96@gmail.com');
       setEmailCopied(true);
       setTimeout(() => setEmailCopied(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy email: ', err);
+    } catch {
+      // Silently fail
     }
   }, []);
 
@@ -251,7 +248,7 @@ function BrandSection({ isVisible }: BrandSectionProps) {
   return (
     <div
       ref={containerRef}
-      className="lg:col-span-2 space-y-6 relative"
+      className="space-y-6 relative"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -280,15 +277,16 @@ function BrandSection({ isVisible }: BrandSectionProps) {
           transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0ms',
         }}
       >
-        <h3 className="text-2xl font-black text-[#ffffea] mb-3 relative">
-          <span className="bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x bg-size-[200%_auto]">
+        <div className="terminal-prompt mb-2">&gt; COPY_DEPLOY</div>
+        <h3 className="text-2xl sm:text-3xl font-black leading-tight tracking-wide transform transition-all duration-700 hover:scale-[1.03] cursor-default mb-3 relative">
+          <span className="lightning-text" data-text="Raka Pranata">
             Raka Pranata
           </span>
           <div className="absolute -bottom-1 left-0 h-1 bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-transparent rounded-full transition-all duration-700 group-hover:w-full w-0" />
         </h3>
         <p className="text-[#ffffea]/70 leading-relaxed text-sm group-hover:text-[#ffffea]/90 transition-colors duration-300 mb-6">
           <TypingText 
-            text="Creating digital experiences that blend beautiful design with flawless functionality. Let's build the future together." 
+            text="Creating digital experiences that blend beautiful design with flawless functionality. I craft interfaces that are not only visually stunning but also intuitive and user-friendly.  GO" 
             isVisible={isVisible} 
             delay={400} 
           />

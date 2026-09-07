@@ -1,30 +1,115 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, type MouseEvent } from 'react';
 import { FaUser, FaGithub, FaLinkedin } from 'react-icons/fa';
 import { FaDiscord, FaSquareBehance, FaSquareDribbble } from "react-icons/fa6";
 import { RiInstagramFill } from "react-icons/ri";
-import MagneticButton from '../ui/MagneticButton';
 
 interface SocialSectionProps {
   isVisible: boolean;
-  hoveredSocial: string | null;
-  setHoveredSocial: (social: string | null) => void;
 }
 
 const socialLinks = [
-  { name: 'GitHub', icon: FaGithub, url: 'https://github.com/rakaaap96-blip', color: 'hover:text-gray-400' },
-  { name: 'LinkedIn', icon: FaLinkedin, url: 'https://www.linkedin.com/in/raka-pranata-2804a437a/', color: 'hover:text-blue-400' },
-  { name: 'Instagram', icon: RiInstagramFill, url: 'https://www.instagram.com/aranasaha11/', color: 'hover:text-pink-500' },
-  { name: 'Dribbble', icon: FaSquareDribbble, url: 'https://dribbble.com/raka-pranata', color: 'hover:text-pink-600' },
-  { name: 'Discord', icon: FaDiscord, url: '#', color: 'hover:text-pink-600' },
-  { name: 'Behance', icon: FaSquareBehance, url: 'https://www.behance.net/Rakanzha', color: 'hover:text-blue-600' }
+  { name: 'GitHub', icon: FaGithub, url: 'https://github.com/rakaaap96-blip' },
+  { name: 'LinkedIn', icon: FaLinkedin, url: 'https://www.linkedin.com/in/raka-pranata-2804a437a/' },
+  { name: 'Instagram', icon: RiInstagramFill, url: 'https://www.instagram.com/aranasaha11/' },
+  { name: 'Dribbble', icon: FaSquareDribbble, url: 'https://dribbble.com/raka-pranata' },
+  { name: 'Discord', icon: FaDiscord, url: 'https://discord.gg/' },
+  { name: 'Behance', icon: FaSquareBehance, url: 'https://www.behance.net/Rakanzha' }
 ];
 
-function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSectionProps) {
+function SocialCard({ social, index, isVisible }: { social: typeof socialLinks[number]; index: number; isVisible: boolean }) {
+  const [hovered, setHovered] = useState(false);
+  const [magnet, setMagnet] = useState({ x: 0, y: 0 });
+  const ref = useRef<HTMLAnchorElement>(null);
+
+  const handleMove = (e: MouseEvent) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 6;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 6;
+    setMagnet({ x, y });
+  };
+
+  const handleLeave = () => {
+    setHovered(false);
+    setMagnet({ x: 0, y: 0 });
+  };
+
+  return (
+    <a
+      ref={ref}
+      href={social.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseMove={handleMove}
+      onMouseLeave={handleLeave}
+      className="group relative block w-full h-[52px] overflow-hidden cyber-card border border-[#d4af37]/20 hover:border-[#d4af37] transition-all duration-300"
+      style={{
+        opacity: isVisible ? 1 : 0,
+        transform: `translate(${magnet.x}px, ${magnet.y}px)`,
+        transition: isVisible ? `opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 100}ms, border 0.3s, box-shadow 0.3s, transform 0.1s ease-out` : `opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) ${index * 100}ms, transform 0.1s ease-out`,
+      }}
+    >
+      {/* Cyber corners */}
+      <div className="absolute top-0 left-0 w-3 h-px bg-[#d4af37]/60" />
+      <div className="absolute top-0 left-0 w-px h-3 bg-[#d4af37]/60" />
+      <div className="absolute top-0 right-0 w-3 h-px bg-[#d4af37]/60" />
+      <div className="absolute top-0 right-0 w-px h-3 bg-[#d4af37]/60" />
+      <div className="absolute bottom-0 left-0 w-3 h-px bg-[#d4af37]/60" />
+      <div className="absolute bottom-0 left-0 w-px h-3 bg-[#d4af37]/60" />
+      <div className="absolute bottom-0 right-0 w-3 h-px bg-[#d4af37]/60" />
+      <div className="absolute bottom-0 right-0 w-px h-3 bg-[#d4af37]/60" />
+
+      {/* Glow on hover */}
+      <div className={`absolute inset-0 bg-[#d4af37] transition-all duration-300 ${
+        hovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+      }`} />
+
+      {/* Scanline */}
+      <div className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${
+        hovered ? 'opacity-20' : 'opacity-0'
+      }`} style={{
+        background: `repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)`
+      }} />
+
+      {/* Inner */}
+      <div className="relative z-10 flex items-center gap-3 h-full px-4">
+        {/* Icon */}
+        <div className={`w-9 h-9 rounded-lg bg-linear-to-r from-[#d4af37] to-[#f4d03f] flex items-center justify-center shrink-0 transition-all duration-300 ${
+          hovered ? 'scale-110 rotate-12 shadow-lg shadow-[#d4af37]/30' : ''
+        }`}>
+          <social.icon className="w-4 h-4 text-[#1a1a1a]" />
+        </div>
+
+        {/* Name */}
+        <span className={`font-semibold text-sm flex-1 min-w-0 transition-all duration-300 ${
+          hovered ? 'text-[#1a1a1a]' : 'text-[#ffffea]'
+        }`}>
+          {social.name}
+        </span>
+
+        {/* Arrow */}
+        <svg
+          className={`w-3.5 h-3.5 shrink-0 transition-all duration-300 ${
+            hovered ? 'text-[#1a1a1a] translate-x-0 opacity-100' : 'text-[#d4af37] opacity-40'
+          }`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
+    </a>
+  );
+}
+
+function SocialSection({ isVisible }: SocialSectionProps) {
   const [spotlight, setSpotlight] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMouseMove = (e: MouseEvent) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
     setSpotlight({
@@ -36,7 +121,7 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
   return (
     <div
       ref={containerRef}
-      className="relative space-y-6"
+      className="relative"
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -44,7 +129,7 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
         setSpotlight({ x: 50, y: 50 });
       }}
     >
-      {/* Spotlight effect */}
+      {/* Spotlight */}
       <div
         className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 pointer-events-none overflow-hidden -m-6"
         style={{
@@ -52,6 +137,8 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
           background: `radial-gradient(500px circle at ${spotlight.x}% ${spotlight.y}%, rgba(212, 175, 55, 0.1), transparent 40%)`,
         }}
       />
+
+      <div className="system-header mb-4">// SOCIAL_LINKS</div>
 
       {/* Header */}
       <div
@@ -69,121 +156,11 @@ function SocialSection({ isVisible, hoveredSocial, setHoveredSocial }: SocialSec
         </span>
       </div>
 
-      {/* Social Links Grid */}
-      <div className="grid grid-cols-2 gap-3 relative z-10">
-        {socialLinks.map((social, index) => {
-          const isCardHovered = hoveredSocial === social.name;
-          return (
-            <div
-              key={social.name}
-              onMouseEnter={() => setHoveredSocial(social.name)}
-              onMouseLeave={() => setHoveredSocial(null)}
-              className="w-full"
-            >
-              <MagneticButton
-                href={social.url}
-                target="_blank"
-                variant="ghost"
-                delay={index * 100}
-                isVisible={isVisible}
-                magnetStrength={0.4}
-                particleCount={8}
-                ripple={true}
-                showEq={true}
-                className={`group relative w-full p-4 rounded-2xl border transition-all duration-300 ${
-                  isCardHovered
-                    ? 'bg-[#d4af37] border-[#d4af37] shadow-2xl shadow-[#d4af37]/30 scale-105 z-10'
-                    : 'bg-[#1a1a1a]/80 backdrop-blur-md border-[#d4af37]/15 hover:border-[#d4af37]/40'
-                }`}
-              >
-                {/* Inner content */}
-                <div className="relative flex items-center gap-3 w-full">
-                  {/* Holographic border (only for non-hover state? Actually we don't need it) */}
-                  {/* Shimmer sweep - always rendered, controlled by CSS */}
-                  <div className={`absolute inset-0 transition-opacity duration-500 pointer-events-none ${
-                    isCardHovered ? 'opacity-0' : 'opacity-0'
-                  }`}>
-                    <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent animate-shimmer-sweep" />
-                  </div>
-
-                  {/* Icon with glow */}
-                  <div className="relative shrink-0">
-                    <div className={`w-10 h-10 rounded-xl bg-linear-to-r from-[#d4af37] to-[#f4d03f] flex items-center justify-center transition-all duration-500 ${
-                      isCardHovered ? 'scale-110 rotate-12 shadow-lg shadow-[#d4af37]/30' : ''
-                    }`}>
-                      <social.icon className={`w-5 h-5 transition-colors duration-300 ${
-                        isCardHovered ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]'
-                      }`} />
-                    </div>
-                    
-                    {/* Orbit ring */}
-                    <svg 
-                      className={`absolute -inset-1 w-12 h-12 -rotate-90 pointer-events-none transition-all duration-500 ${
-                        isCardHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-                      }`} 
-                      viewBox="0 0 48 48"
-                    >
-                      <circle 
-                        cx="24" cy="24" r="22" fill="none" stroke="#d4af37" strokeWidth="1" 
-                        strokeLinecap="round" strokeDasharray="138.23" strokeDashoffset="0" 
-                        className={isCardHovered ? 'animate-orbit-ring' : ''}
-                      />
-                    </svg>
-                    
-                    <div className={`absolute inset-0 rounded-xl bg-[#d4af37]/30 blur-lg transition-opacity duration-500 ${
-                      isCardHovered ? 'opacity-100' : 'opacity-0'
-                    }`} />
-                  </div>
-
-                  {/* Text and equalizer */}
-                  <div className="flex-1 min-w-0 relative z-10">
-                    <span
-                      className={`font-semibold text-sm block transition-colors duration-300 ${
-                        isCardHovered ? 'text-[#1a1a1a]' : 'text-[#ffffea]'
-                      }`}
-                    >
-                      {social.name}
-                    </span>
-                    
-                    {/* Equalizer bars */}
-                    <div className={`flex items-end gap-0.5 h-2 mt-1 transition-all duration-300 ${
-                      isCardHovered ? 'opacity-50 visible' : 'opacity-0 invisible'
-                    }`}>
-                      {[...Array(4)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="w-0.5 rounded-full animate-social-eq"
-                          style={{
-                            height: `${30 + Math.random() * 70}%`,
-                            animationDelay: `${i * 80}ms`,
-                            backgroundColor: '#1a1a1a', // hitam di atas background emas
-                            animationPlayState: isCardHovered ? 'running' : 'paused',
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Arrow indicator */}
-                  <div className={`shrink-0 transition-all duration-300 ${
-                    isCardHovered ? 'translate-x-1 opacity-100' : 'opacity-0 -translate-x-2'
-                  }`}>
-                    <svg
-                      className={`w-4 h-4 transition-colors duration-300 ${
-                        isCardHovered ? 'text-[#1a1a1a]' : 'text-[#d4af37]'
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H7M17 7v10" />
-                    </svg>
-                  </div>
-                </div>
-              </MagneticButton>
-            </div>
-          );
-        })}
+      {/* Social Links */}
+      <div className="grid grid-cols-2 gap-2 mt-4 relative z-10 w-full">
+        {socialLinks.map((social, index) => (
+          <SocialCard key={social.name} social={social} index={index} isVisible={isVisible} />
+        ))}
       </div>
     </div>
   );

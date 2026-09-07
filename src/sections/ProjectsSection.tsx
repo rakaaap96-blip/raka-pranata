@@ -4,6 +4,7 @@ import useFilter from '../hooks/useFilter';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 import ProjectCard from '../components/projects/ProjectCard';
 import ProjectFilter from '../components/projects/ProjectFilter';
+import useMediaQuery from '../hooks/useMediaQuery';
 import { 
   FaFigma, 
   FaReact, 
@@ -23,22 +24,6 @@ import {
 import { 
   RiToolsFill,
 } from 'react-icons/ri';
-
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
-    const listener = (event: MediaQueryListEvent) => setMatches(event.matches);
-    media.addEventListener('change', listener);
-    return () => media.removeEventListener('change', listener);
-  }, [matches, query]);
-
-  return matches;
-}
 
 /* ============================================
    SKILL CARD (TANPA PARTIKEL, TANPA CONDITIONAL RENDER)
@@ -86,18 +71,13 @@ function SkillCard({ skill, index }: SkillCardProps) {
     >
       {/* Glow background (always there, opacity controlled by group-hover) */}
       <div 
-        className={`absolute -inset-1 rounded-2xl bg-linear-to-r ${skill.color} opacity-0 blur-xl transition-all duration-500 group-hover:opacity-40`}
+        className={`absolute -inset-1 bg-linear-to-r ${skill.color} opacity-0 blur-xl transition-all duration-500 group-hover:opacity-40 [clip-path:polygon(0_10px,10px_0,100%_0,100%_calc(100%-10px),calc(100%-10px)_100%,0_100%)]`}
       />
 
-      <div className="relative bg-[#1a1a1a]/80 backdrop-blur-md rounded-2xl p-5 border border-[#d4af37]/10 overflow-hidden transition-all duration-500 group-hover:border-[#d4af37]/40 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10">
+      <div className="relative cyber-card rounded-lg p-5 overflow-hidden transition-all duration-500 group-hover:border-[#d4af37]/40 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10">
         {/* Top border line */}
         <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r ${skill.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
         
-        {/* Shimmer sweep (always there, opacity controlled) */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-          <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent animate-shimmer-sweep" />
-        </div>
-
         <div className="flex flex-col items-center gap-3">
           <div className="relative w-20 h-20">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
@@ -212,16 +192,20 @@ function SectionHeader({ isVisible }: { isVisible: boolean }) {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}
     >
-      <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 rounded-full bg-[#d4af37]/10 border border-[#d4af37]/20 animate-float-subtle">
+      <div className="terminal-section-label mb-2">[02] // PORTFOLIO</div>
+      <div className="data-flow w-full max-w-48 mx-auto h-px mb-4" />
+      <div className="cyber-line w-24 mx-auto mb-6" />
+      
+      <div className="inline-flex items-center gap-3 mb-6 px-4 py-2 cyber-chip animate-float-subtle">
         <RiToolsFill className="w-4 h-4 text-[#d4af37]" />
-        <span className="text-[#d4af37] text-sm font-medium tracking-wider uppercase">Portfolio</span>
+        <span className="system-header text-sm font-medium tracking-[0.2em] uppercase">Portfolio</span>
       </div>
       
       <h2 
         id="projects-heading"
-        className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 relative"
+        className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-black leading-tight tracking-wide transform transition-all duration-700 hover:scale-[1.03] cursor-default mb-6 relative"
       >
-        <span className="bg-linear-to-r from-[#d4af37] via-[#f4d03f] to-[#d4af37] bg-clip-text text-transparent animate-gradient-x bg-size-[200%_auto]">
+        <span className="lightning-text" data-text="My Projects">
           My Projects
         </span>
         <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 bg-linear-to-r from-transparent via-[#d4af37] to-transparent rounded-full opacity-60" />
@@ -243,26 +227,16 @@ function ProjectsSection() {
   const isDesktop = useMediaQuery('(min-width: 768px)');
   const DEFAULT_VISIBLE = isDesktop ? 6 : 3;
   
-  const [visibleCount, setVisibleCount] = useState(DEFAULT_VISIBLE);
+  const [showAllCount, setShowAllCount] = useState<number | null>(null);
   const totalFiltered = filteredProjects.length;
-
-  useEffect(() => {
-    setVisibleCount(prev => {
-      if (prev === totalFiltered) return prev;
-      return DEFAULT_VISIBLE;
-    });
-  }, [isDesktop, DEFAULT_VISIBLE, totalFiltered]);
-
-  useEffect(() => {
-    setVisibleCount(DEFAULT_VISIBLE);
-  }, [filter, searchTerm, DEFAULT_VISIBLE]);
+  const visibleCount = showAllCount ?? Math.min(DEFAULT_VISIBLE, totalFiltered);
 
   const showAll = () => {
-    setVisibleCount(totalFiltered);
+    setShowAllCount(totalFiltered);
   };
 
   const showLess = () => {
-    setVisibleCount(DEFAULT_VISIBLE);
+    setShowAllCount(null);
     if (filterRef.current) {
       filterRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -284,7 +258,7 @@ function ProjectsSection() {
     <section
       id='projects'
       ref={projectsRef}
-      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24"
+      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24 cyber-grid-section cyber-section"
       aria-labelledby="projects-heading"
     >
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
@@ -298,12 +272,13 @@ function ProjectsSection() {
         {/* SKILLS - INFINITE MARQUEE */}
         <div className="mb-16 relative" aria-labelledby="tech-stack-heading">
           <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="h-px w-12 bg-linear-to-r from-transparent to-[#d4af37]/50" />
-            <h3 id="tech-stack-heading" className="text-xl sm:text-2xl font-bold text-[#d4af37] flex items-center gap-3">
-              <RiToolsFill className="w-6 h-6 animate-spin-slow" aria-hidden="true" />
-              Tech Stack
+            <div className="cyber-line flex-1 max-w-24" />
+            <div className="terminal-section-label">[SKILLS]</div>
+            <h3 id="tech-stack-heading" className="text-xl sm:text-2xl font-black leading-tight tracking-wide transform transition-all duration-700 hover:scale-[1.03] cursor-default flex items-center gap-3">
+              <RiToolsFill className="w-6 h-6 animate-spin-slow text-[#d4af37]" aria-hidden="true" />
+              <span className="lightning-text" data-text="Tech Stack">Tech Stack</span>
             </h3>
-            <div className="h-px w-12 bg-linear-to-l from-transparent to-[#d4af37]/50" />
+            <div className="cyber-line flex-1 max-w-24" />
           </div>
 
           <MarqueeSkills skills={skills} direction="left" speed={35} />
@@ -332,9 +307,9 @@ function ProjectsSection() {
             {totalFiltered > DEFAULT_VISIBLE && (
               <div className="text-center mt-8 sm:mt-10">
                 {visibleCount < totalFiltered ? (
-                  <button
+          <button
                     onClick={showAll}
-                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-xl font-bold text-[#1a1a1a] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/30 overflow-hidden"
+                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-linear-to-r from-[#d4af37] to-[#f4d03f] cyber-button-cut font-bold text-[#1a1a1a] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/30 overflow-hidden"
                     aria-label="Show all projects"
                   >
                     <span className="relative z-10">Show More</span>
@@ -344,7 +319,7 @@ function ProjectsSection() {
                 ) : (
                   <button
                     onClick={showLess}
-                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-[#1a1a1a] border border-[#d4af37]/50 rounded-xl font-bold text-[#d4af37] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/20 overflow-hidden"
+                    className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-[#1a1a1a] border border-[#d4af37]/50 cyber-button-cut font-bold text-[#d4af37] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/20 overflow-hidden"
                     aria-label="Show fewer projects"
                   >
                     <span className="relative z-10">Show Less</span>
@@ -356,7 +331,7 @@ function ProjectsSection() {
           </>
         ) : (
           <div 
-            className="text-center py-16 sm:py-20 bg-[#1a1a1a]/50 backdrop-blur-sm rounded-2xl border border-[#d4af37]/20 mt-8 sm:mt-10"
+            className="text-center py-16 sm:py-20 cyber-panel cyber-frame mt-8 sm:mt-10"
             role="status" aria-live="polite"
           >
             <FaSearch className="text-4xl sm:text-6xl mb-4 mx-auto text-[#d4af37]/50 animate-bounce-slow" aria-hidden="true" />

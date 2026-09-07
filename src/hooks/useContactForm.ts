@@ -62,6 +62,19 @@ export function useContactForm() {
     e.preventDefault();
     if (isSubmitting) return;
 
+    if (!formData.name.trim()) {
+      setError('Please enter your name.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (formData.message.trim().length < 10) {
+      setError('Message must be at least 10 characters.');
+      return;
+    }
+
     const now = Date.now();
     if (now - lastSubmitRef.current < RATE_LIMIT_MS) {
       const remaining = Math.ceil((RATE_LIMIT_MS - (now - lastSubmitRef.current)) / 1000);
@@ -93,7 +106,6 @@ export function useContactForm() {
       }
     } catch (err) {
       if ((err as Error).name === 'AbortError') return;
-      console.error('Error sending message:', err);
       setError('Failed to send message. Please try again later.');
     } finally {
       setIsSubmitting(false);

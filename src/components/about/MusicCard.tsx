@@ -250,7 +250,7 @@ function MusicCard() {
       <div className="absolute -inset-8 bg-[#d4af37]/5 rounded-[3rem] blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
         {floatingNotes.map((item, i) => (
-          <FloatingNote key={i} delay={item.delay} left={item.left} symbol={item.note} duration={item.duration} />
+          <FloatingNote key={`note-${i}-${item.note}`} delay={item.delay} left={item.left} symbol={item.note} duration={item.duration} />
         ))}
       </div>
       <div
@@ -260,7 +260,7 @@ function MusicCard() {
         }}
       />
       <div
-        className={`relative bg-[#1a1a1a]/60 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-[#d4af37]/15 overflow-hidden transition-all duration-700 group-hover:border-[#d4af37]/30 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10 h-full flex flex-col ${
+        className={`relative cyber-card rounded-lg p-8 sm:p-10 overflow-hidden transition-all duration-700 group-hover:border-[#d4af37]/30 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10 h-full flex flex-col ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}
         style={{
@@ -271,15 +271,9 @@ function MusicCard() {
           transitionTimingFunction: 'ease-out, ease-out, ease-out, ease-out',
         }}
       >
-        <div
-          className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
         <div className="absolute top-0 left-0 right-0 h-12 flex items-end justify-center gap-1 px-8 opacity-30 pointer-events-none overflow-hidden">
           {eqBars.map((bar, i) => (
-            <EqBar key={i} delay={bar.delay} height={bar.height} />
+            <EqBar key={`eq-${i}`} delay={bar.delay} height={bar.height} />
           ))}
         </div>
         <div className="absolute top-20 left-8 right-8 flex gap-3 pointer-events-none opacity-20">
@@ -287,6 +281,7 @@ function MusicCard() {
             <GuitarString key={i} index={i} isHovered={isHovered} />
           ))}
         </div>
+        <div className="system-header mb-3">// AUDIO MODULE</div>
         <div className="relative flex items-center gap-4 mb-8 mt-4 shrink-0">
           <VinylDisc isHovered={isHovered} />
           <div className="flex-1">

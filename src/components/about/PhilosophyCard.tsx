@@ -129,7 +129,7 @@ function PhilosophyItem({ item, index, isVisible }: PhilosophyItemProps) {
     >
       <div className={`absolute -inset-3 rounded-2xl bg-linear-to-r from-[#d4af37]/20 to-transparent opacity-0 blur-2xl transition-all duration-700 ${isHovered ? 'opacity-100' : ''}`} />
       <div
-        className={`relative h-full bg-[#1a1a1a]/70 backdrop-blur-md rounded-2xl p-6 border border-[#d4af37]/10 overflow-hidden ${
+        className={`relative h-full cyber-card rounded-lg p-6 overflow-hidden ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         } ${isHovered ? 'border-[#d4af37]/40 shadow-2xl shadow-[#d4af37]/10 scale-[1.02]' : ''}`}
         style={{
@@ -141,9 +141,7 @@ function PhilosophyItem({ item, index, isVisible }: PhilosophyItemProps) {
           transitionDelay: isVisible ? `${index * 150}ms` : '0ms',
         }}
       >
-        <div className={`absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none ${isHovered ? 'opacity-100' : ''}`}>
-          <div className="absolute inset-0 bg-linear-to-tr from-transparent via-white/5 to-transparent animate-shimmer-sweep" />
-        </div>
+
         <div className="flex items-start gap-4">
           <div className="relative shrink-0">
             <div className={`w-14 h-14 rounded-full bg-linear-to-r from-[#d4af37] to-[#f4d03f] flex items-center justify-center transition-all duration-500 ${isHovered ? 'scale-110 rotate-12' : ''}`}>
@@ -257,7 +255,7 @@ function PhilosophyCard() {
       {/* Neural nodes + connecting lines – selalu render, tanpa conditional {isHovered && ...} */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-3xl">
         {nodes.map((node, i) => (
-          <NeuralNode key={i} x={node.x} y={node.y} delay={i * 100} isHovered={isHovered} />
+          <NeuralNode key={`nn-${i}`} x={node.x} y={node.y} delay={i * 100} isHovered={isHovered} />
         ))}
         
         {nodes.map((node, i) =>
@@ -293,16 +291,11 @@ function PhilosophyCard() {
         }}
       />
       <div
-        className={`relative bg-[#1a1a1a]/60 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-[#d4af37]/15 overflow-hidden transition-all duration-700 group-hover:border-[#d4af37]/30 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10 h-full flex flex-col ${
+        className={`relative cyber-card rounded-lg p-8 sm:p-10 overflow-hidden transition-all duration-700 group-hover:border-[#d4af37]/30 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10 h-full flex flex-col ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
         }`}
       >
-        <div
-          className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
+        <div className="system-header mb-3">// DESIGN PROTOCOL</div>
         <div className="relative flex items-center gap-4 mb-10 shrink-0">
           <div className="relative">
             <div className="w-14 h-14 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 shadow-lg shadow-[#d4af37]/30">

@@ -75,9 +75,9 @@
     <!-- ========== 5. FONT LOADING ========== -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" fetchpriority="low">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all';document.body.classList.add('fonts-loaded')">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" fetchpriority="low">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" media="print" onload="this.media='all';document.body.classList.add('fonts-loaded')">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"></noscript>
     
     <!-- ========== 8. ROBOTS & GOOGLE META ========== -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
@@ -305,7 +305,7 @@
             const entries = entryList.getEntries();
             const lastEntry = entries[entries.length - 1];
             
-            console.log('🚀 LCP:', lastEntry.startTime, 'ms');
+            // LCP logged via GA4 below
             
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'performance', {

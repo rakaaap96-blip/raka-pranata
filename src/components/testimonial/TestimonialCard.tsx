@@ -173,7 +173,7 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
           className={`group relative rounded-2xl p-5 overflow-hidden transition-all duration-500 flex flex-col h-full ${
             isHovered && !isFlipped
               ? 'bg-[#fefcf5] border-[#d4af37]/60 shadow-2xl shadow-[#d4af37]/20'
-              : 'bg-[#1a1a1a]/70 backdrop-blur-xl border border-[#d4af37]/15'
+              : 'cyber-card'
           }`}
         >
           {/* Spotlight effect */}
@@ -181,14 +181,6 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
             className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
             style={{
               background: `radial-gradient(400px circle at ${spotlight.x}% ${spotlight.y}%, rgba(212, 175, 55, 0.12), transparent 50%)`,
-            }}
-          />
-
-          {/* Noise texture */}
-          <div
-            className="absolute inset-0 opacity-[0.02] mix-blend-overlay pointer-events-none"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
             }}
           />
 
