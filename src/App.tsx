@@ -4,6 +4,7 @@ import Hero from './sections/Hero';
 import BackgroundWrapper from './layout/BackgroundWrapper';
 import CustomCursor from './components/CustomCursor';
 import ErrorBoundary from './components/ErrorBoundary';
+import LazySection from './components/LazySection';
 
 const ProjectsSection = lazy(() => import('./sections/ProjectsSection'));
 const About = lazy(() => import('./sections/About'));
@@ -12,8 +13,18 @@ const Contact = lazy(() => import('./sections/Contact'));
 const Footer = lazy(() => import('./sections/Footer'));
 
 const SectionLoader = () => (
-  <div className="skeleton-loader h-[300px] w-full rounded-xl" />
+  <div className="skeleton-loader h-[300px] w-full rounded-xl" aria-hidden="true" />
 );
+
+function Gate({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <ErrorBoundary>
+      <LazySection id={id}>
+        <Suspense fallback={<SectionLoader />}>{children}</Suspense>
+      </LazySection>
+    </ErrorBoundary>
+  );
+}
 
 export default function App() {
   return (
@@ -24,32 +35,13 @@ export default function App() {
       <Navbar />
 
       <BackgroundWrapper>
+        {/* Hero is the LCP - it stays eager so the id resolves immediately. */}
         <Hero />
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader />}>
-            <ProjectsSection />
-          </Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader />}>
-            <About />
-          </Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader />}>
-            <Testimonials />
-          </Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader />}>
-            <Contact />
-          </Suspense>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <Suspense fallback={<SectionLoader />}>
-            <Footer />
-          </Suspense>
-        </ErrorBoundary>
+        <Gate id="projects"><ProjectsSection /></Gate>
+        <Gate id="about"><About /></Gate>
+        <Gate id="testimonials"><Testimonials /></Gate>
+        <Gate id="contact"><Contact /></Gate>
+        <Gate id="site-footer"><Footer /></Gate>
       </BackgroundWrapper>
     </div>
   );

@@ -186,16 +186,15 @@ function MusicCard() {
     { name: 'Serenading', icon: FaHeart },
   ];
 
-  const notes = ['♪', '♫', '♬', '♩', '♭', '♮', '♯'];
   const floatingNotes = useMemo(
     () =>
-      notes.map((note, i) => ({
+      ['♪', '♫', '♬', '♩', '♭', '♮', '♯'].map((note, i) => ({
         note,
         delay: i * 1.5,
         left: `${10 + i * 12}%`,
         duration: 6 + (i % 4),
       })),
-    [notes]
+    []
   );
 
   const eqBars = useMemo(

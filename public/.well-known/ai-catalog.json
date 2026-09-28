@@ -1,0 +1,53 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Raka Pranata - Frontend Developer & UI/UX Designer",
+    "identifier": "did:web:raka-pranata.vercel.app",
+    "documentationUrl": "https://raka-pranata.vercel.app/",
+    "logoUrl": "https://raka-pranata.vercel.app/IMGG/logo.svg"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:raka-pranata.vercel.app:portfolio:web-design-services",
+      "displayName": "Jasa Pembuatan Website & Landing Page",
+      "type": "application/ai-catalog+json",
+      "url": "https://raka-pranata.vercel.app/",
+      "description": "Layanan jasa pembuatan website company profile, landing page konversi tinggi, company profile, dashboard, dan desain UI/UX. Dikembangkan dengan React, TypeScript, dan Tailwind CSS.",
+      "tags": [
+        "web-development",
+        "landing-page",
+        "company-profile",
+        "ui-ux-design",
+        "react",
+        "typescript",
+        "tailwindcss",
+        "freelance",
+        "indonesia"
+      ],
+      "capabilities": [
+        "LandingPageDesign",
+        "CompanyProfileWebsite",
+        "DashboardInterface",
+        "UIUXDesign",
+        "ResponsiveWebDevelopment",
+        "SEOOptimization",
+        "PerformanceOptimization"
+      ],
+      "representativeQueries": [
+        "jasa pembuatan website di Bogor",
+        "mau bikin landing page Conversion tinggi",
+        "front end developer React TypeScript",
+        "desain UI UX company profile UMKM",
+        "biaya buat website perusahaan"
+      ],
+      "version": "1.0.0",
+      "updatedAt": "2026-09-28T00:00:00Z",
+      "metadata": {
+        "location": "Bogor, West Java, Indonesia",
+        "languages": "id, en",
+        "availability": "available-for-freelance",
+        "priceRangeIDR": "1500000-15000000"
+      }
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 import { useCustomCursor } from '../hooks/useCustomCursor';
 
 function CustomCursor() {
-  const { dotRef, ringRef, glowRef, isPointer, isMobile } = useCustomCursor();
+  const { dotRef, ringRef, glowRef, isPointer, isDisabled } = useCustomCursor();
 
-  // Jangan render apa-apa jika di mobile
-  if (isMobile) {
+  // Tidak ada kursor kustom di perangkat sentuh / mode hemat data
+  if (isDisabled) {
     return null;
   }
 

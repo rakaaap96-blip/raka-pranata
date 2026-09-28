@@ -64,7 +64,9 @@ function CardBack({ testimonial, onFlipBack }: CardBackProps) {
   return (
     <div className="absolute inset-0 bg-linear-to-br from-[#1a1a1a] to-[#0f0f0f] rounded-2xl p-5 border border-[#d4af37]/30 flex flex-col items-center justify-center text-center backface-hidden rotate-y-180">
       <HiBuildingOffice2 className="w-10 h-10 text-[#d4af37] mb-3" />
-      <h4 className="text-[#d4af37] font-bold text-lg mb-1">{testimonial.project}</h4>
+      {/* h3, not h4: the section heading is an h2, so h4 skipped a level and
+          failed the heading-order audit. */}
+      <h3 className="text-[#d4af37] font-bold text-lg mb-1">{testimonial.project}</h3>
       <p className="text-[#ffffea]/80 text-sm mb-4">Completed with excellence</p>
       <div className="flex flex-wrap gap-2 justify-center mb-6">
         {['Design', 'Code', 'Deploy'].map((tag) => (

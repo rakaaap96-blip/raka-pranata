@@ -162,25 +162,14 @@ body {
 }
 
 
-/* ========== LIGHTNING TEXT EFFECT ========== */
+/* ========== LIGHTNING TEXT EFFECT ==========
+   lightning-flicker only animates opacity; the glow is a static text-shadow.
+   The ::before/::after slices still use clip-path, so they are switched off in
+   lite mode (see the LITE MODE block) rather than being animated everywhere. */
 @keyframes lightning-flicker {
-  0%, 7%, 9%, 13%, 20%, 100% {
-    opacity: 1;
-    text-shadow:
-      0 0 1px rgba(255, 255, 234, 0.7),
-      0 0 8px rgba(212, 175, 55, 0.42),
-      0 0 18px rgba(244, 208, 63, 0.22);
-  }
-  8%, 12% {
-    opacity: 0.78;
-    text-shadow: 0 0 2px rgba(212, 175, 55, 0.24);
-  }
-  46% {
-    text-shadow:
-      0 0 2px rgba(255, 255, 234, 0.85),
-      0 0 14px rgba(244, 208, 63, 0.55),
-      0 0 30px rgba(212, 175, 55, 0.32);
-  }
+  0%, 7%, 9%, 13%, 20%, 100% { opacity: 1; }
+  8%, 12% { opacity: 0.78; }
+  46% { opacity: 1; }
 }
 
 @keyframes lightning-slice {
@@ -224,6 +213,10 @@ body {
   display: inline-block;
   color: #d4af37;
   isolation: isolate;
+  text-shadow:
+    0 0 1px rgba(255, 255, 234, 0.7),
+    0 0 8px rgba(212, 175, 55, 0.42),
+    0 0 18px rgba(244, 208, 63, 0.22);
   animation: lightning-flicker 2.8s steps(1, end) infinite;
 }
 
@@ -255,7 +248,9 @@ body {
   animation: lightning-jitter 1.7s steps(1, end) infinite;
 }
 
-/* ========== NEON GLOW UTILITIES ========== */
+/* ========== NEON GLOW UTILITIES ==========
+   Static shadows only. Animated box-shadows force a full repaint every frame,
+   which is the single most expensive thing this design used to do. */
 .neon-glow {
   box-shadow: 
     0 0 5px rgba(212, 175, 55, 0.3),
@@ -281,10 +276,11 @@ body {
     inset 0 0 4px rgba(212, 175, 55, 0.05);
 }
 
-/* ========== CYBERPUNK DECORATIVE LINE ========== */
+/* ========== CYBERPUNK DECORATIVE LINE ==========
+   Opacity-only pulse: box-shadow animation was repainting every frame. */
 @keyframes neon-pulse {
-  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px rgba(212, 175, 55, 0.3); }
-  50% { opacity: 1; box-shadow: 0 0 12px rgba(212, 175, 55, 0.6); }
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 .cyber-line {
   height: 2px;
@@ -392,19 +388,12 @@ body {
   z-index: 1;
 }
 
-/* ========== NEON FLICKER ========== */
+/* ========== NEON FLICKER ==========
+   The glow is a static text-shadow; only opacity animates, so the browser can
+   push this to the compositor instead of re-rasterising the glyphs. */
 @keyframes neon-flicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    opacity: 1;
-    text-shadow: 
-      0 0 4px rgba(212, 175, 55, 0.6),
-      0 0 11px rgba(212, 175, 55, 0.4),
-      0 0 21px rgba(212, 175, 55, 0.3);
-  }
-  20%, 24%, 55% {
-    opacity: 0.6;
-    text-shadow: none;
-  }
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.55; }
 }
 .neon-flicker {
   animation: neon-flicker 4s infinite;
@@ -518,18 +507,14 @@ body {
     2px 0 rgba(0, 229, 255, 0.1);
 }
 
-/* ========== NEON PULSE TEXT ========== */
+/* ========== NEON PULSE TEXT ==========
+   Opacity-only: animating text-shadow rasterises the text on every frame. */
 @keyframes neon-pulse-text {
-  0%, 100% { 
-    text-shadow: 0 0 4px rgba(212, 175, 55, 0.4), 0 0 10px rgba(212, 175, 55, 0.2);
-    opacity: 1;
-  }
-  50% { 
-    text-shadow: 0 0 8px rgba(212, 175, 55, 0.6), 0 0 20px rgba(212, 175, 55, 0.3), 0 0 40px rgba(212, 175, 55, 0.15);
-    opacity: 1;
-  }
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 .neon-pulse-text {
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.4), 0 0 10px rgba(212, 175, 55, 0.2);
   animation: neon-pulse-text 3s ease-in-out infinite;
 }
 
@@ -569,7 +554,7 @@ body {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.15em;
-  color: rgba(212, 175, 55, 0.5);
+  color: rgba(212, 175, 55, 0.8);
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -589,7 +574,7 @@ body {
 }
 .terminal-comment {
   font-family: 'Rajdhani', monospace;
-  color: rgba(212, 175, 55, 0.35);
+  color: rgba(212, 175, 55, 0.72);
   font-size: 0.75rem;
   letter-spacing: 0.05em;
 }
@@ -612,7 +597,7 @@ body {
   font-family: 'Rajdhani', monospace;
   font-size: 0.7rem;
   letter-spacing: 0.3em;
-  color: rgba(212, 175, 55, 0.4);
+  color: rgba(212, 175, 55, 0.75);
   text-transform: uppercase;
 }
 .cyber-card {
@@ -631,11 +616,19 @@ body {
 
 /* ========== SOFT GLOW REMOVED - replaced by sharp terminal borders ========== */
 
-/* ========== GLOBAL ========== */
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  * {
-    cursor: none;
-  }
+/* ========== GLOBAL ==========
+   Scoped to html:not(.lite): CustomCursor is not mounted in lite mode, so
+   hiding the native cursor there would leave touch devices with no cursor at
+   all. Some Android tablets report hover:hover while still being coarse. */
+html:not(.lite) {
+  cursor: none;
+}
+html:not(.lite) *:not(a):not(button):not(input):not(textarea):not(select) {
+  cursor: none;
+}
+html.lite,
+html.lite * {
+  cursor: auto;
 }
 
 h1, h2, h3, h4 {
@@ -891,7 +884,9 @@ code, pre, .font-mono {
   animation: ripple-music 0.6s ease-out forwards;
 }
 
-/* ========== PHILOSOPHY CARD ========== */
+/* ========== PHILOSOPHY CARD ==========
+   border-radius morphing repaints the element every frame; on a blurred
+   384px blob that is brutal. Lite mode renders a static rounded square. */
 @keyframes morph-blob {
   0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
   25% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
@@ -915,6 +910,91 @@ code, pre, .font-mono {
 }
 .animate-morph-blob-reverse {
   animation: morph-blob-reverse 15s ease-in-out infinite;
+}
+
+/* ========== KEYFRAMES YANG DIPAKE COMPONENT TAPI BELUM PERNAH ADA ========== */
+
+/* MusicCard: floating notes */
+@keyframes floatNote {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+
+/* MusicCard: equaliser bars (transform-only, compositor friendly) */
+@keyframes eqPulse {
+  0% { transform: scaleY(0.2); }
+  100% { transform: scaleY(1); }
+}
+
+/* ProfileImage: tech chip entrance (was referenced but never defined) */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* LanguagesCard: sound wave + pulse levels */
+@keyframes soundWave {
+  0%, 100% { transform: scaleY(0.2); }
+  50% { transform: scaleY(1); }
+}
+.animate-sound-wave {
+  animation: soundWave 0.9s ease-in-out infinite;
+  transform-origin: bottom;
+}
+@keyframes pulseFast {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+@keyframes pulseSlower {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-fast { animation: pulseFast 1.2s ease-in-out infinite; }
+.animate-pulse-slower { animation: pulseSlower 5s ease-in-out infinite; }
+
+/* AnimatedBackground: bottom accent bar (transform-only) */
+@keyframes gradientX {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-gradient-x {
+  transform-origin: left;
+  animation: gradientX 6s ease-in-out infinite;
+}
+
+/* ProjectCard tech badge shimmer (background-position, no filter) */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+/* MagneticTag ripple (was referenced but never defined) */
+@keyframes ripple {
+  0% { opacity: 0.35; transform: scale(0.7); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+.animate-ripple {
+  animation: ripple 0.6s ease-out infinite;
+}
+
+/* FooterCTA: were referenced but never defined, so nothing moved at all */
+@keyframes floatCta {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(24px, -18px); }
+}
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-18px, 14px); }
 }
 .animate-blink {
   animation: blink 1s step-end infinite;
@@ -1095,10 +1175,10 @@ textarea:-webkit-autofill:focus {
   50% { transform: translate(-50%, -50%) translate(calc(-5px - 5px * var(--float-dir, 1)), calc(-8px - 3px * var(--float-dir, 1))); }
   100% { transform: translate(-50%, -50%) translate(0px, 0px); }
 }
+/* Opacity-only: animating filter: brightness() forced a repaint per frame. */
 @keyframes particle-twinkle {
-  0% { opacity: var(--twinkle-start, 0.4); filter: brightness(1); }
-  50% { opacity: var(--twinkle-peak, 1); filter: brightness(1.5); }
-  100% { opacity: var(--twinkle-start, 0.4); filter: brightness(1); }
+  0%, 100% { opacity: var(--twinkle-start, 0.4); }
+  50% { opacity: var(--twinkle-peak, 1); }
 }
 .animate-particle-float {
   animation: particle-float 6s ease-in-out infinite;
@@ -1159,3 +1239,216 @@ textarea:-webkit-autofill:focus {
     display: none;
   }
 }
+
+/* ================================================================
+   RESPONSIVE FOUNDATIONS
+   ================================================================ */
+
+html {
+  /* stops iOS Safari inflating text in landscape, which broke the grid */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* `clip` contains stray marquee/decoration overflow without creating a
+     scroll container, so position:sticky keeps working. `hidden` is the
+     fallback for engines without `clip`. */
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+@supports (overflow-x: clip) {
+  html {
+    overflow-x: clip;
+  }
+}
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-x: clip;
+  /* long unbroken strings (emails, URLs) must never widen the page */
+  overflow-wrap: break-word;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* `100vh` on mobile includes the collapsing URL bar, so a `min-h-screen`
+   section overflowed by ~60px. `svh` is the smallest stable viewport. */
+@supports (min-height: 100svh) {
+  .min-h-screen {
+    min-height: 100svh;
+  }
+}
+
+/* Fluid type: one scale from a 320px phone to a 4K display, so nothing
+   relies on guessing breakpoints. */
+.text-fluid-xs  { font-size: clamp(0.6875rem, 0.66rem + 0.14vw, 0.8125rem); }
+.text-fluid-sm  { font-size: clamp(0.8125rem, 0.78rem + 0.18vw, 0.9375rem); }
+.text-fluid-md  { font-size: clamp(0.9375rem, 0.89rem + 0.26vw, 1.125rem); }
+.text-fluid-lg  { font-size: clamp(1.125rem, 1.02rem + 0.52vw, 1.5rem); }
+.text-fluid-xl  { font-size: clamp(1.375rem, 1.16rem + 1.05vw, 2.25rem); }
+.text-fluid-2xl { font-size: clamp(1.5rem, 1.14rem + 1.75vw, 3rem); }
+.text-fluid-3xl { font-size: clamp(1.875rem, 1.25rem + 3.1vw, 4rem); }
+
+/* Fluid section padding so vertical rhythm survives 320px -> 4K */
+.section-pad {
+  padding-block: clamp(3rem, 1.6rem + 5.4vw, 6rem);
+}
+.section-pad-lg {
+  padding-block: clamp(4rem, 2rem + 7vw, 8rem);
+}
+
+/* Notched phones: keep fixed chrome clear of the home indicator / notch */
+.safe-x {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+.safe-b {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Comfortable tap targets on touch (WCAG 2.5.8) */
+@media (pointer: coarse) {
+  button,
+  a[href],
+  [role='button'] {
+    min-height: 44px;
+  }
+  .tap-compact {
+    min-height: 40px;
+  }
+}
+
+/* Kill iOS tap highlight flash + enable momentum scrolling */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ================================================================
+   LITE MODE
+   <html class="lite"> is set by the inline bootstrap in index.html
+   before first paint, so the heavy work is never even created.
+   ================================================================ */
+
+/* Full-viewport overlays: an animated fixed layer over the whole screen is the
+   worst case for a mobile compositor. */
+.lite .scanline-overlay {
+  display: none;
+}
+
+/* Matrix rain keeps the glyphs but stops the endless fall — 10 columns
+   animating translateY forever is a permanent compositing cost for decoration. */
+.lite .matrix-rain span {
+  animation: none;
+  opacity: 0.5;
+}
+
+/* Two full-section gradient grids, repainted on every scroll */
+.lite .cyber-section::after,
+.lite .cyber-grid-section::before,
+.lite .cyber-panel::before {
+  display: none;
+}
+
+/* clip-path animation on text */
+.lite .lightning-text {
+  animation: none;
+  color: #f4d03f;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+}
+.lite .lightning-text::before,
+.lite .lightning-text::after {
+  content: none;
+}
+
+/* blur radius dominates GPU cost. A 64px blur on a 384px box is ~28x more
+   expensive than 12px and visually indistinguishable on a 5-10% opacity glow. */
+.lite .blur-sm  { filter: blur(2px); }
+.lite .blur-md  { filter: blur(4px); }
+.lite .blur-lg  { filter: blur(6px); }
+.lite .blur-xl  { filter: blur(8px); }
+.lite .blur-2xl { filter: blur(10px); }
+.lite .blur-3xl { filter: blur(12px); }
+
+/* border-radius morphing repaints a blurred box every frame */
+.lite .animate-morph-blob,
+.lite .animate-morph-blob-reverse {
+  animation: none;
+  border-radius: 50%;
+}
+
+/* background-position / gradient animations force repaint */
+.lite .data-flow,
+.lite .holo-shimmer,
+.lite .animate-holo-shift,
+.lite .animate-gradient-x,
+.lite .animate-shimmer,
+.lite .animate-ripple {
+  animation: none;
+}
+
+/* Decorative floaters that never stop */
+.lite .animate-float-note,
+.lite .animate-float-1,
+.lite .animate-float-2,
+.lite .animate-float-3,
+.lite .animate-spin-slow,
+.lite .animate-ping,
+.lite .animate-bounce,
+.lite .animate-shimmer-sweep,
+.lite .animate-tech-float,
+.lite .animate-float-subtle,
+.lite .animate-bounce-slow {
+  animation: none;
+}
+
+/* Equaliser-style infinite scaleY loops */
+.lite .animate-eq-bar,
+.lite .animate-eq-mini,
+.lite .animate-eq-testi,
+.lite .animate-typing-wave,
+.lite .animate-social-eq,
+.lite .animate-sound-wave,
+.lite .animate-wave-bar {
+  animation: none;
+  transform: scaleY(0.7);
+}
+
+/* morph/float of the CTA card */
+.lite .animate-spin-slow,
+.lite [style*='floatCta'],
+.lite [style*='float1'],
+.lite [style*='float2'] {
+  animation: none !important;
+}
+
+/* Scrollbar gradient animation - pure decoration, so lite mode drops it. */
+.lite ::-webkit-scrollbar-thumb {
+  animation: none;
+}
+
+/* the marquee is a compositor transform and stays — it is the signature
+   element. DOM size is reduced in JS instead (4 clones -> 2). */
+
+/* ================================================================
+   CONTRAST FIXES
+   Gold/ivory at 40-50% opacity on pure black lands under 4.5:1 and fails the
+   Lighthouse a11y audit. Bumped to the first passing step; the look is
+   essentially unchanged. Unlayered, so it wins over the Tailwind utilities.
+   ================================================================ */
+.text-\[\#ffffea\]\/40 { color: rgba(255, 255, 234, 0.68); }
+.text-\[\#ffffea\]\/50 { color: rgba(255, 255, 234, 0.74); }
+.text-\[\#d4af37\]\/40  { color: rgba(212, 175, 55, 0.78); }
+.text-\[\#d4af37\]\/50  { color: rgba(212, 175, 55, 0.8); }
+.text-\[\#d4af37\]\/60  { color: rgba(212, 175, 55, 0.82); }
+.placeholder-\[\#ffffea\]\/30::placeholder { color: rgba(255, 255, 234, 0.62); }
+
+

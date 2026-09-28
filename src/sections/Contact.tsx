@@ -17,22 +17,21 @@ function Contact() {
       { threshold: 0.1 }
     );
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+    const node = sectionRef.current;
+    if (node) {
+      observer.observe(node);
     }
 
     return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (node) {
+        observer.unobserve(node);
       }
     };
   }, []);
 
   return (
     <section 
-      id="contact" 
-      ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24 cyber-grid-section cyber-section"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-8 lg:px-16 section-pad cyber-grid-section cyber-section"
       aria-labelledby="contact-heading"
     >
       {/* Animated Background Elements */}

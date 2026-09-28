@@ -1,19 +1,16 @@
-const CACHE_NAME = 'portfolio-v2.0';
+const CACHE_NAME = 'portfolio-v3.0';
 const OFFLINE_URL = '/offline.html';
 
+/*
+ * Keep this list tiny. The previous version precached the 260 KB
+ * android-chrome-512x512.png and the 235 KB og-image on every first visit -
+ * ~500 KB the user may never need, which directly hurt LCP and Lighthouse on
+ * mobile data. Icons are already declared in <head>; let the HTTP cache and
+ * Vercel's immutable /assets headers handle repeat visits instead.
+ */
 const urlsToCache = [
   '/offline.html',
-  '/manifest.json',
-
-  '/favicon.ico',
-  '/favicon-16x16.png',
-  '/favicon-32x32.png',
-  '/android-chrome-192x192.png',
-  '/android-chrome-512x512.png',
-  '/apple-touch-icon.png',
-
   '/IMGG/logo.svg',
-  '/IMGG/og-image.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -75,6 +72,18 @@ self.addEventListener('fetch', (event) => {
   }
 });
 
+const MAX_RUNTIME_ENTRIES = 60;
+
+/* The runtime cache is unbounded by default, which quietly eats a phone's
+   storage quota over a few visits. Trim oldest-first after each write. */
+async function trimCache(cache) {
+  const keys = await cache.keys();
+  if (keys.length <= MAX_RUNTIME_ENTRIES) return;
+  await Promise.all(
+    keys.slice(0, keys.length - MAX_RUNTIME_ENTRIES).map((k) => cache.delete(k))
+  );
+}
+
 async function networkWithQueue(request) {
   try {
     const response = await fetch(request.clone());
@@ -131,9 +140,12 @@ async function cacheFirstStrategy(request) {
 
   try {
     const response = await fetch(request);
+    // Opaque (no-cors, e.g. fonts) responses have status 0, so they fall
+    // through untouched - fine, the browser's own HTTP cache still handles them.
     if (response && response.status === 200 && request.url.startsWith(self.location.origin)) {
       const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
+      await cache.put(request, response.clone());
+      await trimCache(cache);
     }
     return response;
   } catch {

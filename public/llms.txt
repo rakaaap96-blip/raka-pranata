@@ -1,0 +1,55 @@
+# Raka Pranata
+
+> Frontend Developer & UI/UX Designer di Bogor, Indonesia. Membangun landing page
+> konversi tinggi, company profile, dashboard, dan desain UI/UX dengan React,
+> TypeScript, dan Tailwind CSS.
+
+Raka Pranata menyediakan jasa pembuatan website untuk bisnis, UMKM, dan
+perusahaan. Fokusnya pada kode yang ringan (React + TypeScript + Tailwind CSS),
+desain yang bersih, dan hasil yang cepat di perangkat mobile.
+
+## Contact
+
+- WhatsApp: [+6287823268333](https://wa.me/6287823268333)
+- Email: [rakaaa.p96@gmail.com](mailto:rakaaa.p96@gmail.com)
+- LinkedIn: [raka-pranata](https://www.linkedin.com/in/raka-pranata-2804a437a/)
+- Lokasi: Bogor, Jawa Barat, Indonesia
+
+## Services
+
+- **Landing Page** — situs marketing satu halaman yang fokus pada konversi dan
+  kecepatan muat.
+- **Company Profile** — website profil perusahaan multi halaman untuk bisnis
+  dan UMKM.
+- **UI/UX Design** — desain antarmuka di Figma, mulai dari wireframe hingga
+  design system.
+- **Dashboard & Web App** — antarmuka berbasis data dengan React dan TypeScript.
+- **SEO & Performance** — optimasi Core Web Vitals, metadata, dan struktur
+  semantik.
+
+## Stack
+
+React, TypeScript, Tailwind CSS, Vite, Next.js, Figma, Framer Motion.
+
+## Selected Work
+
+- [Bakso Menyala](https://bakla-ten.vercel.app/) — landing page RESTO
+- [Lunaria](https://lunaria-xi.vercel.app/) — landing page atelier
+- [Roti Sobek](https://robek.vercel.app/) — company profile bakery
+- [Reconstella](https://reconstella.vercel.app/) — company profile konstruksi
+- [Bogor Nexus](https://bogor-nexus.vercel.app/) — dashboard
+- [Artisan Craft](https://artisan-tan.vercel.app/) — landing page interaktif
+- [NutriNest](https://www.figma.com/proto/UyFCrBWUuZEJF4WzF832AQ/NutriNest-FIx) — UI design
+- [TK Ceria](https://tkceria.vercel.app/) — company profile institutes
+
+## Pricing
+
+- Paket Landing Page — mulai Rp1.500.000
+- Paket Company Profile — mulai Rp3.500.000
+
+Konsultasi awal gratis.
+
+## Optional
+
+- [Website portfolio](https://raka-pranata.vercel.app/)
+- [Machine-readable catalog](https://raka-pranata.vercel.app/.well-known/ai-catalog.json)

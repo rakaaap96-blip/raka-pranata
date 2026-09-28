@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useImageTilt from '../../hooks/useImageTilt';
+import useMediaQuery from '../../hooks/useMediaQuery';
 import { FaFigma, FaReact } from 'react-icons/fa';
 import { SiTypescript, SiTailwindcss } from 'react-icons/si';
 import { GiSpinningBlades } from 'react-icons/gi';
@@ -14,19 +15,10 @@ const TECH_STACK = [
 
 function ProfileImage() {
   const { imageRef, handleImageInteraction, resetImageTransform } = useImageTilt();
-  const [isMobile, setIsMobile] = useState(false);
+  // A media query instead of a window.resize listener: no re-render storm while
+  // the user rotates the phone or resizes, and the first paint is already correct.
+  const isMobile = !useMediaQuery('(min-width: 768px)');
   const [hoverImageLoaded, setHoverImageLoaded] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   return (
     <div
@@ -46,11 +38,12 @@ function ProfileImage() {
         !isMobile ? 'group-hover:border-[#d4af37] transition-all duration-500 shadow-2xl' : ''
       }`}>
         
-        {/* PRIMARY IMAGE */}
+        {/* PRIMARY IMAGE - this is the LCP element, so it is not lazy */}
         <img
           src="/IMGG/face1-248x248.webp"
           alt="Raka Pranata - Frontend Developer and UI/UX Designer"
           fetchPriority="high"
+          decoding="async"
           width="248"
           height="248"
           className={`absolute inset-0 z-10 w-full h-full object-cover grayscale-20 contrast-110 ${

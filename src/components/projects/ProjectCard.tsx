@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { IconType } from 'react-icons';
 import type { Project } from '../../types/project';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
 import { FaExternalLinkAlt, FaStar } from 'react-icons/fa';
@@ -29,27 +30,37 @@ interface ProjectCardProps {
   index: number;
 }
 
+/* Matched in order, so the more specific "adobe illustrator" entry wins over
+   the generic "adobe" one. */
+const TECH_ICONS: [string, IconType][] = [
+  ['adobe illustrator', SiAdobeillustrator],
+  ['typescript', SiTypescript],
+  ['tailwind', SiTailwindcss],
+  ['next', SiNextdotjs],
+  ['vite', SiVite],
+  ['javascript', SiJavascript],
+  ['react', SiReact],
+  ['node', SiNodedotjs],
+  ['python', SiPython],
+  ['html', SiHtml5],
+  ['css', SiCss3],
+  ['figma', SiFigma],
+  ['adobe', SiAdobexd],
+  ['git', SiGit],
+  ['mongo', SiMongodb],
+  ['postgres', SiPostgresql],
+  ['firebase', SiFirebase],
+  ['vercel', SiVercel],
+];
+
 const getTechIconElement = (tech: string, className?: string) => {
   const techLower = tech.toLowerCase();
-  if (techLower.includes('type')) return <SiTypescript className={className} />;
-  if (techLower.includes('tailwind')) return <SiTailwindcss className={className} />;
-  if (techLower.includes('vite')) return <SiVite className={className} />;
-  if (techLower.includes('java')) return <SiJavascript className={className} />;
-  if (techLower.includes('react')) return <SiReact className={className} />;
-  if (techLower.includes('next')) return <SiNextdotjs className={className} />;
-  if (techLower.includes('node')) return <SiNodedotjs className={className} />;
-  if (techLower.includes('python')) return <SiPython className={className} />;
-  if (techLower.includes('html')) return <SiHtml5 className={className} />;
-  if (techLower.includes('css')) return <SiCss3 className={className} />;
-  if (techLower.includes('adobe illustrator')) return <SiAdobeillustrator className={className} />;
-  if (techLower.includes('figma')) return <SiFigma className={className} />;
-  if (techLower.includes('adobe') || techLower.includes('xd')) return <SiAdobexd className={className} />;
-  if (techLower.includes('git')) return <SiGit className={className} />;
-  if (techLower.includes('mongo')) return <SiMongodb className={className} />;
-  if (techLower.includes('postgres')) return <SiPostgresql className={className} />;
-  if (techLower.includes('firebase')) return <SiFirebase className={className} />;
-  if (techLower.includes('vercel')) return <SiVercel className={className} />;
-  return <HiSparkles className={className} />;
+  const match = TECH_ICONS.find(([needle]) => techLower.includes(needle));
+  // Always aria-hidden: the tech name is rendered as adjacent text, and
+  // react-icons stamps role="img" on every icon by default, which fails the
+  // svg-img-alt audit with 19 unlabelled decorative SVGs.
+  const Icon = match ? match[1] : HiSparkles;
+  return <Icon className={className} aria-hidden="true" focusable="false" />;
 };
 
 // Tech badge dengan animasi kompleks (FIXED: sparkle particles selalu dirender)
@@ -91,15 +102,18 @@ function TechBadge({ tech, techIndex, cardIndex }: { tech: string; techIndex: nu
       
       {/* Text */}
       <span className="relative">{tech}</span>
-      
-      {/* Sparkle particles - selalu dirender, visibilitas dikontrol CSS */}
+
+      {/* Sparkle particles - decorative only, so they stay hidden from AT and
+          stop animating entirely when the pointer is coarse. */}
       <span
-        className={`absolute -top-1 -right-1 w-1 h-1 bg-[#f4d03f] rounded-full transition-all duration-300 ${
+        aria-hidden="true"
+        className={`absolute -top-1 -right-1 w-1 h-1 bg-[#f4d03f] rounded-full transition-all duration-300 motion-reduce:hidden ${
           isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
         } ${isHovered ? 'animate-ping' : ''}`}
       />
       <span
-        className={`absolute -bottom-1 -left-1 w-0.5 h-0.5 bg-[#d4af37] rounded-full transition-all duration-300 ${
+        aria-hidden="true"
+        className={`absolute -bottom-1 -left-1 w-0.5 h-0.5 bg-[#d4af37] rounded-full transition-all duration-300 motion-reduce:hidden ${
           isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-0'
         } ${isHovered ? 'animate-pulse' : ''}`}
       />
@@ -136,7 +150,13 @@ function ProjectCard({ project, index }: ProjectCardProps) {
         <img
           src={project.image}
           alt={project.title}
-          loading="lazy"
+          width={project.imageWidth}
+          height={project.imageHeight}
+          /* The first cards sit at/near the fold, so lazy-loading them only
+             delays paint. Everything below stays lazy. */
+          loading={index < 3 ? 'eager' : 'lazy'}
+          fetchPriority={index === 0 ? 'high' : 'auto'}
+          decoding="async"
           className={`w-full h-full object-cover saturate-[0.82] contrast-110 transition-all duration-700 ${
             isHovered ? 'scale-110 rotate-1' : 'scale-100'
           } ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}

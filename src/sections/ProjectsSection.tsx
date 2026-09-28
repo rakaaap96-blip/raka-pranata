@@ -1,10 +1,11 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { projects } from '../data/projects';
 import useFilter from '../hooks/useFilter';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 import ProjectCard from '../components/projects/ProjectCard';
 import ProjectFilter from '../components/projects/ProjectFilter';
 import useMediaQuery from '../hooks/useMediaQuery';
+import { useIsLite } from '../lib/device';
 import { 
   FaFigma, 
   FaReact, 
@@ -26,7 +27,10 @@ import {
 } from 'react-icons/ri';
 
 /* ============================================
-   SKILL CARD (TANPA PARTIKEL, TANPA CONDITIONAL RENDER)
+   SKILL CARD
+   One shared IntersectionObserver per marquee (see MarqueeSkills) instead of
+   one per card, a single level bar instead of 10 dots, and no per-card blur —
+   at 4 clones x 2 marquees those add up to 72 SVGs and 720 divs.
    ============================================ */
 interface SkillCardProps {
   skill: {
@@ -36,76 +40,45 @@ interface SkillCardProps {
     icon: React.ComponentType<{ className?: string; 'aria-hidden'?: boolean }>;
   };
   index: number;
+  isVisible: boolean;
 }
 
-function SkillCard({ skill, index }: SkillCardProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+function SkillCard({ skill, index, isVisible }: SkillCardProps) {
   const IconComponent = skill.icon;
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), index * 80);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (cardRef.current) observer.observe(cardRef.current);
-    return () => observer.disconnect();
-  }, [index]);
-
-  const radius = 36;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (skill.level / 100) * circumference;
 
   return (
     <div
-      ref={cardRef}
-      className={`relative group cursor-default shrink-0 w-44 sm:w-48 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-90'
-      }`}
-      style={{ transitionDelay: `${index * 100}ms` }}
+      className="group cursor-default shrink-0 w-[9.5rem] sm:w-52 transition-[opacity,transform] duration-700 ease-out"
+      style={{
+        transitionDelay: `${Math.min(index, 8) * 80}ms`,
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(2rem) scale(0.94)',
+      }}
     >
-      {/* Glow background (always there, opacity controlled by group-hover) */}
-      <div 
-        className={`absolute -inset-1 bg-linear-to-r ${skill.color} opacity-0 blur-xl transition-all duration-500 group-hover:opacity-40 [clip-path:polygon(0_10px,10px_0,100%_0,100%_calc(100%-10px),calc(100%-10px)_100%,0_100%)]`}
-      />
-
-      <div className="relative cyber-card rounded-lg p-5 overflow-hidden transition-all duration-500 group-hover:border-[#d4af37]/40 group-hover:shadow-2xl group-hover:shadow-[#d4af37]/10">
-        {/* Top border line */}
+      <div className="relative cyber-card rounded-lg p-5 overflow-hidden transition-colors duration-300 group-hover:border-[#d4af37]/40">
         <div className={`absolute top-0 left-0 right-0 h-px bg-linear-to-r ${skill.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-        
+
         <div className="flex flex-col items-center gap-3">
-          <div className="relative w-20 h-20">
-            <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r={radius} fill="none" stroke="rgba(255,255,234,0.08)" strokeWidth="6" />
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+              <circle cx="50" cy="50" r="36" fill="none" stroke="rgba(255,255,234,0.08)" strokeWidth="6" />
               <circle
-                cx="50" cy="50" r={radius} fill="none" stroke="url(#gradient)" strokeWidth="6" strokeLinecap="round"
-                strokeDasharray={circumference}
-                strokeDashoffset={isVisible ? strokeDashoffset : circumference}
-                className="transition-all duration-1500 ease-out"
-                style={{ transitionDelay: `${index * 120 + 300}ms` }}
+                cx="50" cy="50" r="36"
+                fill="none"
+                stroke="#d4af37"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray={2 * Math.PI * 36}
+                strokeDashoffset={isVisible ? 2 * Math.PI * 36 * (1 - skill.level / 100) : 2 * Math.PI * 36}
+                className="transition-[stroke-dashoffset] duration-1000 ease-out"
               />
-              <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#d4af37" />
-                  <stop offset="100%" stopColor="#f4d03f" />
-                </linearGradient>
-              </defs>
             </svg>
 
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative transition-all duration-500 group-hover:scale-110">
-                <IconComponent 
-                  className={`w-7 h-7 text-[#d4af37] transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.6)]`}
-                  aria-hidden={true} 
-                />
-                {/* Efek glow icon – selalu ada, opacity diatur */}
-                <div className="absolute inset-0 blur-lg bg-[#d4af37]/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
+              <IconComponent
+                className="w-6 h-6 sm:w-7 sm:h-7 text-[#d4af37] transition-transform duration-300 group-hover:scale-110"
+                aria-hidden={true}
+              />
             </div>
           </div>
 
@@ -114,27 +87,17 @@ function SkillCard({ skill, index }: SkillCardProps) {
               {skill.name}
             </h4>
             <div className="flex items-center justify-center gap-1">
-              <span className="text-xl font-black bg-linear-to-r from-[#d4af37] to-[#f4d03f] bg-clip-text text-transparent">
-                {skill.level}
-              </span>
-              <span className="text-[#d4af37]/60 text-xs font-medium">%</span>
+              <span className="text-xl font-black text-[#d4af37]">{skill.level}</span>
+              <span className="text-[#d4af37]/80 text-xs font-medium">%</span>
             </div>
           </div>
 
-          <div className="flex gap-1">
-            {[...Array(10)].map((_, i) => (
-              <div
-                key={i}
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                  i < Math.floor(skill.level / 10)
-                    ? 'bg-[#d4af37] shadow-[0_0_6px_rgba(212,175,55,0.5)]'
-                    : 'bg-[#ffffea]/10'
-                }`}
-                style={{ 
-                  transitionDelay: `${index * 100 + i * 50}ms`,
-                }}
-              />
-            ))}
+          {/* single segmented-look level bar (was 10 rounded dots) */}
+          <div className="w-full h-1.5 rounded-full bg-[#ffffea]/10 overflow-hidden">
+            <div
+              className={`h-full bg-linear-to-r ${skill.color} rounded-full transition-[width] duration-1000 ease-out`}
+              style={{ width: isVisible ? `${skill.level}%` : '0%' }}
+            />
           </div>
         </div>
       </div>
@@ -143,7 +106,7 @@ function SkillCard({ skill, index }: SkillCardProps) {
 }
 
 /* ============================================
-   INFINITE MARQUEE SKILLS ROW (tanpa perubahan)
+   INFINITE MARQUEE SKILLS ROW
    ============================================ */
 interface MarqueeSkillsProps {
   skills: Array<{
@@ -157,30 +120,73 @@ interface MarqueeSkillsProps {
 }
 
 function MarqueeSkills({ skills, direction = 'left', speed = 30 }: MarqueeSkillsProps) {
-  const duplicatedSkills = [...skills, ...skills, ...skills, ...skills];
-  
+  const isLite = useIsLite();
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  // The -50% translate needs exactly two copies to loop seamlessly; a third
+  // just hides the seam. Lite devices get two, everyone else gets three.
+  const cloneCount = isLite ? 2 : 3;
+  const marqueeSkills = useMemo(
+    () => Array.from({ length: cloneCount }, () => skills).flat(),
+    [skills, cloneCount],
+  );
+
+  // One observer for the whole row instead of one per card.
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: '100px' },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="relative overflow-hidden group/marquee py-4">
-      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-linear-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-linear-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
-      
-      <div 
+      <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-24 bg-linear-to-r from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-24 bg-linear-to-l from-[#0a0a0a] to-transparent z-10 pointer-events-none" />
+
+      <div
+        ref={trackRef}
         className={`flex gap-4 sm:gap-6 w-max ${direction === 'left' ? 'animate-marquee-left' : 'animate-marquee-right'}`}
         style={{ animationDuration: `${speed}s` }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLElement).style.animationPlayState = 'paused';
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLElement).style.animationPlayState = 'running';
-        }}
       >
-        {duplicatedSkills.map((skill, index) => (
-          <SkillCard key={`${skill.name}-${index}`} skill={skill} index={index % skills.length} />
+        {marqueeSkills.map((skill, index) => (
+          <SkillCard
+            key={`${skill.name}-${index}`}
+            skill={skill}
+            index={index % skills.length}
+            isVisible={isVisible}
+          />
         ))}
       </div>
     </div>
   );
 }
+
+/* Hoisted to module scope: a new array identity on every render would defeat
+   MarqueeSkills' useMemo and re-render all ~50 cards on each parent update. */
+const SKILLS = [
+  { name: "Figma", level: 90, color: "from-purple-500 to-pink-500", icon: FaFigma },
+  { name: "Adobe Illustrator", level: 85, color: "from-cyan-500 to-blue-500", icon: SiAdobeillustrator },
+  { name: "Corel Draw", level: 90, color: "from-orange-400 to-red-500", icon: SiCoreldraw },
+  { name: "React.js", level: 85, color: "from-purple-500 to-pink-500", icon: FaReact },
+  { name: "TypeScript", level: 80, color: "from-blue-500 to-blue-600", icon: SiTypescript },
+  { name: "TailwindCSS", level: 95, color: "from-teal-400 to-cyan-500", icon: SiTailwindcss },
+  { name: "HTML/CSS", level: 95, color: "from-orange-400 to-red-500", icon: FaHtml5 },
+  { name: "JavaScript", level: 88, color: "from-yellow-400 to-yellow-500", icon: FaJs },
+  { name: "AI", level: 95, color: "from-teal-400 to-cyan-500", icon: GiArtificialIntelligence },
+];
+
+const SKILLS_REVERSED = [...SKILLS].reverse();
 
 /* ============================================
    SECTION HEADER
@@ -203,7 +209,7 @@ function SectionHeader({ isVisible }: { isVisible: boolean }) {
       
       <h2 
         id="projects-heading"
-        className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-black leading-tight tracking-wide transform transition-all duration-700 hover:scale-[1.03] cursor-default mb-6 relative"
+        className="text-fluid-2xl font-black leading-tight tracking-wide transition-transform duration-700 hover:scale-[1.03] cursor-default mb-6 relative"
       >
         <span className="lightning-text" data-text="My Projects">
           My Projects
@@ -211,7 +217,7 @@ function SectionHeader({ isVisible }: { isVisible: boolean }) {
         <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-1 bg-linear-to-r from-transparent via-[#d4af37] to-transparent rounded-full opacity-60" />
       </h2>
       
-      <p className="text-lg sm:text-xl text-[#ffffea]/60 max-w-2xl mx-auto leading-relaxed">
+      <p className="text-fluid-md text-[#ffffea]/70 max-w-2xl mx-auto leading-relaxed">
         Projects with a frontend focus that highlight current development techniques, seamless interactions, and clean design.
       </p>
     </div>
@@ -225,6 +231,7 @@ function ProjectsSection() {
   const filterRef = useRef<HTMLDivElement>(null);
   
   const isDesktop = useMediaQuery('(min-width: 768px)');
+  const isLite = useIsLite();
   const DEFAULT_VISIBLE = isDesktop ? 6 : 3;
   
   const [showAllCount, setShowAllCount] = useState<number | null>(null);
@@ -242,27 +249,21 @@ function ProjectsSection() {
     }
   };
 
-  const skills = [
-    { name: "Figma", level: 90, color: "from-purple-500 to-pink-500", icon: FaFigma },
-    { name: "Adobe Illustrator", level: 85, color: "from-cyan-500 to-blue-500", icon: SiAdobeillustrator },
-    { name: "Corel Draw", level: 90, color: "from-orange-400 to-red-500", icon: SiCoreldraw },
-    { name: "React.js", level: 85, color: "from-purple-500 to-pink-500", icon: FaReact },
-    { name: "TypeScript", level: 80, color: "from-blue-500 to-blue-600", icon: SiTypescript },
-    { name: "TailwindCSS", level: 95, color: "from-teal-400 to-cyan-500", icon: SiTailwindcss },
-    { name: "HTML/CSS", level: 95, color: "from-orange-400 to-red-500", icon: FaHtml5 },
-    { name: "JavaScript", level: 88, color: "from-yellow-400 to-yellow-500", icon: FaJs },
-    { name: "AI", level: 95, color: "from-teal-400 to-cyan-500", icon: GiArtificialIntelligence }
-  ];
-
   return (
     <section
       id='projects'
       ref={projectsRef}
-      className="relative min-h-screen flex items-center justify-between overflow-hidden px-4 sm:px-8 lg:px-16 py-16 lg:py-24 cyber-grid-section cyber-section"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-8 lg:px-16 section-pad cyber-grid-section cyber-section"
       aria-labelledby="projects-heading"
     >
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#f4d03f]/5 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }} />
+      {/* blur(120px) on a 384px box is one of the most expensive paints on the
+          page, and at 5% opacity it is almost invisible — so lite devices drop it. */}
+      {!isLite && (
+        <>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#d4af37]/5 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-[#f4d03f]/5 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }} />
+        </>
+      )}
 
       <div className="relative z-20 w-full max-w-7xl mx-auto">
         <div ref={ref}>
@@ -270,20 +271,19 @@ function ProjectsSection() {
         </div>
 
         {/* SKILLS - INFINITE MARQUEE */}
-        <div className="mb-16 relative" aria-labelledby="tech-stack-heading">
-          <div className="flex items-center justify-center gap-3 mb-8">
+        <div className="mb-10 sm:mb-16 relative" aria-labelledby="tech-stack-heading">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
             <div className="cyber-line flex-1 max-w-24" />
-            <div className="terminal-section-label">[SKILLS]</div>
-            <h3 id="tech-stack-heading" className="text-xl sm:text-2xl font-black leading-tight tracking-wide transform transition-all duration-700 hover:scale-[1.03] cursor-default flex items-center gap-3">
-              <RiToolsFill className="w-6 h-6 animate-spin-slow text-[#d4af37]" aria-hidden="true" />
+            <h3 id="tech-stack-heading" className="text-fluid-lg font-black leading-tight tracking-wide transition-transform duration-700 hover:scale-[1.03] cursor-default flex items-center gap-2 sm:gap-3">
+              <RiToolsFill className="w-5 h-5 sm:w-6 sm:h-6 animate-spin-slow text-[#d4af37] shrink-0" aria-hidden="true" />
               <span className="lightning-text" data-text="Tech Stack">Tech Stack</span>
             </h3>
             <div className="cyber-line flex-1 max-w-24" />
           </div>
 
-          <MarqueeSkills skills={skills} direction="left" speed={35} />
+          <MarqueeSkills skills={SKILLS} direction="left" speed={35} />
           <div className="mt-2">
-            <MarqueeSkills skills={[...skills].reverse()} direction="right" speed={40} />
+            <MarqueeSkills skills={SKILLS_REVERSED} direction="right" speed={40} />
           </div>
         </div>
 
@@ -307,10 +307,9 @@ function ProjectsSection() {
             {totalFiltered > DEFAULT_VISIBLE && (
               <div className="text-center mt-8 sm:mt-10">
                 {visibleCount < totalFiltered ? (
-          <button
+                  <button
                     onClick={showAll}
                     className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-linear-to-r from-[#d4af37] to-[#f4d03f] cyber-button-cut font-bold text-[#1a1a1a] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/30 overflow-hidden"
-                    aria-label="Show all projects"
                   >
                     <span className="relative z-10">Show More</span>
                     <span className="relative z-10 bg-[#1a1a1a]/20 px-2 py-0.5 rounded-md text-sm">{totalFiltered - visibleCount}</span>
@@ -320,7 +319,6 @@ function ProjectsSection() {
                   <button
                     onClick={showLess}
                     className="group relative inline-flex items-center gap-2 px-8 py-3.5 bg-[#1a1a1a] border border-[#d4af37]/50 cyber-button-cut font-bold text-[#d4af37] transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#d4af37]/20 overflow-hidden"
-                    aria-label="Show fewer projects"
                   >
                     <span className="relative z-10">Show Less</span>
                     <div className="absolute inset-0 bg-[#d4af37]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

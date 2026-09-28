@@ -5,9 +5,29 @@
     
     <!-- ========== 1. OPTIMIZED VIEWPORT ========== -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <!-- ========== 1b. LITE-TIER BOOTSTRAP ==========
+         Runs before any paint so CSS never has to render the heavy version and
+         then throw it away. Mirrors detectTier() in src/lib/device.ts - keep
+         the two in sync. -->
+    <script>
+    (function () {
+        try {
+            var el = document.documentElement;
+            var conn = navigator.connection || {};
+            var lite = !!conn.saveData ||
+                /^(slow-2g|2g|3g)$/.test(conn.effectiveType || '') ||
+                (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 2) ||
+                window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+                !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+            if (lite) el.className += ' lite';
+        } catch (e) { /* keep the full experience if detection throws */ }
+    })();
+    </script>
     
-    <!-- ========== 2. PRELOAD OG IMAGE (CRITICAL) ========== -->
-    <link rel="preload" href="https://raka-pranata.vercel.app/IMGG/og-image.png" as="image" fetchpriority="high">
+    <!-- ========== 2. PRELOAD LCP IMAGE ==========
+         The og-image is deliberately NOT preloaded: crawlers fetch it from the
+         og:/twitter: meta tags, and the page itself never displays it. -->
     <link rel="preload" as="image" href="/IMGG/face1-248x248.webp" fetchpriority="high">
     <!-- ========== 3. TITLE & DESCRIPTION (FOKUS JASA WEBSITE) ========== -->
     <title>Jasa Pembuatan Website & Landing Page Profesional | Raka Pranata</title>
@@ -72,42 +92,77 @@
     }
     </style>
     
-    <!-- ========== 5. FONT LOADING ========== -->
+    <!-- ========== 5. FONT LOADING ==========
+         Manrope and Orbitron are variable fonts: the `400..800` range syntax
+         returns ONE file per family instead of one per weight, cutting ~10
+         font requests. Only weights actually used (500/600/700/800/900) are
+         kept. Loaded non-render-blocking; the system stack shows first. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" fetchpriority="low">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" media="print" onload="this.media='all';document.body.classList.add('fonts-loaded')">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"></noscript>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Orbitron:wght@400..900&family=Rajdhani:wght@500;600;700&display=swap" fetchpriority="low">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Orbitron:wght@400..900&family=Rajdhani:wght@500;600;700&display=swap" media="print" onload="this.media='all';document.body.classList.add('fonts-loaded')">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..800&family=Orbitron:wght@400..900&family=Rajdhani:wght@500;600;700&display=swap"></noscript>
     
     <!-- ========== 8. ROBOTS & GOOGLE META ========== -->
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1">
     
-    <!-- ========== 9. DEFERRED GOOGLE ANALYTICS (idle callback) ========== -->
+    <!-- ========== 9. DEFERRED GOOGLE ANALYTICS (engagement-gated) ==========
+         gtag.js is ~73 KB. Loading it on a 5 s idle callback still put it in
+         the critical window, where Lighthouse counted it entirely as unused
+         JavaScript. It now loads only after the visitor actually does
+         something (scroll / tap / keypress) or after a long idle period, and
+         never for save-data clients. -->
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    
-    ((fn) => {
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(fn, { timeout: 5000 });
-        } else {
-            setTimeout(fn, 3000);
+
+    (function () {
+        var loaded = false;
+        var ID = 'G-ZR9N8GXMB9';
+
+        function load() {
+            if (loaded) return;
+            loaded = true;
+            document.head.appendChild(s);
         }
-    })(function() {
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZR9N8GXMB9';
-        script.onload = function() {
-            gtag('config', 'G-ZR9N8GXMB9', { 
+        function arm() {
+            if (loaded) return;
+            ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
+                window.addEventListener(evt, load, { once: true, passive: true, capture: true });
+            });
+        }
+        function idle() {
+            if (loaded) return;
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(load, { timeout: 15000 });
+            } else {
+                setTimeout(load, 15000);
+            }
+        }
+
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+        s.onload = function () {
+            gtag('config', ID, {
                 transport_type: 'beacon',
                 page_title: document.title,
                 page_location: window.location.href
             });
         };
-        document.head.appendChild(script);
-    });
+
+        var conn = navigator.connection || {};
+        // Respect Data Saver outright, and skip it on a small/low-memory device
+        // unless the visitor engages - a portfolio does not need pageview
+        // tracking from a bounce.
+        if (conn.saveData) return;
+        var lean = (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 2);
+
+        arm();
+        if (!lean) idle();
+    })();
     </script>
     
     <!-- ========== 10. FAVICON ========== -->
@@ -140,6 +195,13 @@
     
     <!-- ========== 14. CANONICAL ========== -->
     <link rel="canonical" href="https://raka-pranata.vercel.app">
+
+    <!-- ========== 14b. AGENT DISCOVERY ==========
+         Machine-readable entry points for crawlers and AI agents. Declared
+         explicitly so discovery does not have to fall back to probing
+         /.well-known/. -->
+    <link rel="ai-catalog" href="/.well-known/ai-catalog.json" type="application/ai-catalog+json">
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt">
     
     <!-- ========== 15. STRUCTURED DATA (JASA PROFESIONAL) ========== -->
     <script type="application/ld+json">
@@ -205,27 +267,22 @@
     
 </head>
 <body class="antialiased" cz-shortcut-listen="true">   
-    <!-- ========== 16. GOOGLE HELPER - VISIBLE TO GOOGLE ONLY ========== -->
+    <!-- ========== 16. GOOGLE HELPER - VISIBLE TO GOOGLE ONLY ==========
+         No <img> here: a 235 KB og-image was being downloaded twice on every
+         page load just to satisfy crawlers, which read the og:/twitter: meta
+         tags and JSON-LD instead. -->
     <div class="google-helper">
-        <h1 style="font-size: 1px; margin: 0; padding: 0;">Raka Pranata - Jasa Pembuatan Website & Landing Page Profesional</h1>
-        <p style="font-size: 1px; margin: 0; padding: 0;">Frontend Developer & UI/UX Designer. Layanan custom website, landing page konversi tinggi, optimasi performa dan SEO. Hubungi +6287823268333.</p>
-        <img src="https://raka-pranata.vercel.app/IMGG/og-image.png" 
-             alt="Raka Pranata - Jasa Website" 
-             style="width: 1px; height: 1px;"
-             width="1" 
-             height="1"
-             loading="eager">
+        <h1 style="font-size: 1px; margin: 0; padding: 0;">Raka Pranata - Jasa Pembuatan Website &amp; Landing Page Profesional</h1>
+        <p style="font-size: 1px; margin: 0; padding: 0;">Frontend Developer &amp; UI/UX Designer. Layanan custom website, landing page konversi tinggi, optimasi performa dan SEO. Hubungi +6287823268333.</p>
     </div>
     
-    <!-- ========== 17. HIDDEN SEO CONTENT ========== -->
+    <!-- ========== 17. HIDDEN SEO CONTENT ==========
+         <link itemprop="image"> gives crawlers the same association without
+         the browser ever downloading the bytes. -->
     <div class="seo-hidden" aria-hidden="true" itemscope itemtype="https://schema.org/Person">
-        <img src="https://raka-pranata.vercel.app/IMGG/og-image.png" 
-             alt="Raka Pranata - Creative Developer"
-             itemprop="image"
-             width="500"
-             height="500">
+        <link itemprop="image" href="https://raka-pranata.vercel.app/IMGG/og-image.png">
         <span itemprop="name">Raka Pranata</span>
-        <span itemprop="jobTitle">Frontend Developer & UI/UX Designer</span>
+        <span itemprop="jobTitle">Frontend Developer &amp; UI/UX Designer</span>
         <span itemprop="description">Spesialis jasa pembuatan website dan landing page untuk bisnis Anda. Kontak: +6287823268333</span>
     </div>
     

@@ -19,13 +19,14 @@ function Footer() {
       { threshold: 0.1 }
     );
 
-    if (footerRef.current) {
-      observer.observe(footerRef.current);
+    const node = footerRef.current;
+    if (node) {
+      observer.observe(node);
     }
 
     return () => {
-      if (footerRef.current) {
-        observer.unobserve(footerRef.current);
+      if (node) {
+        observer.unobserve(node);
       }
     };
   }, []);

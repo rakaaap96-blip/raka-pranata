@@ -11,7 +11,7 @@ function useMediaQuery(query: string): boolean {
     return window.matchMedia(query).matches;
   }, [query]);
 
-  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  return useSyncExternalStore(subscribe, getSnapshot, () => false);
 }
 
 export default useMediaQuery;

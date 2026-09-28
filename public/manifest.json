@@ -8,17 +8,8 @@
   "theme_color": "#d4af37",
   "orientation": "any",
   "scope": "/",
-  "lang": "en",
+  "lang": "id",
   "categories": ["business", "productivity", "education"],
-
-  "screenshots": [
-    {
-      "src": "/IMGG/og-image.png",
-      "sizes": "1200x630",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
 
   "shortcuts": [
     {
