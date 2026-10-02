@@ -122,11 +122,11 @@ function Navbar() {
               scrollToSection('#home');
             }}
             className="flex items-center gap-2 group min-h-11 min-w-11"
-            aria-label="Raka Pranata - back to top"
           >
             <img
               src="/IMGG/logo.svg"
               alt=""
+              decoding="async"
               width="36"
               height="36"
               className="w-8 h-8 sm:w-9 sm:h-9"
@@ -139,6 +139,11 @@ function Navbar() {
                 PRANATA
               </span>
             </div>
+            {/* Built from real text instead of an aria-label: axe compares the
+                accessible name against the *rendered* text ("RAKA PRANATA")
+                case-sensitively, so a hand-written aria-label failed
+                label-content-name-mismatch. */}
+            <span className="sr-only">Raka Pranata - back to top</span>
           </a>
 
           {/* Desktop Nav */}

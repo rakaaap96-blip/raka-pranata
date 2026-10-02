@@ -4,10 +4,18 @@ import ContactForm from '../components/contact/ContactForm';
 import ContactRobot from '../components/contact/ContactRobot';
 
 function Contact() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  // A scroll-reveal must never be able to permanently hide real content, so
+  // start visible when the browser has no IntersectionObserver to reveal with.
+  // Seeding this in useState (not in the effect) also avoids a cascading
+  // synchronous re-render.
+  const canObserve = typeof IntersectionObserver !== 'undefined';
+  const [isVisible, setIsVisible] = useState(!canObserve);
 
   useEffect(() => {
+    const node = sectionRef.current;
+    if (!node || !canObserve) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -17,20 +25,16 @@ function Contact() {
       { threshold: 0.1 }
     );
 
-    const node = sectionRef.current;
-    if (node) {
-      observer.observe(node);
-    }
+    observer.observe(node);
 
     return () => {
-      if (node) {
-        observer.unobserve(node);
-      }
+      observer.unobserve(node);
     };
-  }, []);
+  }, [canObserve]);
 
   return (
     <section 
+      ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 sm:px-8 lg:px-16 section-pad cyber-grid-section cyber-section"
       aria-labelledby="contact-heading"
     >

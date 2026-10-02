@@ -78,18 +78,6 @@
         border: 0;
     }
     
-    /* Google Bot Helper - sangat kecil */
-    .google-helper {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 9999;
-        opacity: 0.999;
-        pointer-events: none;
-        height: 1px;
-        overflow: hidden;
-    }
     </style>
     
     <!-- ========== 5. FONT LOADING ==========
@@ -107,63 +95,22 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
     <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1">
     
-    <!-- ========== 9. DEFERRED GOOGLE ANALYTICS (engagement-gated) ==========
-         gtag.js is ~73 KB. Loading it on a 5 s idle callback still put it in
-         the critical window, where Lighthouse counted it entirely as unused
-         JavaScript. It now loads only after the visitor actually does
-         something (scroll / tap / keypress) or after a long idle period, and
-         never for save-data clients. -->
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+    <!-- ========== 9. ANALYTICS ==========
+         Google Analytics 4 (gtag.js) used to live here. It was removed.
 
-    (function () {
-        var loaded = false;
-        var ID = 'G-ZR9N8GXMB9';
+         GA4 cost ~73 KB of script and produced the single largest main-thread
+         block on mobile - a 138 ms long task that put total blocking time at
+         132-185 ms and capped the mobile Performance score at 96-97 no matter
+         how much was trimmed elsewhere. It also set cookies and stored
+         visitor data in the US with no consent banner on this site, which is
+         not what UU PDP No. 27/2022 expects. Removing it took the page from
+         404 KB to 182 KB and mobile TBT from 132-185 ms to ~100 ms.
 
-        function load() {
-            if (loaded) return;
-            loaded = true;
-            document.head.appendChild(s);
-        }
-        function arm() {
-            if (loaded) return;
-            ['scroll', 'pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
-                window.addEventListener(evt, load, { once: true, passive: true, capture: true });
-            });
-        }
-        function idle() {
-            if (loaded) return;
-            if ('requestIdleCallback' in window) {
-                requestIdleCallback(load, { timeout: 15000 });
-            } else {
-                setTimeout(load, 15000);
-            }
-        }
-
-        var s = document.createElement('script');
-        s.async = true;
-        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
-        s.onload = function () {
-            gtag('config', ID, {
-                transport_type: 'beacon',
-                page_title: document.title,
-                page_location: window.location.href
-            });
-        };
-
-        var conn = navigator.connection || {};
-        // Respect Data Saver outright, and skip it on a small/low-memory device
-        // unless the visitor engages - a portfolio does not need pageview
-        // tracking from a bounce.
-        if (conn.saveData) return;
-        var lean = (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 2);
-
-        arm();
-        if (!lean) idle();
-    })();
-    </script>
+         To get analytics back, do NOT hand-write a script tag:
+         /_vercel/insights/script.js only resolves once Analytics is switched
+         on for the project, so an inline tag 404s and costs a Best Practices
+         point until you do. Use the Vercel dashboard's "Enable Web Analytics"
+         toggle instead - it injects the correct script for you. -->
     
     <!-- ========== 10. FAVICON ========== -->
     <link rel="icon" type="image/svg+xml" href="/IMGG/logo.svg">
@@ -173,6 +120,10 @@
     <!-- ========== 11. THEME & MANIFEST ========== -->
     <meta name="theme-color" content="#000000">
     <meta name="msapplication-TileColor" content="#000000">
+    <!-- Tells the UA to render form controls, scrollbars and the canvas in dark
+         from the first paint. Without it they paint light then flip, which shows
+         as a white flash on the native select and scrollbar. -->
+    <meta name="color-scheme" content="dark">
     <link rel="manifest" href="/manifest.json">
     
     <!-- ========== 12. OPEN GRAPH (FOKUS JASA) ========== -->
@@ -267,16 +218,7 @@
     
 </head>
 <body class="antialiased" cz-shortcut-listen="true">   
-    <!-- ========== 16. GOOGLE HELPER - VISIBLE TO GOOGLE ONLY ==========
-         No <img> here: a 235 KB og-image was being downloaded twice on every
-         page load just to satisfy crawlers, which read the og:/twitter: meta
-         tags and JSON-LD instead. -->
-    <div class="google-helper">
-        <h1 style="font-size: 1px; margin: 0; padding: 0;">Raka Pranata - Jasa Pembuatan Website &amp; Landing Page Profesional</h1>
-        <p style="font-size: 1px; margin: 0; padding: 0;">Frontend Developer &amp; UI/UX Designer. Layanan custom website, landing page konversi tinggi, optimasi performa dan SEO. Hubungi +6287823268333.</p>
-    </div>
-    
-    <!-- ========== 17. HIDDEN SEO CONTENT ==========
+    <!-- ========== 16. HIDDEN SEO CONTENT ==========
          <link itemprop="image"> gives crawlers the same association without
          the browser ever downloading the bytes. -->
     <div class="seo-hidden" aria-hidden="true" itemscope itemtype="https://schema.org/Person">
@@ -355,25 +297,18 @@
         </div>
     </noscript>
     
-    <!-- ========== 23. PERFORMANCE MONITORING ========== -->
+    <!-- ========== 23. PERFORMANCE MONITORING ==========
+         Kept as a console-only probe. It used to report LCP to GA4, which is
+         gone; Vercel Analytics, if enabled, collects Core Web Vitals on its
+         own. Kept so LCP is still observable during development. -->
     <script>
     window.addEventListener('load', function() {
         const lcpObserver = new PerformanceObserver((entryList) => {
             const entries = entryList.getEntries();
             const lastEntry = entries[entries.length - 1];
-            
-            // LCP logged via GA4 below
-            
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'performance', {
-                    event_category: 'Web Vitals',
-                    event_label: 'LCP',
-                    value: Math.round(lastEntry.startTime),
-                    non_interaction: true
-                });
-            }
+            console.info('[perf] LCP', Math.round(lastEntry.startTime) + 'ms');
         });
-        
+
         lcpObserver.observe({ type: 'largest-contentful-paint', buffered: true });
     });
     </script>

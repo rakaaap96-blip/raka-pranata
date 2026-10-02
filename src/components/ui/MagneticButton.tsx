@@ -133,7 +133,7 @@ const MagneticButton = forwardRef<HTMLButtonElement | HTMLAnchorElement, Magneti
     const isPrimary = variant === 'primary';
     const isSecondary = variant === 'secondary';
 
-    const baseClasses = `relative inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold text-sm sm:text-base tracking-wide overflow-hidden transition-all duration-300 active:scale-95 cursor-pointer ${
+    const baseClasses = `relative inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 min-h-11 rounded-xl font-bold text-sm sm:text-base tracking-wide overflow-hidden transition-all duration-300 active:scale-95 cursor-pointer ${
       disabled ? 'opacity-50 cursor-not-allowed' : ''
     } ${className}`;
 

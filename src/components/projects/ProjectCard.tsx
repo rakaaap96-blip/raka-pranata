@@ -182,8 +182,11 @@ function ProjectCard({ project, index }: ProjectCardProps) {
           {project.category}
         </div>
         
-        {/* Hover Actions - Only Live Demo */}
-        <div className={`absolute bottom-4 left-4 right-4 transition-all duration-500 ${
+        {/* Hover Actions - Only Live Demo.
+            focus-within matters: isHovered is pointer-only, so without it the
+            link stayed at opacity-0 while still being tabbable, and keyboard
+            users focused an invisible control. */}
+        <div className={`absolute bottom-4 left-4 right-4 transition-all duration-500 focus-within:opacity-100 focus-within:translate-y-0 ${
           isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         }`}>
           {project.liveUrl && (

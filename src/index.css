@@ -1225,6 +1225,85 @@ textarea:-webkit-autofill:focus {
   transform-origin: bottom;
 }
 
+/* ========== FOCUS VISIBILITY (A11Y) ==========
+   Audit menemukan 0 rules :focus-visible di seluruh bundle, jadi 10-14
+   elemen focusable di halaman tidak menampilkan apa pun saat diklik/di-tab.
+   Keyboard user tidak bisa tahu posisinya di navigasi.
+
+   Pakai :focus-visible (bukan :focus) supaya ring hanya muncul untuk
+   navigasi keyboard, tidak saat mouse klik. Kalau pakai :focus, setiap
+   klik mouse akan memunculkan ring yang mengganggu. */
+:focus-visible {
+  outline: 2px solid var(--cyber-gold-hot);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Link di dalam teks: pakai underline, bukan ring, supaya tidak menggeser
+   layout dan tetap terbaca inline. */
+a:focus-visible {
+  outline-offset: 3px;
+}
+
+/* Untuk elemen yang sudah punya border radius sendiri (pill, card, chip),
+   ring mengikuti bentuknya. */
+.rounded-full:focus-visible {
+  border-radius: 9999px;
+}
+
+@media (forced-colors: active) {
+  /* Windows High Contrast mengabaikan warna, jadi pastikan ring tetap ada. */
+  :focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+/* ========== SELECTION & COLOR SCHEME ==========
+   Default selection is browser blue, which reads as a bug against the
+   black/gold palette. Match the brand so copying text looks intentional. */
+::selection {
+  background: var(--cyber-gold);
+  color: var(--cyber-black);
+}
+
+::-moz-selection {
+  background: var(--cyber-gold);
+  color: var(--cyber-black);
+}
+
+/* Render native widgets (select, scrollbar, checkbox) dark from first paint. */
+:root {
+  color-scheme: dark;
+}
+
+/* ========== SKIP LINK ==========
+   First tab stop on the page. Sits off-screen until focused, then jumps
+   straight into the main content instead of forcing a keyboard user through
+   every nav link on each page visit. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0.875rem 1.25rem;
+  margin: 0.5rem;
+  border-radius: 0 0 0.75rem 0;
+  background: var(--cyber-gold);
+  color: var(--cyber-black);
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.02em;
+  transform: translateY(-150%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--cyber-ivory);
+  outline-offset: -4px;
+}
+
 /* ========== REDUCED MOTION (PERFORMANCE & AKSESIBILITAS) ==========
    Matikan semua animasi CSS yang berat/infinite utk user yg memilih reduced motion. */
 @media (prefers-reduced-motion: reduce) {

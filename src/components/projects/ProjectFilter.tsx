@@ -89,7 +89,7 @@ function ProjectFilter({ filter, setFilter, searchTerm, setSearchTerm }: Project
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 onKeyDown={(e) => e.key === 'Escape' && setSearchTerm('')}
-                className="w-full pl-9 sm:pl-12 pr-9 sm:pr-10 py-3 sm:py-3.5 bg-transparent text-[#ffffea] placeholder-[#ffffea]/30 focus:outline-none text-sm"
+                className="w-full pl-9 sm:pl-12 pr-9 sm:pr-10 py-3 sm:py-3.5 bg-transparent text-[#ffffea] placeholder-[#ffffea]/30 focus:outline-none text-base"
               />
 
               {/* Clear button */}
@@ -120,7 +120,7 @@ function ProjectFilter({ filter, setFilter, searchTerm, setSearchTerm }: Project
                   magnetStrength={0.3}
                   particleCount={0}
                   ripple={false}
-                  className={`px-3 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-semibold min-h-10 transition-all duration-300 ${
+                  className={`px-3 py-2.5 sm:px-5 sm:py-3 text-xs sm:text-sm font-semibold min-h-11 transition-all duration-300 ${
                     isActive
                       ? 'text-[#1a1a1a] bg-linear-to-r from-[#d4af37] to-[#f4d03f] shadow-md shadow-[#d4af37]/20 cyber-button-cut'
                       : 'text-[#ffffea]/70 hover:text-[#ffffea] hover:bg-[#d4af37]/10'

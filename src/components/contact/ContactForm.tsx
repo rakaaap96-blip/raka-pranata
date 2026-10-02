@@ -323,13 +323,15 @@ function ContactForm({ isVisible }: ContactFormProps) {
         </div>
       )}
 
-      {/* Error Message */}
+      {/* Error Message. role="alert" makes assistive tech announce it the
+          moment validation fails; without it a screen-reader user submits an
+          invalid form and hears nothing at all. */}
       {error && (
-        <div className="relative mb-6">
+        <div className="relative mb-6" role="alert" aria-live="assertive">
           <div className="bg-linear-to-r from-red-500/20 to-rose-600/20 border border-red-400/30 rounded-2xl p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-linear-to-r from-red-400 to-rose-500 rounded-full flex items-center justify-center shadow-lg shadow-red-500/30 shrink-0">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
@@ -345,6 +347,7 @@ function ContactForm({ isVisible }: ContactFormProps) {
         <form 
           ref={formRef}
           onSubmit={handleSubmit}
+          noValidate
           className="space-y-6 group flex flex-col relative z-10"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

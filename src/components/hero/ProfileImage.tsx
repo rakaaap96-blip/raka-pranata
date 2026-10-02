@@ -59,6 +59,7 @@ function ProfileImage() {
             src="/IMGG/face0-248x248.webp"
             alt="Raka Pranata creative profile"
             loading="lazy"
+            decoding="async"
             width="248"
             height="248"
             className="absolute inset-0 z-20 w-full h-full object-cover grayscale-20 contrast-110 transition-all duration-1000 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"

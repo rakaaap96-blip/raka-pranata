@@ -32,16 +32,22 @@ export default function App() {
       <div className="scanline-overlay" aria-hidden="true" />
       <div className="vhs-overlay" aria-hidden="true" />
       <CustomCursor />
+      {/* First tab stop: jumps past the nav straight into the content. */}
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
       <Navbar />
 
       <BackgroundWrapper>
         {/* Hero is the LCP - it stays eager so the id resolves immediately. */}
-        <Hero />
-        <Gate id="projects"><ProjectsSection /></Gate>
-        <Gate id="about"><About /></Gate>
-        <Gate id="testimonials"><Testimonials /></Gate>
-        <Gate id="contact"><Contact /></Gate>
-        <Gate id="site-footer"><Footer /></Gate>
+        <main id="main-content">
+          <Hero />
+          <Gate id="projects"><ProjectsSection /></Gate>
+          <Gate id="about"><About /></Gate>
+          <Gate id="testimonials"><Testimonials /></Gate>
+          <Gate id="contact"><Contact /></Gate>
+          <Gate id="site-footer"><Footer /></Gate>
+        </main>
       </BackgroundWrapper>
     </div>
   );

@@ -58,11 +58,15 @@ function EqBar({ delay }: { delay: number }) {
 interface CardBackProps {
   testimonial: Testimonial;
   onFlipBack: () => void;
+  inert: boolean;
 }
 
-function CardBack({ testimonial, onFlipBack }: CardBackProps) {
+function CardBack({ testimonial, onFlipBack, inert }: CardBackProps) {
   return (
-    <div className="absolute inset-0 bg-linear-to-br from-[#1a1a1a] to-[#0f0f0f] rounded-2xl p-5 border border-[#d4af37]/30 flex flex-col items-center justify-center text-center backface-hidden rotate-y-180">
+    <div
+      inert={inert}
+      className="absolute inset-0 bg-linear-to-br from-[#1a1a1a] to-[#0f0f0f] rounded-2xl p-5 border border-[#d4af37]/30 flex flex-col items-center justify-center text-center backface-hidden rotate-y-180"
+    >
       <HiBuildingOffice2 className="w-10 h-10 text-[#d4af37] mb-3" />
       {/* h3, not h4: the section heading is an h2, so h4 skipped a level and
           failed the heading-order audit. */}
@@ -172,6 +176,7 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
       >
         {/* FRONT FACE */}
         <div
+          inert={isFlipped}
           className={`group relative rounded-2xl p-5 overflow-hidden transition-all duration-500 flex flex-col h-full ${
             isHovered && !isFlipped
               ? 'bg-[#fefcf5] border-[#d4af37]/60 shadow-2xl shadow-[#d4af37]/20'
@@ -220,7 +225,7 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
           <div className="mb-3 z-10">
             <button
               onClick={handleFlip}
-              className={`group/flip text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5 w-fit transition-all duration-300 ${
+              className={`group/flip text-xs font-medium px-3.5 py-2.5 min-h-11 rounded-full flex items-center gap-1.5 w-fit transition-all duration-300 ${
                 isHovered && !isFlipped
                   ? 'bg-[#1a1a1a] text-[#d4af37] border border-[#d4af37]/40 shadow-md hover:bg-[#d4af37] hover:text-[#1a1a1a] hover:border-[#d4af37]'
                   : 'bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/20 hover:bg-[#d4af37] hover:text-[#1a1a1a] hover:border-[#d4af37]'
@@ -262,7 +267,7 @@ function TestimonialCard({ testimonial, index }: TestimonialCardProps) {
         </div>
 
         {/* BACK FACE */}
-        <CardBack testimonial={testimonial} onFlipBack={handleFlip} />
+          <CardBack testimonial={testimonial} onFlipBack={handleFlip} inert={!isFlipped} />
       </div>
     </div>
   );
